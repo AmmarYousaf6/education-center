@@ -8,6 +8,7 @@ const client = new Client({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 });
+
 client.connect().then((result) => console.log('Database connection successful')).catch((err) => console.log(err));
 
 module.exports = {
