@@ -8,17 +8,13 @@ const getUser = async (req,res) => {
     let userInfo = jwtDecode(token);
 
     const getUserById = {
-        text : 'SELECT id,email,status,name, title, institution, level_of_training, gender, country, date_of_birth FROM users WHERE id = $1',
+        text : 'SELECT id,email,status,name, gender, type FROM users WHERE id = $1',
         values : [userInfo.userID]
     }
     try {
         const response  = await database.query(getUserById);
         if (!response.rows[0]) {
             return res.status(400).send({'message': 'The credentials you provided is incorrect'});
-            res.status(400).json({
-                status: 0,
-                message: 'No user found',
-            });
         }
         else {
             res.status(200).json({

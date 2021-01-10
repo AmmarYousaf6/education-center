@@ -4,12 +4,12 @@ const {database} = require('../config/database');
 const {ReasonPhrases,StatusCodes,getReasonPhrase,getStatusCode}=  require('http-status-codes');
 
 const signUp = async (req,res,next) => {
-    const {email, password, name, title, institution, levelOftraining, gender, country, dateOfBirth} = req.body;
+    const {email, password, name, gender,type} = req.body;
 
     let encryptPassword = await md5(password);
 
-    const text = 'INSERT INTO users(email, password, name, title, institution, level_of_training, gender, country, date_of_birth ) VALUES($1, $2, $3, $4, $5, $6, $7 ,$8 ,$9 ) RETURNING *'
-    const values = [email.trim(), encryptPassword, name, title, institution, levelOftraining, gender, country, dateOfBirth];
+    const text = 'INSERT INTO users(email, password, name, gender, type ) VALUES($1, $2, $3, $4, $5) RETURNING *'
+    const values = [email.trim(), encryptPassword, name, gender, type];
     try {
         const query = await database.query(text, values).then((res) => {
             return {
@@ -36,7 +36,7 @@ const signUp = async (req,res,next) => {
 
 const login =  (req,res) => {
     const {email, password} = req.body;
-
+    console.log(email,password)
     if(validateUser(req.body)){
 
        getUserByEmail(email,password, (err,results)=>{
@@ -64,8 +64,6 @@ const login =  (req,res) => {
                 const jsonToken = sign({
                         username: results.name,
                         userID: results.id,
-                        senderId : req.sender_id,
-                        nlpToken : req.nlpToken
                     },
                     process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: "24hr"
@@ -123,15 +121,7 @@ function validateUser(user){
     const validPassword = typeof user.password == 'string' && user.password.trim() != '' && user.password.trim().length >= 6;
     return validEmail && validPassword;
 }
-const test = async (req,res,next) => {
-    res.email = 'ammar@asdad';
-    next();
-    res.status(200).json({
-        'message' : "great"
-    });
-}
 module.exports = {
     signUp,
-    login,
-    test,
+    login
 }
