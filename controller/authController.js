@@ -8,8 +8,8 @@ const signUp = async (req,res,next) => {
 
     let encryptPassword = await md5(password);
 
-    const text = 'INSERT INTO users(email, password, name, gender, type ) VALUES($1, $2, $3, $4, $5) RETURNING *'
-    const values = [email.trim(), encryptPassword, name, gender, type];
+    const text = 'INSERT INTO users(email, password, name, gender, type, status, image ) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *'
+    const values = [email.trim(), encryptPassword, name, gender, type, 0, 'default.jpg'];
     try {
         const query = await database.query(text, values).then((res) => {
             return {
@@ -38,13 +38,13 @@ const socialSignUp = async (req,res,next) => {
     if(req.userExists == true){
         next();
     } else {
-        const {email, password, name, gender,type} = req.body;
+        const {email, password, name, gender,type, image} = req.body;
         var encryptPassword = ''; 
         if(password){
             encryptPassword = await md5(password);
         }
-        const text = 'INSERT INTO users(email, password, name, gender, type, status ) VALUES($1, $2, $3, $4, $5, $6) RETURNING *'
-        const values = [email.trim(), encryptPassword, name, gender, type, 1];
+        const text = 'INSERT INTO users(email, password, name, gender, type, status, image ) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *'
+        const values = [email.trim(), encryptPassword, name, gender, type, 1, image];
         try {
             const query = await database.query(text, values).then((res) => {
                 return {
