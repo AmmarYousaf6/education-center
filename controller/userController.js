@@ -299,10 +299,65 @@ const getTeachers = async (req,res) => {
         const response  = await database.query(getUserById);
         
         if (!response.rows[0]) {
-            return res.status(400).send({'message': 'The credentials you provided is incorrect'});
+            return res.status(400).send({'message': 'No user found'});
         }
         else {
             let data = response.rows;
+            res.status(200).json({
+                status: 1,
+                message: 'success',
+                user : data
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+}
+
+const getTeacherById = async (req,res) => {
+    const {userId} = req.params;
+    console.log(userId)
+    const getUserById = {
+        text : 'SELECT * FROM users WHERE id = $1',
+        values : [userId]
+    }
+    const getUserSubjects = {
+        text : 'SELECT name FROM user_subjects WHERE user_id = $1',
+        values : [userId]
+    }
+    const getUserGrades = {
+        text : 'SELECT name FROM user_grades WHERE user_id = $1',
+        values : [userId]
+    }
+    const getUserAreas = {
+        text : 'SELECT name FROM user_target_areas WHERE user_id = $1',
+        values : [userId]
+    }
+    const getUserSlots = {
+        text : 'SELECT day, time FROM user_slots WHERE user_id = $1',
+        values : [userId]
+    }
+    try {
+        const response  = await database.query(getUserById);
+        
+        if (!response.rows[0]) {
+            return res.status(400).send({'message': 'No user found'});
+        }
+        else {
+            let data = response.rows[0];
+            if(response.rows[0].user_type){
+                const subjects  = await database.query(getUserSubjects);
+                const grades  = await database.query(getUserGrades);
+                const areas  = await database.query(getUserAreas);
+                const slots  = await database.query(getUserSlots);
+                data.subjects = subjects.rows;
+                data.grades = grades.rows;
+                data.areas = areas.rows;
+                data.slots = slots.rows;
+            }
             res.status(200).json({
                 status: 1,
                 message: 'success',
@@ -330,5 +385,6 @@ module.exports = {
     getUser,
     updateBasicProfile,
     getTeachers,
+    getTeacherById,
     health,
 }
