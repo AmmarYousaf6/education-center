@@ -164,12 +164,12 @@ const resetPassword = async (req,res,next) => {
 const updateBasicProfile = async (req,res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
-    let {user_type, subjects, grades, target_area, slots, summary} = req.body;
+    let {user_type, subjects, grades, target_area, slots, summary, experience, qualification,age, salary, duration_of_commitment, video_introduction, hours_per_day, image, curriculum} = req.body;
     if(user_type == 'teacher' || user_type == 'parent'){
         /* Update user type */
         const updateType = {
-            text : 'Update users SET user_type = $1, summary = $2 WHERE id = $3',
-            values : [user_type, summary, userInfo.userID]
+            text : 'Update users SET user_type = $1, summary = $2, experience = $3, qualification = $4, age = $5, salary = $6, duration_of_commitment = $7, video_introduction = $8, hours_per_day = $9, image = $10, curriculum = $11 WHERE id = $12',
+            values : [user_type, summary, experience, qualification, age, salary, duration_of_commitment, video_introduction, hours_per_day, image, curriculum, userInfo.userID]
         }
         
         try {
