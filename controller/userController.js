@@ -2,6 +2,7 @@ const {database} = require('../config/database');
 const {ReasonPhrases,StatusCodes,getReasonPhrase,getStatusCode}=  require('http-status-codes');
 const md5 = require('md5');
 const jwtDecode = require('jwt-decode');
+const multer = require('multer');
 
 const getUser = async (req,res) => {
     let token = req.headers.authorization;
@@ -164,12 +165,14 @@ const resetPassword = async (req,res,next) => {
 const updateBasicProfile = async (req,res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
-    let {user_type, subjects, grades, target_area, slots, summary, experience, qualification,age, salary, duration_of_commitment, video_introduction, hours_per_day, image, curriculum} = req.body;
-    if(user_type == 'teacher' || user_type == 'parent'){
+    let {userType, subjects, grades, target_area, slots, summary, experience, qualification,age, salary, duration_of_commitment, video_introduction, hours_per_day} = req.body;
+    let image = req.files.image ? req.files.image[0].filename  : 'default.jpg';
+    let curriculum = req.files.curriculum ? req.files.curriculum[0].filename  : 'NA';
+    if(userType == 'teacher' || userType == 'parent'){
         /* Update user type */
         const updateType = {
             text : 'Update users SET user_type = $1, summary = $2, experience = $3, qualification = $4, age = $5, salary = $6, duration_of_commitment = $7, video_introduction = $8, hours_per_day = $9, image = $10, curriculum = $11 WHERE id = $12',
-            values : [user_type, summary, experience, qualification, age, salary, duration_of_commitment, video_introduction, hours_per_day, image, curriculum, userInfo.userID]
+            values : [userType, summary, experience, qualification, age, salary, duration_of_commitment, video_introduction, hours_per_day, image, curriculum, userInfo.userID]
         }
         
         try {
@@ -199,10 +202,10 @@ const updateBasicProfile = async (req,res) => {
             let getSubjects = eval(subjects);
             for(let i = 0; i<getSubjects.length; i++){
                 let text = 'INSERT INTO user_subjects(user_id, name) VALUES($1, $2) RETURNING *'
-                let values = [userInfo.userID, getSubjects[i]];
+                let values = [userInfo.userID, getSubjects[i].name];
                 try {
                     const query = await database.query(text, values).then((res) => {
-                       console.log('great')
+                       console.log('updated subjects')
                     });
                 } catch (err) {
                     console.log(err.stack)
@@ -221,7 +224,7 @@ const updateBasicProfile = async (req,res) => {
             let getGrades = eval(grades);
             for(let i = 0; i<getGrades.length; i++){
                 let text = 'INSERT INTO user_grades(user_id, name) VALUES($1, $2) RETURNING *'
-                let values = [userInfo.userID, getGrades[i]];
+                let values = [userInfo.userID, getGrades[i].name];
                 try {
                     await database.query(text, values);
                 } catch (err) {
@@ -250,7 +253,7 @@ const updateBasicProfile = async (req,res) => {
             }
         }
         /* Update Time slot */
-        if(eval(slots).length > 1){
+        if(eval(slots)){
             /* Remove slots if they exists */
             const removeslots = {
                 text : 'DELETE FROM user_slots WHERE user_id = $1',
@@ -260,8 +263,11 @@ const updateBasicProfile = async (req,res) => {
             /* *** */
             let getSlots = eval(slots);
             for(let i = 0; i<getSlots.length; i++){
-                let day = getSlots[i]['Monday'] ? 'Monday' : getSlots[i]['Tuesday'] ? 'Tuesday' : getSlots[i]['Wednesday'] ? 'Wednesday' : getSlots[i]['Thursday'] ? 'Thursday' : getSlots[i]['Friday'] ? 'Friday' : getSlots[i]['Saturday'] ? 'Saturday' : getSlots[i]['Sunday'] ? 'Sunday' : '';
-                let time = getSlots[i][day];
+                let slotType = getSlots[i]['timeMonday'] ? 'timeMonday' : getSlots[i]['timeTuesday'] ? 'timeTuesday' : getSlots[i]['timeWednesday'] ? 'timeWednesday' : getSlots[i]['timeThursday'] ? 'timeThursday' : getSlots[i]['timeFriday'] ? 'timeFriday' : getSlots[i]['timeSaturday'] ? 'timeSaturday' : getSlots[i]['timeSunday'] ? 'timeSunday' : '';
+                let slotNow = getSlots[i][slotType];
+                let day = slotNow.day;
+                let time = slotNow.start+' - '+slotNow.end;
+                
                 let text = 'INSERT INTO user_slots(user_id, day, time) VALUES($1, $2, $3) RETURNING *'
                 let values = [userInfo.userID, day, time];
                 try {
@@ -271,6 +277,7 @@ const updateBasicProfile = async (req,res) => {
                 }
             }
         }
+        /* Upload Image */
 
         res.status(200).json({
             status: 1,
@@ -371,6 +378,281 @@ const getTeacherById = async (req,res) => {
         });
     }
 }
+const sendInvite = async (req,res,next) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let userId,participant_id;
+    if(userInfo.user_type == 'parent'){
+        userId = userInfo.userID;
+        participant_id = req.params.userId;
+    } else {
+        userId = req.params.userId;
+        participant_id = userInfo.userID;
+    }
+    checkConnectionExists(userId,participant_id, async (err,results)=> {
+        if (err) {
+            res.status(500).json({
+                status: 0,
+                message: err
+            });
+        }
+        if (!results) {
+            const text = 'INSERT INTO user_connections(user_id, participant_id,status ) VALUES($1, $2, $3) RETURNING *'
+            const values = [userId, participant_id, 'pending'];
+            try {
+                const query = await database.query(text, values).then((response) => {
+                    res.status(200).json({
+                        status : 1,
+                        message : 'Invite has been sent successfully!',
+                        session : response.rows[0]
+                    });
+                });
+                
+            } catch (err) {
+                res.status(500).json({
+                    status : 0,
+                    message : err.stack
+                });
+            }
+        } else {
+            res.status(200).json({
+                status : 1,
+                message : 'Connection already Exists',
+                data : results
+            });
+        }
+        
+    });
+}
+
+const getUserConnectionSession = async (req,res,next) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let userId,participant_id;
+    if(userInfo.user_type == 'parent'){
+        userId = userInfo.userID;
+        participant_id = req.params.userId;
+    } else {
+        userId = req.params.userId;
+        participant_id = userInfo.userID;
+    }
+    checkConnectionExists(userId,participant_id, async (err,results)=> {
+        if (err) {
+            res.status(500).json({
+                status: 0,
+                message: err
+            });
+        }
+        if (!results) {
+            res.status(200).json({
+                status : 1,
+                message : 'No connection exists.Please send an invite to to connect with the user',
+                data : []
+            });
+        } else {
+            res.status(200).json({
+                status : 1,
+                message : 'Connection exists',
+                data : results
+            });
+        }
+        
+    });
+}
+
+function checkConnectionExists(userId, participant_id, callback){
+    const checkConnectionExists = {
+        text : 'SELECT id as session_id, user_id,participant_id,status FROM user_connections WHERE user_id = $1 AND participant_id = $2',
+        values : [userId, participant_id]
+    }
+    try {
+        const query = database.query(checkConnectionExists).then(res => {
+            if(res.rows.length > 0){
+                callback(null, res.rows[0])
+            } else {
+                callback(null)
+            }
+        })
+    } catch (err) {
+        callback(err);
+    }
+}
+
+const updateInvite = async (req,res,next) => {
+    const {id, status} = req.body;
+    const updatePassword = {
+        text : 'Update user_connections SET status = $1 WHERE id = $2',
+        values : [status, id]
+    }
+    try {
+        const response  = await database.query(updatePassword);
+        if (response.rowCount < 1) {
+            res.status(400).json({
+                status: 0,
+                message: 'No data found',
+            });
+        }
+        else {
+            res.status(200).json({
+                status: 1,
+                message: 'Your request has been updated!'
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            status: 0,
+            message: callback(err)
+        });
+    }
+}
+
+const myInvites = async (req,res,next) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let query;
+    if(userInfo.user_type == 'parent'){ // AND participant_id = $2
+        query = 'SELECT name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.participant_id  WHERE user_id = $1';
+    } else {
+        query = 'SELECT name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.user_id  WHERE participant_id = $1';
+    }
+    const getInvites = {
+        text : query,
+        values : [userInfo.userID]
+    }
+    try {
+        const response  = await database.query(getInvites);
+        if (response.rowCount < 1) {
+            res.status(400).json({
+                status: 0,
+                message: 'No data found',
+                data : []
+            });
+        }
+        else {
+            res.status(200).json({
+                status: 1,
+                message: 'Connection requests',
+                data : response.rows
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            status: 0,
+            message: callback(err)
+        });
+    }
+}
+
+function isRated(userId, ratedTo, callback){
+    const checkisRated = {
+        text : 'SELECT * FROM ratings WHERE rated_by = $1 AND rated_to = $2',
+        values : [userId, ratedTo]
+    }
+    try {
+        const query = database.query(checkisRated).then(res => {
+            if(res.rows.length > 0){
+                callback(null, res.rows[0])
+            } else {
+                callback(null)
+            }
+        })
+    } catch (err) {
+        callback(err);
+    }
+}
+
+const rateUser = async (req,res,next) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    const {ratedTo, rating, feedback} = req.body;
+    isRated(userInfo.userID,ratedTo, async (err,results)=> {
+        if (err) {
+            res.status(500).json({
+                status: 0,
+                message: err
+            });
+        }
+        if (!results) {
+            const text = 'INSERT INTO ratings(rated_by, rated_to, rating, feedback ) VALUES($1, $2, $3, $4) RETURNING *'
+            const values = [userInfo.userID, ratedTo, rating,feedback ];
+            try {
+                const query = await database.query(text, values).then((response) => {
+                    res.status(200).json({
+                        status : 1,
+                        message : 'Rating has been placed successfully!'
+                    });
+                });
+                
+            } catch (err) {
+                res.status(500).json({
+                    status : 0,
+                    message : err.stack
+                });
+            }
+        } else {
+            console.log(results)
+            const updateRating = {
+                text : 'UPDATE ratings SET rating = $1,feedback = $2 WHERE id = $3',
+                values : [rating, feedback, results.id]
+            }
+            try {
+                const response  = await database.query(updateRating);
+                if (response.rowCount < 1) {
+                    res.status(400).json({
+                        status: 0,
+                        message: 'No data found',
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        status: 1,
+                        message: 'Your request has been updated!'
+                    });
+                }
+            } catch (err) {
+                res.status(500).json({
+                    status: 0,
+                    message: callback(err)
+                });
+            }
+        }
+        
+    });
+    
+}
+
+const userRated = async (req,res,next) => {
+    const {userId} = req.params;
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    const myRatings = {
+        text : 'SELECT * FROM ratings WHERE rated_by = $1 AND rated_to = $2',
+        values : [userInfo.userID, userId]
+    }
+    try {
+        const query = database.query(myRatings).then(response => {
+            if(response.rows.length > 0){
+                res.status(200).json({
+                    status: 1,
+                    message: 'Ratings to the user',
+                    data : response.rows
+                });
+            } else {
+                res.status(200).json({
+                    status: 1,
+                    message: 'No rating found',
+                    data : []
+                });
+            }
+        })
+    } catch (err) {
+        res.status(500).json({
+            status: 0,
+            message: err,
+            data : []
+        });
+    }
+}
 
 const health = async (req,res) => {
     res.status(200).json({
@@ -386,5 +668,11 @@ module.exports = {
     updateBasicProfile,
     getTeachers,
     getTeacherById,
+    sendInvite,
+    getUserConnectionSession,
+    updateInvite,
+    myInvites,
+    rateUser,
+    userRated,
     health,
 }

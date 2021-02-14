@@ -10,5 +10,4 @@ router.post('/signup',authMiddleware.validateSignup,authMiddleware.checkUserExis
 router.post('/social-login',authMiddleware.validateSocialSignup,authMiddleware.checkUserExists, authController.socialSignUp,authController.socialLogin);
 router.post('/login', authController.login);
 
-
 module.exports = router;

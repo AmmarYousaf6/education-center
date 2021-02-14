@@ -93,6 +93,7 @@ const login =  (req,res) => {
                 const jsonToken = sign({
                         username: results.name,
                         userID: results.id,
+                        user_type : results.user_type
                     },
                     process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: "24hr"
@@ -154,6 +155,7 @@ const socialLogin =  (req,res) => {
                 const jsonToken = sign({
                         username: results.name,
                         userID: results.id,
+                        user_type : results.user_type
                     },
                     process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: "24hr"
@@ -191,13 +193,13 @@ const socialLogin =  (req,res) => {
 
 function getUserByEmail(email,password, callback){
     const getUserByEmail = {
-        text : 'SELECT id,name,email,status FROM users WHERE email = $1 AND password = $2',
+        text : 'SELECT id,name,email,status,user_type FROM users WHERE email = $1 AND password = $2',
         values : [email,md5(password)]
     }
     try {
         const query = database.query(getUserByEmail).then(res => {
             if(res.rows.length > 0){
-                callback(null, {id : res.rows[0].id,name : res.rows[0].name,email : res.rows[0].email,password : res.rows[0].password, status : res.rows[0].status})
+                callback(null, {id : res.rows[0].id,name : res.rows[0].name,email : res.rows[0].email,password : res.rows[0].password, status : res.rows[0].status, user_type : res.rows[0].user_type})
             } else {
                 callback(null)
             }
@@ -217,13 +219,13 @@ function validateSocialUser(user){
 }
 function getSocialUserByEmail(email, callback){
     const getUserByEmail = {
-        text : 'SELECT id,name,email,status FROM users WHERE email = $1',
+        text : 'SELECT id,name,email,status,user_type FROM users WHERE email = $1',
         values : [email]
     }
     try {
         const query = database.query(getUserByEmail).then(res => {
             if(res.rows.length > 0){
-                callback(null, {id : res.rows[0].id,name : res.rows[0].name,email : res.rows[0].email, status : res.rows[0].status})
+                callback(null, {id : res.rows[0].id,name : res.rows[0].name,email : res.rows[0].email, status : res.rows[0].status, user_type : res.rows[0].user_type})
             } else {
                 callback(null)
             }
