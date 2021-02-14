@@ -244,7 +244,7 @@ const updateBasicProfile = async (req,res) => {
             let gettarget_area = eval(target_area);
             for(let i = 0; i<gettarget_area.length; i++){
                 let text = 'INSERT INTO user_target_areas(user_id, name) VALUES($1, $2) RETURNING *'
-                let values = [userInfo.userID, gettarget_area[i]];
+                let values = [userInfo.userID, gettarget_area[i].location];
                 try {
                     await database.query(text, values);
                 } catch (err) {
@@ -324,7 +324,7 @@ const getTeachers = async (req,res) => {
     }
 }
 
-const getTeacherById = async (req,res) => {
+const getProfileById = async (req,res) => {
     const {userId} = req.params;
     console.log(userId)
     const getUserById = {
@@ -340,18 +340,26 @@ const getTeacherById = async (req,res) => {
         values : [userId]
     }
     const getUserAreas = {
-        text : 'SELECT name FROM user_target_areas WHERE user_id = $1',
+        text : 'SELECT name, latitude, longitude FROM user_target_areas WHERE user_id = $1',
         values : [userId]
     }
     const getUserSlots = {
         text : 'SELECT day, time FROM user_slots WHERE user_id = $1',
         values : [userId]
     }
+    const getAverageRating = {
+        text : 'SELECT AVG(rating) as averageRating FROM ratings WHERE rated_to = $1',
+        values : [userId]
+    }
     try {
         const response  = await database.query(getUserById);
         
         if (!response.rows[0]) {
-            return res.status(400).send({'message': 'No user found'});
+            res.status(200).json({
+                status: 1,
+                message: 'No data found',
+                user : []
+            });
         }
         else {
             let data = response.rows[0];
@@ -360,10 +368,14 @@ const getTeacherById = async (req,res) => {
                 const grades  = await database.query(getUserGrades);
                 const areas  = await database.query(getUserAreas);
                 const slots  = await database.query(getUserSlots);
+                const rating  = await database.query(getAverageRating);
+                // Map data
+                data.rating = rating.rows[0].averagerating;
                 data.subjects = subjects.rows;
                 data.grades = grades.rows;
                 data.areas = areas.rows;
                 data.slots = slots.rows;
+                
             }
             res.status(200).json({
                 status: 1,
@@ -667,7 +679,7 @@ module.exports = {
     getUser,
     updateBasicProfile,
     getTeachers,
-    getTeacherById,
+    getProfileById,
     sendInvite,
     getUserConnectionSession,
     updateInvite,

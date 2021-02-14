@@ -9,7 +9,7 @@ var upload = multer({ dest: './public/uploads/' });
 
 router.get('/',authMiddleware.validateToken,userController.getUser);
 router.get('/teachers',authMiddleware.validateToken,userController.getTeachers);
-router.get('/teachers/:userId',authMiddleware.validateToken,userController.getTeacherById);
+router.get('/profile/:userId',authMiddleware.validateToken,userController.getProfileById);
 router.get('/activate/:userId',userController.activateUser);
 router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
 router.post('/reset-password',userController.resetPassword);
