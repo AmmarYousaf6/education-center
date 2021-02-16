@@ -2444,41 +2444,40 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 .courses-search-bx .input-group label,
 .contact-bx .input-group label{
 	width:100%;
+	font-weight: normal;
+	font-size: 14px;
+}
+.contact-bx .form-group {
+	margin-bottom: 15px !important;
 }
 .courses-search-bx .input-group label,
-.contact-bx .input-group label{
-	font-size: 14px;
-	font-weight: 400;
-	color: #606060;
-	position: absolute;
-	top: 10px;
-	left: 0;
-	transition:all 0.5s;
-	-moz-transition:all 0.5s;
-	-webkit-transition:all 0.5s;
-	-ms-transition:all 0.5s;
-	-o-transition:all 0.5s;
-}
+
 .courses-search-bx .focused .input-group label,
 .contact-bx .focused .input-group label{
 	top: -8px;
 	font-size: 10px;
 	color:var(--primary);
+	
 }
 .contact-bx .input-group textarea.form-control{
 	height:120px;
 }
 .courses-search-bx .input-group .form-control,
 .contact-bx .input-group .form-control{
-	border-width: 0 0 1px 0;
+	font-size: 12px;
 	background-color:rgba(0,0,0,0);
-	padding:10px 0;
+	padding:10px 10px;
+}
+.contact-bx .span-help {
+	font-weight: 300;
+    font-size: 12px;
 }
 .contact-bx .heading-bx {
     margin-bottom: 30px;
 }
 .courses-search-bx .input-group .form-control{
 	border-width: 0 0 2px 0;
+	border-radius: 2px;
 	border-color:#E0E0E0;
 }
 .faq-bx .panel{
@@ -3010,7 +3009,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	align-self: center;
 }
 .account-container {
-    max-width: 400px;
+    max-width: 500px;
 	margin: auto;
 	padding: 30px 0;	
 }

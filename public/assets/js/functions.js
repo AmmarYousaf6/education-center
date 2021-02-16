@@ -336,14 +336,7 @@ Theme Version:	1.0.0
 					});
 				}
 				
-				/* Set Counter Up Function */
-				var setCounterUp = function(){
-					if(!checkSelectorExistence('.counter')){return;}
-					 jQuery('.counter').counterUp({
-						delay: 10,
-						time: 3000
-					});	
-				}
+				
 				
 				/* Set Bootstrap Drop Down */
 				var setBootstrapDropDown = function(){
@@ -479,22 +472,17 @@ Theme Version:	1.0.0
 						wowAnimation();
 						scrollPageLayout();
 						setHeaderHeight();
-						searchBar();
-						magnificPopupImageView();
-						pageScrollToTop();
-						managePlaceholderStyle();
 						setFooterHeight();
 						setStickyheader();
-						setCountDown();
 						setStylishScroll();
 						manageLeftSideMenu();
-						codeSecurity();
+						
 					},
 					
 					afterLoadThePage:function(){
 						//setBootstrapDropDown();
 						setDivSameHeight('.equal-height-container .equal-height-container-item');
-						setCounterUp();
+						
 						masonryLayout();
 						manageLoader();
 					},

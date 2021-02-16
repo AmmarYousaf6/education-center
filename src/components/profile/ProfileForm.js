@@ -11,77 +11,18 @@ const ProfileForm = ({ auth: { user, isAuthenticated, loading } } ) => {
             <Navbar />
 
             <div class="page-content bg-white">
-                <div class="page-banner ovbl-dark" style={{backgroundImage:"url(assets/images/banner/banner2.jpg)"}}>
-                    <div class="container">
-                        <div class="page-banner-entry">
-                            <h1 class="text-white text-uppercase">About Aasim Sajjad</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="breadcrumb-row">
-                    <div class="container">
-                        <ul class="list-inline">
-                            <li><a href="#">Home</a></li>
-                            <li>Tutor Details</li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="content-block">
             
 			        <div class="section-area section-sp1">
                         <div class="container">
 					        <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12 m-b30">
-                                    <div class="course-detail-bx">
-                                        
-                                        <div class="course-buy-now text-center">
-                                            <a href="#" class="btn radius-xl text-uppercase">Hire Me Now</a>
-                                        </div>
-                                        <div class="teacher-bx">
-                                            <div class="teacher-info">
-                                                <div class="teacher-thumb">
-                                                    <img src="assets/images/testimonials/pic1.jpg" alt=""/>
-                                                </div>
-                                                <div class="teacher-name">
-                                                    <h5>Aasim Sajjad</h5>
-                                                    <span>Science Teacher</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="cours-more-info">
-                                            <div class="review">
-                                                <span>3 Review</span>
-                                                <ul class="cours-star">
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                </ul>
-                                            </div>
-                                            <div class="price categories">
-                                                <span>Categories</span>
-                                                <h5 class="text-primary">Frontend</h5>
-                                            </div>
-                                        </div>
-                                        <div class="course-info-list scroll-page">
-                                            <ul class="navbar">
-                                                <li><a class="nav-link" href="#introduction"><i class="ti-zip"></i>Introduction</a></li>
-                                                <li><a class="nav-link" href="#classes"><i class="ti-bookmark-alt"></i>Classes & Subjects</a></li>
-                                                <li><a class="nav-link" href="#location"><i class="ti-user"></i>Preferred Location</a></li>
-                                                <li><a class="nav-link" href="#details"><i class="ti-comments"></i>Details</a></li>
-                                                <li><a class="nav-link" href="#reviews"><i class="ti-comments"></i>Reviews</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-lg-8 col-md-8 col-sm-12">
+                                <div class="col-lg-12 col-md-8 col-sm-12">
 
                                     <div class="tab-pane" id="edit-profile">
                                         <div class="profile-head">
-                                            <h3>Edit Profile</h3>
+                                            <h3 className=" text-center">Update Profile</h3>
                                         </div>
                                         <form class="edit-profile">
                                             <div class="">

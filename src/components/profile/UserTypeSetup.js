@@ -7,24 +7,13 @@ import { Link } from 'react-router-dom';
 import { login } from '../../actions/auth';
 import Alert from './../layout/Alert';
 
-const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
+import { setUserType } from '../../actions/profile';
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-
-    const { email, password } = formData;
+const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUserType }) => {
 
     const selectType = (type) => {
-        console.log(type);
+        setUserType(type);
     }
-
-    const onSubmit = e => {
-        e.preventDefault();
-        clearAlert();
-        login(email, password);
-    };
 
     if (!isAuthenticated) {
 
@@ -44,19 +33,19 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user} }) => 
                             <h2 className="title-head text-center title-head-text-cust">Tell Us Something <span>About Your Self</span></h2>
                             
                         </div>	
-                        <form className="contact-bx" onSubmit={e => onSubmit(e)}>
+                        <form className="contact-bx">
                             <div className="row placeani">
-                                <div class="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('teacher')}>
-                                    <div class="pricingtable-wrapper">
-                                        <div class="pricingtable-inner">
-                                            <div class="pricingtable-main"> 
-                                                <div class="pricingtable-price"> 
-                                                    <span class="pricingtable-bx">Teacher</span>
-                                                    <span class="pricingtable-type-cust">
+                                <div className="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('teacher')}>
+                                    <div className="pricingtable-wrapper">
+                                        <div className="pricingtable-inner">
+                                            <div className="pricingtable-main"> 
+                                                <div className="pricingtable-price"> 
+                                                    <span className="pricingtable-bx">Teacher</span>
+                                                    <span className="pricingtable-type-cust">
                                                         <img src="assets/images/testimonials/pic1.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
                                                 </div>
-                                                <div class="pricingtable-title">
+                                                <div className="pricingtable-title">
                                                     
                                                     <p>I am a Teacher looking for Teaching opportunities</p>
                                                 </div>
@@ -65,17 +54,17 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user} }) => 
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('parent')}>
-                                    <div class="pricingtable-wrapper">
-                                        <div class="pricingtable-inner">
-                                            <div class="pricingtable-main"> 
-                                                <div class="pricingtable-price"> 
-                                                    <span class="pricingtable-bx">Parent</span>
-                                                    <span class="pricingtable-type-cust">
+                                <div className="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('parent')}>
+                                    <div className="pricingtable-wrapper">
+                                        <div className="pricingtable-inner">
+                                            <div className="pricingtable-main"> 
+                                                <div className="pricingtable-price"> 
+                                                    <span className="pricingtable-bx">Parent</span>
+                                                    <span className="pricingtable-type-cust">
                                                     <img src="assets/images/testimonials/pic2.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
                                                 </div>
-                                                <div class="pricingtable-title">
+                                                <div className="pricingtable-title">
                                                     
                                                     <p>I am a parent looking for Teacher for my children</p>
                                                 </div>
@@ -87,7 +76,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user} }) => 
                                 
                             
                             </div>
-                            <a href="#" class="btn button-md assign-right"><i class="fa fa-arrow-right"></i> Submit</a>
+                            <Link to="/profile-setup-info" className="btn button-md assign-right"><i className="fa fa-arrow-right"></i> Next</Link>
                             
                         </form>
                         <Alert />
@@ -99,7 +88,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user} }) => 
 }
 
 UserTypeSetup.propTypes = {
-    login: PropTypes.func.isRequired,
+    
     clearAlert: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool
   };
@@ -109,4 +98,4 @@ UserTypeSetup.propTypes = {
     auth: state.auth
   });
   
-  export default connect(mapStateToProps, { login, clearAlert })(UserTypeSetup);
+  export default connect(mapStateToProps, { clearAlert, setUserType })(UserTypeSetup);

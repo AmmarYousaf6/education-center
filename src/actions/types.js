@@ -38,3 +38,4 @@ export const GET_CASES = 'GET_CASES';
 export const GET_CASE_INFO = 'GET_CASE_INFO';
 export const APPEND_CHAT_MESSAGE = 'APPEND_CHAT_MESSAGE';
 
+export const SET_USER_TYPE = 'SET_USER_TYPE';

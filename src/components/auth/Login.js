@@ -28,7 +28,7 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
         login(email, password);
     };
 
-    if (isAuthenticated) {
+    if (isAuthenticated && user) {
         if (user.user_type == null) {
             return <Redirect to="/profile-setup" />;
         }
@@ -53,9 +53,10 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Your Name</label>
+                                            <label>Email Address</label>
                                             <input 
                                                 name="email" 
+                                                placeholder="Enter your email address"
                                                 type="email" 
                                                 required="" 
                                                 className="form-control" 
@@ -69,9 +70,10 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                            <label>Your Password</label>
+                                            <label>Password</label>
                                             <input 
                                                 name="password" 
+                                                placeholder="Enter your password"
                                                 type="password" 
                                                 className="form-control" 
                                                 required="" 

@@ -20,6 +20,7 @@ import TeacherProfile from './components/profile/TeacherProfile';
 import ChangePassword from "./components/auth/ChangePassword";
 import UserTypeSetup from './components/profile/UserTypeSetup';
 import ProfileForm from './components/profile/ProfileForm';
+import BasicProfileSetup from './components/profile/BasicProfileSetup';
 
 
 if (localStorage.token) {
@@ -50,6 +51,8 @@ const App = () => {
               <Route exact path="/search" component={Main} />
               <Route exact path="/profile" component={TeacherProfile} />
 
+              
+              <PrivateRoute exact path="/profile-setup-info" component={BasicProfileSetup} />
               <PrivateRoute exact path="/profile-setup" component={UserTypeSetup} />
               <PrivateRoute exact path="/profile/update" component={ProfileForm} />
               

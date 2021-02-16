@@ -145,3 +145,75 @@ width: 80%;
 .border-radius-circle {
     border-radius: 50%;
 }
+.teacher-section .chips { 
+	background: #398b67 !important;
+}
+.optionContainer li:hover {
+    background: #398b67 !important;
+}
+.optionContainer .highlight {
+    background: #398b67 !important;
+}
+.input-range__track--active {
+    background-color: #398b67 !important;
+}
+.input-range__slider {
+    background-color: #398b67 !important;
+    border: 1px solid #398b67 !important;
+}
+.slider-label{font-size: 12px; text-align: center;}
+.image-upload-ph {
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    display: block;
+    margin-top: 20px;
+}
+.suggested-items-sty {
+    font-size: 12px;
+    margin-top: 10px;
+    /* margin-left: 10px; */
+    border: 1px solid #dddbdb;
+    padding: 10px;
+    width: 90%;
+    border-radius: 5px;
+}
+.close-place {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    float: right;
+    border: 1px solid #c55829;
+    padding: 2px 9px;
+    margin-top: -5px;
+    font-weight: bold;
+    font-size: 16px;
+    color: red;
+    cursor: pointer;
+    background: #ffd1d1;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    width: 50% !important;
+    cursor: pointer;
+}
+.header-day {
+    font-size: 15px;
+    font-weight: bold;
+    float: left;
+    margin-left: 20px;
+    color: #398b67 !important;
+    
+}
+.header-day-parent {
+    margin-bottom: 10px !important;
+}
+.form-control {
+    border-radius: 5px !important
+}

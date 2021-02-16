@@ -67,9 +67,10 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Your Name</label>
+                                            <label>Full Name</label>
                                             <input 
                                                 name="name" 
+                                                placeholder="Enter your full name"
                                                 type="text" 
                                                 required="" 
                                                 className="form-control" 
@@ -83,25 +84,28 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Your Email Address</label>
+                                            <label>Email Address</label>
                                             <input 
                                                 name="email" 
+                                                placeholder="Enter your email address"
                                                 type="email" 
                                                 required="" 
-                                                className="form-control" 
+                                                className="form-control mb-2" 
                                                 autoComplete="one-time-code"
                                                 value={email}
                                                 onChange={e => onChange(e)}
                                             />
+                                            <span class="help span-help">A confirmation email will be sent to the address you provide above for account activation</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                            <label>Your Password</label>
+                                            <label>Password</label>
                                             <input 
                                                 name="password" 
+                                                placeholder="Enter your password"
                                                 type="password" 
                                                 className="form-control" 
                                                 required="" 
@@ -118,6 +122,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                             <label>Confirm Password</label>
                                             <input 
                                                 name="confirmPassword" 
+                                                placeholder="Enter your confirm password"
                                                 type="password" 
                                                 className="form-control" 
                                                 required="" 
@@ -132,7 +137,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                           
+                                        <label>Select Gender</label>
                                             <select 
                                                 className="form-control" 
                                                 placeholder="Select Gender"
