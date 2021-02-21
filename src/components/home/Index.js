@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
-
+import MapComponent from './Map';
 const Index = () => {
     return (
         <Fragment>  
@@ -310,6 +310,10 @@ const Index = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+                {/* Map */}
+                <div className="row">
+                    <MapComponent/>
                 </div>
                 {/*  */}
                 <div class="section-area section-sp2">
