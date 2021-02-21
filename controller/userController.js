@@ -166,8 +166,8 @@ const updateBasicProfile = async (req,res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
     let {userType, subjects, grades, target_area, slots, summary, experience, qualification,age, salary, duration_of_commitment, video_introduction, hours_per_day} = req.body;
-    let image = req.files.image ? req.files.image[0].filename  : 'default.jpg';
-    let curriculum = req.files.curriculum ? req.files.curriculum[0].filename  : 'NA';
+    let image = req.files ? req.files.image[0].filename  : 'default.jpg';
+    let curriculum = req.files ? req.files.curriculum[0].filename  : 'NA';
     if(userType == 'teacher' || userType == 'parent'){
         /* Update user type */
         const updateType = {
@@ -292,6 +292,39 @@ const updateBasicProfile = async (req,res) => {
         });
     }
     
+}
+
+const addChildren = async (req,res) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let {name, qualification, summary, age} = req.body;
+    let image = req.files.image ? req.files.image[0].filename  : 'default.jpg';
+        /* Update user type */
+    console.log(req.body)
+        const addChildren = {
+            text : 'INSERT INTO children(parent_id, name, qualification, summary, age, image) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+            values : [userInfo.userID, name, qualification, summary, age, image]
+        }
+        
+        try {
+            const response  = await database.query(addChildren);
+            if (response.rowCount < 1) {
+                res.status(400).json({
+                    status: 0,
+                    message: 'Something went wrong. Please try again!',
+                });
+            } else {
+                res.status(200).json({
+                    status: 1,
+                    message: 'Success'
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                status: 0,
+                message: err
+            });
+        }
 }
 
 const getTeachers = async (req,res) => {
@@ -678,6 +711,7 @@ module.exports = {
     resetPassword,
     getUser,
     updateBasicProfile,
+    addChildren,
     getTeachers,
     getProfileById,
     sendInvite,

@@ -4,7 +4,7 @@ var userController = require('../controller/userController');
 var emailMiddleware = require('../middleware/sendEmail')
 var authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
-var upload = multer({ dest: './public/uploads/' });
+var upload = multer({ dest: './public/uploads/' }); //destination folder for file upload
 
 
 router.get('/',authMiddleware.validateToken,userController.getUser);
@@ -14,6 +14,7 @@ router.get('/activate/:userId',userController.activateUser);
 router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
 router.post('/reset-password',userController.resetPassword);
 router.put('/update-profile', authMiddleware.validateToken,upload.fields([{name: 'image', maxCount: 1}, {name: 'curriculum', maxCount: 1}]),userController.updateBasicProfile);
+router.post('/add-children', authMiddleware.validateToken,upload.fields([{name: 'image', maxCount: 1}]),userController.addChildren);
 
 router.get('/my-invites',authMiddleware.validateToken,userController.myInvites);
 router.get('/invite/:userId',authMiddleware.validateToken,userController.sendInvite);
