@@ -700,10 +700,35 @@ const userRated = async (req,res,next) => {
 }
 
 const health = async (req,res) => {
-    res.status(200).json({
-        status: 1,
-        message: 'Server Is running'
-    });
+    const getUserById = {
+        text : 'SELECT * FROM users WHERE user_type = $1 AND id != $2',
+        values : ['teacher', 20]
+    }
+    try {
+        const response  = await database.query(getUserById);
+        
+        if (!response.rows[0]) {
+            return res.status(400).send({'message': 'No user found'});
+        }
+        else {
+            let data = response.rows;
+            res.status(200).json({
+                status: 1,
+                message: 'success',
+                user : data
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+
+    // res.status(200).json({
+    //     status: 1,
+    //     message: 'Server Is running'
+    // });
 }
 module.exports = {
     activateUser,
