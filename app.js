@@ -19,9 +19,9 @@ if(process.env.NODE_ENV === 'production'){
     //     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
     // });
 } else {
-    // app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'public')));
 }
-}
+
 
 
 app.use(cors({
