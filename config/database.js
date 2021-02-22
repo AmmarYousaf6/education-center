@@ -7,6 +7,7 @@ const client = new Client({
     database: process.env.DB_DATABASE_PROD,
     password: process.env.DB_PASSWORD_PROD,
     port: process.env.DB_PORT_PROD,
+    ssl : { rejectUnauthorized: false }
 });
 
 client.connect().then((result) => console.log('Database connection successful')).catch((err) => console.log(err));
