@@ -1,0 +1,219 @@
+.ovpr-dark-new {
+    background-color: #216044 !important;
+}
+.text-center-fix {
+    width: 100%;
+    text-align: center;
+}
+.font-size-15 {
+    font-size: 15px !important;
+}
+.color-green {
+    color: #216044 !important;
+}
+.text-big-cust {
+    font-size: 24px;
+    font-weight: 400;
+}
+.header-name-tbl {
+width: 20%;
+}
+.header-val-tbl {
+width: 80%;
+}
+.tutor-table {
+    width: 90%;
+    margin-left: 5% !important;
+}
+
+.tutor-table td, .tutor-table th {
+    
+    padding: .4rem 0;
+    font-size: 13px;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+.hirenow-btn {
+    width: 100%;
+}
+.cours-more-info {
+    padding: 10px 0;
+}
+.testimonial-content {
+    font-size: 13px;
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.margin-fix-btm {
+    margin-top: 50px;
+}
+.color-adj {
+    background: white;
+    color: black;
+}
+.radius-color {
+    color: white !important;
+    width: 60px;
+    height: 60px;
+}
+.radius-color i {
+    font-size: 20px;
+    margin-top: 8px;
+}
+.footer-bold {
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: white;
+}
+.font-size-adj-p {
+    font-size: 14px;
+    text-align: justify;
+    padding-bottom: 10px
+}
+.addr-header {
+    color: white;
+    padding-top: 15px;
+    letter-spacing: 2px;
+    font-size: 16px;
+}
+.profile-view-btn {
+    background: white;
+    width: 50%;
+    color: black;
+    border: ipx solid green;
+    border: 1px solid #afafaf;
+    border-radius: 0px;
+    font-size: 14px;
+}
+.hire-now-btn {
+    border-radius: 0px;
+    border: 1px solid #216044;
+    width: 50%;
+    font-size: 14px;
+}
+.search-term-text {
+    margin-top: -50px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.sort-field {
+    margin-top: -50px;
+}
+.checked-items-li {
+    padding: 6px 30px !important;
+    border-bottom: 0px !important;
+}
+.course-features-spec li {
+    display: inline-block !important;
+}
+.lbl-header {
+    font-weight: bold;
+    font-size: 15px;
+}
+.details-para {
+    font-size: 13px;
+    text-align: justify;
+}
+.terms-condit {
+    margin-left: 10px;
+    font-size: 12px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.alert-sm-st {
+    font-size: 12px !important
+}
+.account-container-custom {
+    max-width: 70% !important;
+}
+.assign-right {
+    float: right;
+}
+.title-head-text-cust {
+    font-size: 36px;
+}
+.border-radius-circle {
+    border-radius: 50%;
+}
+.teacher-section .chips { 
+	background: #398b67 !important;
+}
+.optionContainer li:hover {
+    background: #398b67 !important;
+}
+.optionContainer .highlight {
+    background: #398b67 !important;
+}
+.input-range__track--active {
+    background-color: #398b67 !important;
+}
+.input-range__slider {
+    background-color: #398b67 !important;
+    border: 1px solid #398b67 !important;
+}
+.slider-label{font-size: 12px; text-align: center;}
+.image-upload-ph {
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    display: block;
+    margin-top: 20px;
+}
+.suggested-items-sty {
+    font-size: 12px;
+    margin-top: 10px;
+    /* margin-left: 10px; */
+    border: 1px solid #dddbdb;
+    padding: 10px;
+    width: 90%;
+    border-radius: 5px;
+}
+.close-place {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    float: right;
+    border: 1px solid #c55829;
+    padding: 2px 9px;
+    margin-top: -5px;
+    font-weight: bold;
+    font-size: 16px;
+    color: red;
+    cursor: pointer;
+    background: #ffd1d1;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    width: 50% !important;
+    cursor: pointer;
+}
+.header-day {
+    font-size: 15px;
+    font-weight: bold;
+    float: left;
+    margin-left: 20px;
+    color: #398b67 !important;
+    
+}
+.header-day-parent {
+    margin-bottom: 10px !important;
+}
+.form-control {
+    border-radius: 5px !important
+}

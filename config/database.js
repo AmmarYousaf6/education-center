@@ -10,7 +10,7 @@ const client = new Client({
     ssl : { rejectUnauthorized: false }
 });
 
-client.connect().then((result) => console.log('Database connection successful')).catch((err) => console.log(err));
+client.connect().then((result) => console.log('Database connection successful', " Environment is "+ process.env.NODE_ENV)).catch((err) => console.log(err));
 
 module.exports = {
     database: client
