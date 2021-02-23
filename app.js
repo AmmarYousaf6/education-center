@@ -7,6 +7,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const mapRouter = require('./routes/map');
 var app = express();
 
 app.use(logger('dev'));
@@ -32,6 +33,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRoutes);
 app.use('/chat', chatRoutes);
+app.use('/map', mapRouter );
 
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname,'client/build/index.html'));

@@ -39,3 +39,6 @@ export const GET_CASE_INFO = 'GET_CASE_INFO';
 export const APPEND_CHAT_MESSAGE = 'APPEND_CHAT_MESSAGE';
 
 export const SET_USER_TYPE = 'SET_USER_TYPE';
+
+export const SEARCH_MAP = 'SEARCH_MAP';
+export const CLEAR_SEARCH = 'CLEAR_SEARCH_MAP_RESULTS';
