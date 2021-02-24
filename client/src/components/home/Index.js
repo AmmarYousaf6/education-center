@@ -26,34 +26,6 @@ const Index = () => {
                                 </form>
                             </div>
                         </div>
-                        <div className="mw800 m-auto">
-                            <div className="row">
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-user"></i><span className="counter">5</span>M</h3>
-                                        </div>
-                                        <span className="cours-search-text">Over 5 Thousands student</span>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-book"></i><span className="counter">30</span>K</h3>
-                                        </div>
-                                        <span class="cours-search-text">100 Tutors.</span>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-12">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-layout-list-post"></i><span className="counter">20</span>K</h3>
-                                        </div>
-                                        <span className="cours-search-text">Learn Anythink Online.</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -320,8 +292,8 @@ const Index = () => {
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 heading-bx left">
-                                <h2 class="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
-                                <p className="text-center">It is a long established fact that a reader will be distracted by the readable content of a page</p>
+                                <h3 class="title-head text-center title-head-cust">"What a teacher is, is more important than what he teaches" Karl Menninger
+</h3>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-8 col-sm-12">

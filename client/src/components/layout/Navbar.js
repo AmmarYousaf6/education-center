@@ -84,7 +84,6 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                     <li><a href="javascript:;">Tutors <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu">
                                             <li><a href="#">Home Tutors</a></li>
-                                            <li><a href="#">Online Tutors</a></li>
                                         </ul>
                                     </li>
                                     <li className="add-mega-menu"><a href="javascript:;">How it Works <i className="fa fa-chevron-down"></i></a>

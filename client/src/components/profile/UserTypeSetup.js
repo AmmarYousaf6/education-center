@@ -30,7 +30,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                 <div className="account-form-inner">
                     <div className="account-container account-container-custom">
                         <div className="heading-bx left">
-                            <h2 className="title-head text-center title-head-text-cust">Tell Us Something <span>About Your Self</span></h2>
+                            <h2 className="title-head text-center title-head-text-cust">I am a</h2>
                             
                         </div>	
                         <form className="contact-bx">

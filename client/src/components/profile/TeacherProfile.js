@@ -65,10 +65,10 @@ const TeacherProfile = () => {
                                         </div>
                                         <div class="course-info-list scroll-page">
                                             <ul class="navbar">
+                                                <li><a class="nav-link" href="#details"><i class="ti-comments"></i>Details</a></li>
                                                 <li><a class="nav-link" href="#introduction"><i class="ti-zip"></i>Introduction</a></li>
                                                 <li><a class="nav-link" href="#classes"><i class="ti-bookmark-alt"></i>Classes & Subjects</a></li>
                                                 <li><a class="nav-link" href="#location"><i class="ti-user"></i>Preferred Location</a></li>
-                                                <li><a class="nav-link" href="#details"><i class="ti-comments"></i>Details</a></li>
                                                 <li><a class="nav-link" href="#reviews"><i class="ti-comments"></i>Reviews</a></li>
                                             </ul>
                                         </div>
@@ -76,6 +76,17 @@ const TeacherProfile = () => {
                                 </div>
 
                                 <div class="col-lg-8 col-md-8 col-sm-12">
+
+                                    <div class="courese-overview" id="details">
+                                        <h4 className="text-center">DETAILS</h4>
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-10">
+                                                <p className="details-para">
+                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including ve
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>  
 
                                     <div class="courese-overview" id="introduction">
                                         <h4 className="text-center">INTRODUCTION</h4>
@@ -158,17 +169,6 @@ const TeacherProfile = () => {
                                                 <li className="checked-items-li">DHA, Lahore, Pakistan</li>
                                                 <li className="checked-items-li">Askari X, Lahore, Pakistan</li>
                                             </ul>
-                                            </div>
-                                        </div>
-                                    </div>  
-
-                                    <div class="courese-overview" id="details">
-                                        <h4 className="text-center">DETAILS</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                                <p className="details-para">
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including ve
-                                                </p>
                                             </div>
                                         </div>
                                     </div>  
