@@ -31,7 +31,9 @@
     "redux-thunk": "^2.3.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
-    "yarn": "^1.22.10"
+    "yarn": "^1.22.10",
+    "create-react-class": "^15.7.0",
+    "dotenv": "^8.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
