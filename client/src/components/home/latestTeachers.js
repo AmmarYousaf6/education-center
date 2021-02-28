@@ -12,7 +12,7 @@ import toast  , { Toaster } from 'react-hot-toast';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
+const apiUrl = 'https://hometutorpk.herokuapp.com/';
 
 //Actual component 
 const LatestTeachersComponent = ({setShowModal}) => {
