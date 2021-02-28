@@ -1,273 +1,379 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useEffect , useState } from 'react';
+//For routing
+import { BrowserRouter as Router ,  Link , NavLink , Switch , Route , useRouteMatch, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
 
+//For animation
+import { AnimatePresence , motion } from 'framer-motion';
+//For ajax calls
+import axios from 'axios';
+
+import  Inbox  from './../mailbox/inbox';
+import setAuthToken from '../../utils/setAuthToken';
+
+//Importing all the modals 
+import Modal from './../modals/hireMeModal';
+
+//For toast notifications
+import toast  , { Toaster } from 'react-hot-toast';
+
+//File hosting api url i.e base url
+const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
+
+const pageTransitions = {
+    in : {
+        opacity : 1 ,
+        y: 0
+    },
+    out : {
+        opacity : 0 ,
+        y : "+100vh"
+    }
+};
+//Changes first letter of string to upper case
+const capitalize = (s)=>{
+    if(s== undefined || s.length < 2)
+        return '';
+    return s[0].toUpperCase() + s.slice(1)
+};
+
+const Introduction = (props) => {
+    return (
+            <motion.div className="courese-overview" id="introduction"
+            exit="out" 
+            animate="in" 
+            initial="out"
+            variants={pageTransitions} >
+                <h4 className="text-center">INTRODUCTION</h4>
+                <div className="row">
+                    <div className="col-md-12 col-lg-10">
+                        <ul className="course-features">
+                            <li><i className="ti-book"></i> <span className="label">About Tutor</span> <span className="value">{props?.userInfo.age ? (props?.userInfo?.age +"yrs,") : ''} {props.userInfo ? capitalize(props?.userInfo?.gender):''}</span></li>
+                            <li><i className="ti-help-alt"></i> <span className="label">Qualification</span> <span className="value">{props?.userInfo?.qualification}</span></li>
+                            <li><i className="ti-time"></i> <span className="label">Experience</span> <span className="value">{props?.userInfo.experience ? (props?.userInfo?.experience +"years") : 'Not provided'}</span></li>
+                            <li><i className="ti-stats-up"></i> <span className="label">English Skills</span> <span className="value">High</span></li>
+                            <li><i className="ti-smallcap"></i> <span className="label">Teaching In</span> <span className="value">Not specified</span></li>
+                            <li><i className="ti-user"></i> <span className="label">No ofStudents</span> <span className="value">32</span></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </motion.div>
+    )
+}
+
+const ClassesAndSubjects = (props) => {
+    let subjects = props?.userInfo.subjects;
+    let grades = props?.userInfo.grades;
+    return (
+                <motion.div className="courese-overview" id="classes"
+                exit="out" 
+                animate="in" 
+                initial="out"
+                variants={pageTransitions} >
+                    <h4 className="text-center">CLASSES & SUBJECTS</h4>
+                    <div className="row">
+                        <div className="col-md-12 col-lg-10">
+                            <ul className="course-features course-features-spec">
+                                { typeof grades == "object" && grades.map(grade => (
+                                    <li >
+                                        <i className="ti-book"></i> <span className="label lbl-header">{grade.name}</span>                                    
+                                    </li>
+                                ))}
+
+                                <li><i className="ti-books"></i> <span className="label lbl-header"></span>
+                                    <span className="value">
+                                        <ul className="list-checked primary">
+                                            {subjects && subjects.map(subject=>(
+                                                <li className="checked-items-li">{subject.name}</li>
+                                            ))}
+                                        </ul>
+                                        <div className="widget_tag_cloud">
+                                            <div className="tagcloud">
+                                                <a href="#">{props?.userInfo.salary} /Per Month (For all subjects)</a>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </motion.div>
+    )
+}
+const PreferredLocations = (props) => {
+    let preferredLocations = props?.userInfo?.areas;
+    return (
+        <motion.div className="courese-overview" id="location"
+        exit="out" 
+        animate="in" 
+        initial="out"
+        variants={pageTransitions} >
+                    <h4 className="text-center">PREFERRED LOCATIONS</h4>
+                    <div className="row">
+                        <div className="col-md-12 col-lg-10">
+                            <ul className="list-checked primary">
+                                { preferredLocations && preferredLocations.map(loc=>(
+                                   <li className="checked-items-li">{loc.name}</li>
+                                ))}
+ 
+                                
+                            </ul>
+                        </div>
+                    </div>
+        </motion.div>
+    )
+}
+const Details = (props)=>{
+    let summary = props?.userInfo?.summary;
+    return (
+        <motion.div className="courese-overview" id="details" 
+        exit="out" 
+        animate="in" 
+        initial="out"
+        variants={pageTransitions} >
+            <h4 className="text-center">DETAILS</h4>
+            <div className="row">
+                <div className="col-md-12 col-lg-10">
+                    <p className="details-para">
+                        {summary}
+                    </p>
+                </div>
+            </div>
+        </motion.div>        
+    )
+}
+const Reviews = (props) =>{
+    let ratings = props?.userInfo?.ratings;
+    // Making groups of ratings
+    let groupedRatings =new Array(5);
+
+    //Check if ratings are provided or not
+    if(ratings)
+    {
+        for(let i=0 ; i < 5 ; i++){
+            groupedRatings[i] = [];
+            groupedRatings[i]["count"] = ratings.filter(rat =>rat.rating == i+1).length;
+            groupedRatings[i]["avgRating"] = groupedRatings[i]["count"]/ratings.length *100;
+        }
+    }
+    console.log("After ratings done" , groupedRatings)
+    return (
+        <motion.div className="courese-overview" id="reviews" 
+            exit="out" 
+            animate="in" 
+            initial="out"
+            variants={pageTransitions} >
+                    <h4 className="text-center">REVIEWS</h4>
+                    <div className="row">
+                        <div className="col-md-12 col-lg-10">
+                            <div className="review-bx">
+                                <div className="all-review">
+                                    <h2 className="rating-type">{props?.userInfo?.rating}</h2>
+                                    <ul className="cours-star">
+                                        {[...Array(5).keys()].map(key=>(
+                                            <li key={key} className={props?.userInfo?.rating && props?.userInfo?.rating > key ? "active" : ""}><i className="fa fa-star"></i></li>
+                                        ))}
+                                    </ul>
+                                    <span>{props.userInfo ? props?.userInfo?.ratings.length : ''} Rating{props.userInfo && props?.userInfo?.ratings.length > 1 ? 's' :'' }</span>
+                                </div>
+                                <div className="review-bar">
+                                    {[...Array(5).keys()].map(key=>(                                
+
+                                    <div className="bar-bx" key={key}>
+                                        <div className="side">
+                                            <div>{5-key} star</div>
+                                        </div>
+                                        <div className="middle">
+                                            <div className="bar-container">
+                                                <div className="bar-5" style={{ width: groupedRatings[5-key-1] ? groupedRatings[5-key-1].avgRating+"%" : "0%" }}></div>
+                                            </div>
+                                        </div>
+                                        <div className="side right">
+                                            <div>{groupedRatings[5-key-1] ? groupedRatings[5-key-1].count : 0}</div>
+                                        </div>
+                                    </div>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* End of Main Section */}
+                        </div>
+                    </div>
+                </motion.div>
+    )
+}
 const TeacherProfile = () => {
+    //For modals
+    const [showModal , setShowModal] = useState(false);
+
+    let match = useRouteMatch("/\profile/*/:id");
+    const location = useLocation();
+
+    let [teacherInfo , setTeacherInfo] = useState(0);
+
+    //Method to initiate hiring request 
+    const hireMeClicked = (teacher)=>{
+        //handling user not logged in
+        if (!localStorage.token) {
+            toast.error("Please login to hire "+teacher.name);
+            // history.push("/login");
+            return ;
+        }
+        setShowModal(teacher)
+    } 
+    //Fetching teacher info
+    useEffect( ()=>{
+        const fetchAllteacherInfo  = async () => {
+            let data = [];
+            //Making an object for data filtering 
+            let filters = {
+                skip : 0 ,
+                limit : 10 ,
+                search : ''
+            };
+            //Making an object of header authorization
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            if (localStorage.token) {
+                setAuthToken(localStorage.token);
+            }
+            let resultToReturn = [];
+            try {    
+                const allTeacherInfo = await axios.get(`${apiUrl}users/profile/${match.params.id}` , filters , config);
+                data = allTeacherInfo.data.user;
+                console.log("Data which is fetched" , data , allTeacherInfo);
+
+                setTeacherInfo(data);
+                // setShowModal(data);
+                // this will re render the view with new data            
+            } catch (err) {
+                console.log("Error occured in index" , err);        
+            }
+            return resultToReturn;
+        }
+        fetchAllteacherInfo() }, [] );
+
     return (
         <Fragment>  
             <Navbar />
 
-            <div class="page-content bg-white">
-                <div class="page-banner ovbl-dark" style={{backgroundImage:"url(assets/images/banner/banner2.jpg)"}}>
-                    <div class="container">
-                        <div class="page-banner-entry">
-                            <h1 class="text-white text-uppercase">About Hinata Hyuga</h1>
+            <div className="page-content bg-white">
+                <div className="page-banner ovbl-dark" style={{backgroundImage:"url(assets/images/banner/banner2.jpg)"}}>
+                    <div className="container">
+                        <div className="page-banner-entry">
+                            <h1 className="text-white text-uppercase">About {teacherInfo?.name}</h1>
                         </div>
                     </div>
                 </div>
-                <div class="breadcrumb-row">
-                    <div class="container">
-                        <ul class="list-inline">
+                <div className="breadcrumb-row">
+                    <div className="container">
+                        <ul className="list-inline">
                             <li><a href="#">Home</a></li>
                             <li>Tutor Details</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="content-block">
+                <div className="content-block">
             
-			        <div class="section-area section-sp1">
-                        <div class="container">
-					        <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12 m-b30">
-                                    <div class="course-detail-bx">
+			        <div className="section-area section-sp1">
+                        <div className="container">
+					        <div className="row">
+                                {/* Left Sidebar */}
+                                <div className="col-lg-4 col-md-4 col-sm-12 m-b30">
+                                    <div className="course-detail-bx">
                                         
-                                        <div class="course-buy-now text-center">
-                                            <a href="#" class="btn radius-xl text-uppercase">Hire Me Now</a>
+                                        <div className="course-buy-now text-center">
+                                            <button className="btn radius-xl text-uppercase" onClick={()=>hireMeClicked(teacherInfo)}>Hire Me Now</button>
                                         </div>
-                                        <div class="teacher-bx">
-                                            <div class="teacher-info">
-                                                <div class="teacher-thumb">
-                                                    <img src="assets/images/testimonials/pic1.jpg" alt=""/>
+                                        <div className="teacher-bx">
+                                            <div className="teacher-info">
+                                                <div className="teacher-thumb">
+                                                    <img src={mediaBaseUrl+teacherInfo.image} alt=""/>
                                                 </div>
-                                                <div class="teacher-name">
-                                                    <h5>Hinata Hyuga</h5>
-                                                    <span>Science Teacher</span>
+                                                <div className="teacher-name">
+                                                    <h5>{teacherInfo?.name}</h5>
+                                                    <span>{teacherInfo.qualification}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="cours-more-info">
-                                            <div class="review">
-                                                <span>3 Review</span>
-                                                <ul class="cours-star">
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li class="active"><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                </ul>
+                                        <div className="cours-more-info">
+                                            <div className="review">
+                                                <span>{teacherInfo ? teacherInfo.ratings.length : 0} Review{teacherInfo && teacherInfo.ratings.length > 1 ? 's' : '' }</span>
+                                                <ul className="cours-star">
+                                                    {[...Array(5).keys()].map(key=>(
+                                                        <li key={key} className={teacherInfo && teacherInfo.rating > key ? "active" : "" } key={key}><i className="fa fa-star"></i></li>
+                                                    ))}
+                                               </ul>
                                             </div>
-                                            <div class="price categories">
+                                            <div className="price categories">
                                                 <span>Categories</span>
-                                                <h5 class="text-primary">Frontend</h5>
+                                                <h5 className="text-primary">{teacherInfo ? teacherInfo?.user_type?.toUpperCase() : '' }</h5>
                                             </div>
                                         </div>
-                                        <div class="course-info-list scroll-page">
-                                            <ul class="navbar">
-                                                <li><a class="nav-link" href="#details"><i class="ti-comments"></i>Details</a></li>
-                                                <li><a class="nav-link" href="#introduction"><i class="ti-zip"></i>Introduction</a></li>
-                                                <li><a class="nav-link" href="#classes"><i class="ti-bookmark-alt"></i>Classes & Subjects</a></li>
-                                                <li><a class="nav-link" href="#location"><i class="ti-user"></i>Preferred Location</a></li>
-                                                <li><a class="nav-link" href="#reviews"><i class="ti-comments"></i>Reviews</a></li>
+                                        <div className="course-info-list scroll-page">
+                                            <ul className="navbar">
+                                                    <li>
+                                                        <NavLink  activeClassName='active' to={"/profile/details/"+(match ? match.params.id : '')} className="nav-link" >
+                                                        <i className="ti-zip"></i>Introduction
+                                                        </NavLink >
+                                                    </li>
+                                                    <li>
+                                                        <NavLink  activeClassName='active' to={"/profile/details/classes/"+(match ? match.params.id : '')} className="nav-link" >
+                                                            <i className="ti-bookmark-alt"></i>Classes & Subjects
+                                                        </NavLink >
+                                                    </li>
+                                                    <li>
+                                                        <NavLink  activeClassName='active' to={"/profile/details/preferred-locations/"+(match ? match.params.id : '')} className="nav-link" >
+                                                        
+                                                            <i className="ti-user"></i>Preferred Location
+                                                        </NavLink >
+                                                    </li>
+                                                    <li>
+                                                        <NavLink  activeClassName='active' to={"/profile/details/details/"+(match ? match.params.id : '')} className="nav-link" >
+                                                            <i className="ti-comments"></i>Details
+                                                        </NavLink >
+                                                    </li>
+                                                    <li>
+                                                        <NavLink  activeClassName='active' to={"/profile/details/reviews/"+(match ? match.params.id : '')} className="nav-link" >
+                                                            <i className="ti-comments"></i>Reviews
+                                                        </NavLink >
+                                                    </li>
+                                                    
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                                {/* End of Left Sidebar */}
 
-                                <div class="col-lg-8 col-md-8 col-sm-12">
-
-                                    <div class="courese-overview" id="details">
-                                        <h4 className="text-center">DETAILS</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                                <p className="details-para">
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including ve
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>  
-
-                                    <div class="courese-overview" id="introduction">
-                                        <h4 className="text-center">INTRODUCTION</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                                <ul class="course-features">
-                                                    <li><i class="ti-book"></i> <span class="label">About Tutor</span> <span class="value">45yrs, Male</span></li>
-                                                    <li><i class="ti-help-alt"></i> <span class="label">Qualification</span> <span class="value">MA education, bsc double math stat</span></li>
-                                                    <li><i class="ti-time"></i> <span class="label">Experience</span> <span class="value">25 years</span></li>
-                                                    <li><i class="ti-stats-up"></i> <span class="label">English Skills</span> <span class="value">High</span></li>
-                                                    <li><i class="ti-smallcap"></i> <span class="label">Teaching In</span> <span class="value">Not specified</span></li>
-                                                    <li><i class="ti-user"></i> <span class="label">No ofStudents</span> <span class="value">32</span></li>
-                                                    
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>  
-
-                                    <div class="courese-overview" id="classes">
-                                        <h4 className="text-center">CLASSES & SUBJECTS</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                                <ul class="course-features course-features-spec">
-                                                    <li><i class="ti-book"></i> <span class="label lbl-header">PRIMARY</span> 
-                                                        <span class="value">
-                                                        <ul class="list-checked primary">
-                                                            <li className="checked-items-li">All Subjects</li>
-                                                        </ul>
-                                                            <div class="widget_tag_cloud">
-                                                                <div class="tagcloud"> 
-                                                                    <a href="#">14,000 /Per Month (For all subjects)</a> 
-                                                                    <a href="#">8,000 /Per Month (Per Subject)</a> 
-                                                                    
-                                                                </div>
-                                                            </div>    
-                                                        </span>
-                                                    </li>
-                                                    <li><i class="ti-book"></i> <span class="label lbl-header">SECONDARY</span> 
-                                                        <span class="value">
-                                                        <ul class="list-checked primary">
-                                                            <li className="checked-items-li">All Subjects</li>
-                                                        </ul>
-                                                            <div class="widget_tag_cloud">
-                                                                <div class="tagcloud"> 
-                                                                    <a href="#">14,000 /Per Month (For all subjects)</a> 
-                                                                    <a href="#">8,000 /Per Month (Per Subject)</a> 
-                                                                    
-                                                                </div>
-                                                            </div>    
-                                                        </span>
-                                                    </li>
-                                                    <li><i class="ti-book"></i> <span class="label lbl-header">O LEVELS</span> 
-                                                        <span class="value">
-                                                        <ul class="list-checked primary">
-                                                            <li className="checked-items-li">English</li>
-                                                            <li className="checked-items-li">Urdu</li>
-                                                            <li className="checked-items-li">Science</li>
-                                                        </ul>
-                                                            <div class="widget_tag_cloud">
-                                                                <div class="tagcloud"> 
-                                                                    <a href="#">14,000 /Per Month (For all subjects)</a> 
-                                                                    <a href="#">8,000 /Per Month (Per Subject)</a> 
-                                                                    
-                                                                </div>
-                                                            </div>    
-                                                        </span>
-                                                    </li>
-                                                    
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div> 
-
-                                    <div class="courese-overview" id="location">
-                                        <h4 className="text-center">PREFERRED LOCATION</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                            <ul class="list-checked primary">
-                                                <li className="checked-items-li">Paragon City, Lahore, Pakistan</li>
-                                                <li className="checked-items-li">DHA, Lahore, Pakistan</li>
-                                                <li className="checked-items-li">Askari X, Lahore, Pakistan</li>
-                                            </ul>
-                                            </div>
-                                        </div>
-                                    </div>  
-
-                                    <div class="courese-overview" id="reviews">
-                                        <h4 className="text-center">REVIEWS</h4>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-10">
-                                            <div class="review-bx">
-									<div class="all-review">
-										<h2 class="rating-type">3</h2>
-										<ul class="cours-star">
-											<li class="active"><i class="fa fa-star"></i></li>
-											<li class="active"><i class="fa fa-star"></i></li>
-											<li class="active"><i class="fa fa-star"></i></li>
-											<li><i class="fa fa-star"></i></li>
-											<li><i class="fa fa-star"></i></li>
-										</ul>
-										<span>3 Rating</span>
-									</div>
-									<div class="review-bar">
-										<div class="bar-bx">
-											<div class="side">
-												<div>5 star</div>
-											</div>
-											<div class="middle">
-												<div class="bar-container">
-													<div class="bar-5" style={{width:"90%" }}></div>
-												</div>
-											</div>
-											<div class="side right">
-												<div>150</div>
-											</div>
-										</div>
-										<div class="bar-bx">
-											<div class="side">
-												<div>4 star</div>
-											</div>
-											<div class="middle">
-												<div class="bar-container">
-													<div class="bar-5" style={{width:"90%" }}></div>
-												</div>
-											</div>
-											<div class="side right">
-												<div>140</div>
-											</div>
-										</div>
-										<div class="bar-bx">
-											<div class="side">
-												<div>3 star</div>
-											</div>
-											<div class="middle">
-												<div class="bar-container">
-													<div class="bar-5" style={{width:"90%" }}></div>
-												</div>
-											</div>
-											<div class="side right">
-												<div>120</div>
-											</div>
-										</div>
-										<div class="bar-bx">
-											<div class="side">
-												<div>2 star</div>
-											</div>
-											<div class="middle">
-												<div class="bar-container">
-													<div class="bar-5" style={{width:"90%" }}></div>
-												</div>
-											</div>
-											<div class="side right">
-												<div>110</div>
-											</div>
-										</div>
-										<div class="bar-bx">
-											<div class="side">
-												<div>1 star</div>
-											</div>
-											<div class="middle">
-												<div class="bar-container">
-													<div class="bar-5" style={{width:"90%" }}></div>
-												</div>
-											</div>
-											<div class="side right">
-												<div>80</div>
-											</div>
-										</div>
-									</div>
-								</div>
-                                            </div>
-                                        </div>
-                                    </div>  
-
+                                {/* Start of body */}
+                                <div className="col-lg-8 col-md-8 col-sm-12">
+                                    {/* <Switch>
+                                        <Route exact path="/profile/details/:id" component={ProfileDetails}></Route>
+                                        <Route exact path="/profile/inbox" component={Inbox}></Route>
+                                    </Switch> */}
+                                    <AnimatePresence exitBeforeEnter>
+                                        <Switch location={location} key={location.pathname}>
+                                            <Route exact path="/profile/details/:id" render={(props) => <Introduction userInfo={teacherInfo}/>}/>
+                                            <Route exact path="/profile/details/classes/:id" render={(props) => <ClassesAndSubjects userInfo={teacherInfo}/>}/>
+                                            <Route exact path="/profile/details/preferred-locations/:id" render={(props) => <PreferredLocations userInfo={teacherInfo}/>} />
+                                            <Route exact path="/profile/details/details/:id" render={(props) => <Details userInfo={teacherInfo}/>}/>
+                                            <Route exact path="/profile/details/reviews/:id" render={(props) => <Reviews userInfo={teacherInfo}/>}/>                        
+                                        </Switch>
+                                    </AnimatePresence>    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer />            
+            <Modal showModal={showModal} setShowModal={setShowModal}/>
         </Fragment>
     )
 }

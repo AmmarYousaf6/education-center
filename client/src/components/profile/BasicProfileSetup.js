@@ -374,7 +374,35 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         </div>
                                     </div>
                                     
-                                
+                                    <div className="col-lg-12 mt-5">
+                                        <div className="form-group">
+                                            <div className="input-group"> 
+                                                <label for="file-upload" class="custom-file-upload">
+                                                    <i class="fa fa-cloud-upload"></i> Upload Your Picture
+                                                </label>
+                                                <input id="file-upload" type="file" name="file" onChange={changeHandler}/>
+                                                
+                                                    {isSelected && (
+                                                        <img className="image-upload-ph" src={fileUrl}/>
+                                                    )}
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-lg-12 mt-5">
+                                        <div className="form-group">
+                                            <div className="input-group"> 
+                                                <label for="file-upload" class="custom-file-upload">
+                                                    <i class="fa fa-cloud-upload"></i> Upload Your Resume
+                                                </label>
+                                                <input id="file-upload" type="file" name="file"/>
+                                                
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div className="col-lg-12 text-right">
                                         <button type="reset" class="btn" onClick={saveChanges}>Save Changes</button>

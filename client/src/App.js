@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
@@ -21,6 +21,8 @@ import ChangePassword from "./components/auth/ChangePassword";
 import UserTypeSetup from './components/profile/UserTypeSetup';
 import ProfileForm from './components/profile/ProfileForm';
 import BasicProfileSetup from './components/profile/BasicProfileSetup';
+import MailBox from './components/mailbox/mailbox';
+
 
 
 if (localStorage.token) {
@@ -31,30 +33,33 @@ const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
-
+  
   return (
     <Provider store={store}>
       <Router>
         <Fragment>
           {/*<Navbar />
-          <Route exact path="/" component={Landing} />*/}
-          <section className="">
+          <Route exact path="/" component={Landing} />*/} 
 
+          <section className="">
+          
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/reset-password/:token" component={ChangePassword} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/forgetpassword" component={ForgetPassword} />
               <Route exact path="/contact" component={Contact} />
-              <Route exact path="/" component={Index} />
+              <Route exact path="/" component={Index}  />
               <Route exact path="/linkedin" component={LinkedInPopUp} />
               <Route exact path="/search" component={Main} />
-              <Route exact path="/profile" component={TeacherProfile} />
+              <Route exact path="/profile/details/*" component={TeacherProfile} />
+              <Route exact path="/profile/inbox" component={TeacherProfile} />
 
               
               <PrivateRoute exact path="/profile-setup-info" component={BasicProfileSetup} />
               <PrivateRoute exact path="/profile-setup" component={UserTypeSetup} />
               <PrivateRoute exact path="/profile/update" component={ProfileForm} />
+              <PrivateRoute exact path="/mailbox" component={MailBox} />
               
             </Switch>
           </section>

@@ -384,6 +384,11 @@ const getProfileById = async (req,res) => {
         text : 'SELECT AVG(rating) as averageRating FROM ratings WHERE rated_to = $1',
         values : [userId]
     }
+    //Added by Malik Ahsan aftab
+    const getAllRatings = {
+        text : 'SELECT rating FROM ratings WHERE rated_to = $1',
+        values : [userId]
+    }
     try {
         const response  = await database.query(getUserById);
         
@@ -402,13 +407,14 @@ const getProfileById = async (req,res) => {
                 const areas  = await database.query(getUserAreas);
                 const slots  = await database.query(getUserSlots);
                 const rating  = await database.query(getAverageRating);
+                const allRatings = await database.query(getAllRatings);
                 // Map data
                 data.rating = rating.rows[0].averagerating;
                 data.subjects = subjects.rows;
                 data.grades = grades.rows;
                 data.areas = areas.rows;
                 data.slots = slots.rows;
-                
+                data.ratings = allRatings.rows;                
             }
             res.status(200).json({
                 status: 1,
@@ -555,20 +561,22 @@ const myInvites = async (req,res,next) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
     let query;
+    
     if(userInfo.user_type == 'parent'){ // AND participant_id = $2
-        query = 'SELECT name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.participant_id  WHERE user_id = $1';
+        query = 'SELECT user_connections.id as session_id, name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.participant_id  WHERE user_id = $1 AND user_connections.status = $2';
     } else {
-        query = 'SELECT name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.user_id  WHERE participant_id = $1';
+        query = 'SELECT user_connections.id as session_id, name, qualification, gender, summary, user_connections.status as inviteStatus FROM user_connections JOIN users ON users.id = user_connections.user_id  WHERE participant_id = $1 AND user_connections.status = $2';
     }
     const getInvites = {
         text : query,
-        values : [userInfo.userID]
+        values : [userInfo.userID, 'accepted']
     }
+
     try {
         const response  = await database.query(getInvites);
         if (response.rowCount < 1) {
-            res.status(400).json({
-                status: 0,
+            res.status(200).json({
+                status: 1,
                 message: 'No data found',
                 data : []
             });
@@ -730,6 +738,70 @@ const health = async (req,res) => {
     //     message: 'Server Is running'
     // });
 }
+
+
+const getLatestTeachers = async (req,res) => {
+    const getLatest = {
+        text : `select * from (select 
+            u.id, 
+            u.name, 
+            u.image, 
+            u.qualification, 
+            u.curriculum, 
+            u.duration_of_commitment, 
+            string_agg(us.name, ', ') , 
+            sum( rat.rating ) / count( rat.rating ) ratings,
+            (select count(*) from ratings where ratings.rated_to=u.id) as reviewsCount ,  
+            string_agg( ug.name , ',') classes , 
+            u.experience ,
+            u.salary 
+          from 
+            users u 
+            left join user_grades ug on u.id = ug.user_id 
+            left join ratings rat on rat.rated_to = u.id 
+            left join user_subjects us on u.id = us.user_id 
+          where 
+            u.user_type = $1
+          GROUP by 
+            u.id, 
+            u.name, 
+            u.image, 
+            u.qualification, 
+            u.curriculum, 
+            u.duration_of_commitment ,
+            u.experience ,
+            u.salary ) as data
+            limit $2`,
+        values : ['teacher' , 4]
+    }
+    const getUserById = {
+        text : 'SELECT * FROM users WHERE user_type = $1 ',
+        values : ['teacher', 20]
+    }
+ 
+    try {
+        const response  = await database.query(getLatest);
+        console.log("Response we have " , response)        
+        if (!response.rows[0]) {
+            return res.status(400).send({users: []});
+        }
+        else {
+            let data = response.rows;
+            res.status(200).json({
+                users : data
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+    // res.status(200).json({
+    //     status: 1,
+    //     message: 'Server Is running'
+    // });
+}
 module.exports = {
     activateUser,
     forgotPassword,
@@ -746,4 +818,5 @@ module.exports = {
     rateUser,
     userRated,
     health,
+    getLatestTeachers,
 }

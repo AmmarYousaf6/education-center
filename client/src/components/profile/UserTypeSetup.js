@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,12 +9,15 @@ import Alert from './../layout/Alert';
 
 import { setUserType } from '../../actions/profile';
 
-const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUserType }) => {
-
+const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUserType , profile }) => {
+    console.log("Profile changed value" , profile );
     const selectType = (type) => {
+        console.log("Gonna set value " , type , user)
         setUserType(type);
     }
+    useEffect(()=>{
 
+    })
     if (!isAuthenticated) {
 
         return <Redirect to="/login" />;
@@ -30,17 +33,17 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                 <div className="account-form-inner">
                     <div className="account-container account-container-custom">
                         <div className="heading-bx left">
-                            <h2 className="title-head text-center title-head-text-cust">I am a</h2>
+                            <h2 className="title-head text-center title-head-text-cust">Tell Us Something <span>About Your Self</span></h2>
                             
                         </div>	
                         <form className="contact-bx">
                             <div className="row placeani">
-                                <div className="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('teacher')}>
+                                <div className={"col-sm-12 col-md-6 col-lg-6 m-b40 profile-box" } onClick={() => selectType('teacher')}>
                                     <div className="pricingtable-wrapper">
                                         <div className="pricingtable-inner">
-                                            <div className="pricingtable-main"> 
+                                            <div className={(profile.userType == 'teacher' ? 'pricingtable-main selected' : 'pricingtable-main')}> 
                                                 <div className="pricingtable-price"> 
-                                                    <span className="pricingtable-bx">Teacher</span>
+                                                    <span className="pricingtable-bx" style={{fontSize: "55px" } }>Teacher</span>
                                                     <span className="pricingtable-type-cust">
                                                         <img src="assets/images/testimonials/pic1.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
@@ -54,10 +57,10 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-sm-12 col-md-6 col-lg-6 m-b40" onClick={() => selectType('parent')}>
+                                <div className="col-sm-12 col-md-6 col-lg-6 m-b40 profile-box" onClick={() => selectType('parent')}>
                                     <div className="pricingtable-wrapper">
                                         <div className="pricingtable-inner">
-                                            <div className="pricingtable-main"> 
+                                            <div className={"pricingtable-main"+(profile.userType == 'parent' ? ' selected' : '')}> 
                                                 <div className="pricingtable-price"> 
                                                     <span className="pricingtable-bx">Parent</span>
                                                     <span className="pricingtable-type-cust">
@@ -95,7 +98,8 @@ UserTypeSetup.propTypes = {
   
   const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
-    auth: state.auth
+    auth: state.auth ,
+    profile : state.profile
   });
   
-  export default connect(mapStateToProps, { clearAlert, setUserType })(UserTypeSetup);
+  export default connect(mapStateToProps, { clearAlert, setUserType  })(UserTypeSetup);

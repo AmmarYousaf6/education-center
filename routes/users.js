@@ -23,9 +23,14 @@ router.post('/invite',authMiddleware.validateToken,userController.updateInvite);
 //chat session
 router.get('/session/:userId',authMiddleware.validateToken,userController.getUserConnectionSession);
 
+
 //ratings
 router.post('/ratings',authMiddleware.validateToken,userController.rateUser);
 router.get('/ratings/:userId',authMiddleware.validateToken,userController.userRated);
 
 router.get('/health',userController.health);
+
+//latest teachers
+router.get('/latest', userController.getLatestTeachers);
+
 module.exports = router;

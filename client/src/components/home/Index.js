@@ -1,10 +1,28 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
 import MapComponent from './Map';
-const Index = () => {
-    return (
+//Importing all the modals 
+import Modal from '../modals/hireMeModal';
+
+import LatestTeachersComponent from './latestTeachers';
+
+// var createReactClass = require('create-react-class');
+//File hosting api url i.e base url
+const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
+
+
+const Index =  () => {    
+    //For modals
+    const [showModal , setShowModal] = useState(false);
+
+    // const [showModal , setShowModal] = useState(true);
+    useEffect(()=>{
+        
+    }, []);
+     return (
         <Fragment>  
             <Navbar />
 
@@ -24,6 +42,34 @@ const Index = () => {
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                        <div className="mw800 m-auto">
+                            <div className="row">
+                                <div className="col-md-4 col-sm-6">
+                                    <div className="cours-search-bx m-b30">
+                                        <div className="icon-box">
+                                            <h3><i className="ti-user"></i><span className="counter">5</span>M</h3>
+                                        </div>
+                                        <span className="cours-search-text">Over 5 Thousands student</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-sm-6">
+                                    <div className="cours-search-bx m-b30">
+                                        <div className="icon-box">
+                                            <h3><i className="ti-book"></i><span className="counter">30</span>K</h3>
+                                        </div>
+                                        <span class="cours-search-text">100 Tutors.</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-sm-12">
+                                    <div className="cours-search-bx m-b30">
+                                        <div className="icon-box">
+                                            <h3><i className="ti-layout-list-post"></i><span className="counter">20</span>K</h3>
+                                        </div>
+                                        <span className="cours-search-text">Learn Anythink Online.</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,180 +150,9 @@ const Index = () => {
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-md-8 col-sm-12">
-                                    <div class="row">
-                                    <div class="col-md-6 col-lg-3 col-sm-6 m-b30">
-                                            <div class="cours-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic1.jpg" alt=""/>
-                                                </div>
-                                                <div class="info-bx text-center">
-                                                    <h5><a href="#">Maurice Bates</a></h5>
-                                                    <span>Phd. Chemistry</span>
-                                                </div>
-                                                <div class="cours-more-info">
-                                                    <div class="review">
-                                                        <span>3 Review</span>
-                                                        <ul class="cours-star">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="price">
-                                                        <del>$190</del>
-                                                        <h5>$120</h5>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <table className="table tutor-table">
-                                                        <tr>
-                                                            <th width="20%">Subjects</th>
-                                                            <td width="80%">Physics, Chemistry</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Classes</th><td>Primary, Secondary, Matric</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Experience</th><td>20 years</td>
-                                                        </tr>
-                                                    </table>
-                                                    <a href="#" class="btn button-md hire-now-btn">Hire Now</a>
-                                                    <Link to="/profile" class="btn button-md profile-view-btn">View Profile</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 col-sm-6 m-b30">
-                                            <div class="cours-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic2.jpg" alt=""/>
-                                                </div>
-                                                <div class="info-bx text-center">
-                                                    <h5><a href="#">Maurice Bates</a></h5>
-                                                    <span>Phd. Chemistry</span>
-                                                </div>
-                                                <div class="cours-more-info">
-                                                    <div class="review">
-                                                        <span>3 Review</span>
-                                                        <ul class="cours-star">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="price">
-                                                        <del>$190</del>
-                                                        <h5>$120</h5>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <table className="table tutor-table">
-                                                        <tr>
-                                                            <th width="20%">Subjects</th>
-                                                            <td width="80%">Physics, Chemistry</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Classes</th><td>Primary, Secondary, Matric</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Experience</th><td>20 years</td>
-                                                        </tr>
-                                                    </table>
-                                                    <a href="#" class="btn button-md hire-now-btn">Hire Now</a>
-                                                    <Link to="/profile" class="btn button-md profile-view-btn">View Profile</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 col-sm-6 m-b30">
-                                            <div class="cours-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic3.jpg" alt=""/>
-                                                </div>
-                                                <div class="info-bx text-center">
-                                                    <h5><a href="#">Jessie Russel</a></h5>
-                                                    <span>Computer Engineer</span>
-                                                </div>
-                                                <div class="cours-more-info">
-                                                    <div class="review">
-                                                        <span>3 Review</span>
-                                                        <ul class="cours-star">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="price">
-                                                        <del>$190</del>
-                                                        <h5>$120</h5>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <table className="table tutor-table">
-                                                        <tr>
-                                                            <th width="20%">Subjects</th>
-                                                            <td width="80%">Physics, Chemistry</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Classes</th><td>Primary, Secondary, Matric</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Experience</th><td>20 years</td>
-                                                        </tr>
-                                                    </table>
-                                                    <a href="#" class="btn button-md hire-now-btn">Hire Now</a>
-                                                    <Link to="/profile" class="btn button-md profile-view-btn">View Profile</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 col-sm-6 m-b30">
-                                            <div class="cours-bx">
-                                                <div class="testimonial-thumb">
-                                                    <img src="assets/images/testimonials/pic3.jpg" alt=""/>
-                                                </div>
-                                                <div class="info-bx text-center">
-                                                    <h5><a href="#">Jessie Russel</a></h5>
-                                                    <span>Computer Engineer</span>
-                                                </div>
-                                                <div class="cours-more-info">
-                                                    <div class="review">
-                                                        <span>3 Review</span>
-                                                        <ul class="cours-star">
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li class="active"><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="price">
-                                                        <del>$190</del>
-                                                        <h5>$120</h5>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <table className="table tutor-table">
-                                                        <tr>
-                                                            <th width="20%">Subjects</th>
-                                                            <td width="80%">Physics, Chemistry</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Classes</th><td>Primary, Secondary, Matric</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Experience</th><td>20 years</td>
-                                                        </tr>
-                                                    </table>
-                                                    <a href="#" class="btn button-md hire-now-btn">Hire Now</a>
-                                                    <Link to="/profile" class="btn button-md profile-view-btn">View Profile</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        {/* Start of teacher dynamic section  */}
+                                    {  <LatestTeachersComponent setShowModal={setShowModal}/> }
+                                        {/* End of Four teachers section */}
                                 </div>
                             </div>
                         </div>
@@ -292,8 +167,8 @@ const Index = () => {
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 heading-bx left">
-                                <h3 class="title-head text-center title-head-cust">"What a teacher is, is more important than what he teaches" Karl Menninger
-</h3>
+                                <h2 class="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
+                                <p className="text-center">It is a long established fact that a reader will be distracted by the readable content of a page</p>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-8 col-sm-12">
@@ -331,6 +206,8 @@ const Index = () => {
                     </div>
                 </div>
             </div>
+
+            <Modal showModal={showModal} setShowModal={setShowModal}/>
 
             {/*  */}
             <Footer />

@@ -61,7 +61,7 @@ const Main = () => {
                                         </div>
                                     </div>
                                     <div class="widget widget_archive">
-                                        <h5 class="widget-title style-1">Advanced Search</h5>
+                                        <h5 class="widget-title style-1">Refine Search</h5>
                                         
                                         <div class="widget courses-search-bx placeani">
                                             <div class="form-group">
