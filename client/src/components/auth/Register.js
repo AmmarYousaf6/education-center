@@ -67,7 +67,6 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Full Name</label>
                                             <input 
                                                 name="name" 
                                                 placeholder="Enter your full name"
@@ -84,7 +83,6 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Email Address</label>
                                             <input 
                                                 name="email" 
                                                 placeholder="Enter your email address"
@@ -102,7 +100,6 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                            <label>Password</label>
                                             <input 
                                                 name="password" 
                                                 placeholder="Enter your password"
@@ -119,7 +116,6 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                            <label>Confirm Password</label>
                                             <input 
                                                 name="confirmPassword" 
                                                 placeholder="Enter your confirm password"
@@ -137,7 +133,6 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                        <label>Select Gender</label>
                                             <select 
                                                 className="form-control" 
                                                 placeholder="Select Gender"

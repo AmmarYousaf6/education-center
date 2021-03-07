@@ -33,4 +33,13 @@ router.get('/health',userController.health);
 //latest teachers
 router.get('/latest', userController.getLatestTeachers);
 
+//unique Classes
+router.get('/uniqueClasses', userController.uniqueClasses);
+
+//unique Classes
+router.get('/uniqueSubjects', userController.uniqueSubject);
+
+//Search teachers
+router.post('/search' ,userController.search);
+
 module.exports = router;

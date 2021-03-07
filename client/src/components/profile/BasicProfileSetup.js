@@ -155,7 +155,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Select Experience</label>
                                                     <input 
                                                         name="experience" 
                                                         placeholder="Enter your experience"
@@ -172,7 +171,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Enter Your Qualification</label>
                                                     <input 
                                                         name="qualification" 
                                                         placeholder="Enter your qualification"
@@ -192,7 +190,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Enter Your Age</label>
                                                     <input 
                                                         name="age" 
                                                         placeholder="Enter your age"
@@ -209,7 +206,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Enter Your Salary</label>
                                                     <input 
                                                         name="salary" 
                                                         placeholder="Enter your salary"
@@ -229,7 +225,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                     <div className="col-lg-12">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Enter Your Introduction Video Link</label>
                                                     <input 
                                                         name="introduction" 
                                                         placeholder="Enter your introduction video link"
@@ -248,7 +243,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <label>What subjects you can teach ?</label>
                                                     <Multiselect
                                                         options={subjectList} // Options to display in the dropdown
                                                         selectedValues={subject} // Preselected value to persist in dropdown
@@ -264,7 +258,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>What grades you can teach ?</label>
                                                     <Multiselect
                                                         options={gradeList} // Options to display in the dropdown
                                                         selectedValues={grade} // Preselected value to persist in dropdown
@@ -282,7 +275,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                         <div className="col-lg-12">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Select your targeted areas</label>
                                                     <GooglePlacesAutocomplete
                                                         selectProps={{
                                                             locationValue,
@@ -304,8 +296,6 @@ const BasicProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, profile:
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <div className="input-group"> 
-                                                <label>Please set your availability</label>
-
                                                 <div className="header-day-parent slider-label"><span className="header-day">Monday </span>StartTime : {timeMonday.start} - EndTime : {timeMonday.end} </div>
                                                 <TimeRangeSlider
                                                     disabled={false}

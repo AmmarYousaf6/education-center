@@ -23,7 +23,7 @@ const modalTransitions = {
         opacity : 0
     } ,
     visible : {
-        y : "200px",
+        y : "100px",
         opacity : 1 , 
         transition : { delay : 0.5}
     }
@@ -97,13 +97,13 @@ const Modal = ({showModal , setShowModal}) =>{
                                Cancel 
                             </button> */}
 
-                            <div class="container d-flex justify-content-center">
-                                <div class="card p-3 py-4">
-                                    <div class="text-center"> 
-                                        <img src={showModal && (mediaBaseUrl+showModal.image)} width="100" class="rounded-circle" />
-                                        <h3 class="mt-2">Hire {showModal && (showModal.name)}?</h3> 
-                                        <span class="mt-1 clearfix">{showModal && (showModal.qualification)}</span> 
-                                        <small class="mt-4">
+                            <div className="container d-flex justify-content-center">
+                                <div className="card p-3 py-4">
+                                    <div className="text-center"> 
+                                        <img src={showModal && (mediaBaseUrl+showModal.image)} width="100" className="rounded-circle" />
+                                        <h3 className="mt-2">Hire {showModal && (showModal.name)}?</h3> 
+                                        <span className="mt-1 clearfix">{showModal && (showModal.qualification)}</span> 
+                                        <small className="mt-4">
                                             Click yes to hire me
                                         </small>
                                         <div>
@@ -114,15 +114,15 @@ const Modal = ({showModal , setShowModal}) =>{
                                                 Cancel 
                                             </button>
                                         </div>
-                                        <div class="social-buttons mt-5"> 
-                                            <button class="neo-button">
-                                                <i class="fa fa-facebook fa-1x"></i> 
+                                        <div className="social-buttons mt-5"> 
+                                            <button className="neo-button">
+                                                <i className="fa fa-facebook fa-1x"></i> 
                                             </button> 
-                                            <button class="neo-button">
-                                                <i class="fa fa-linkedin fa-1x"></i>
+                                            <button className="neo-button">
+                                                <i className="fa fa-linkedin fa-1x"></i>
                                             </button> 
-                                            <button class="neo-button">
-                                                <i class="fa fa-google fa-1x"></i> 
+                                            <button className="neo-button">
+                                                <i className="fa fa-google fa-1x"></i> 
                                             </button> 
                                         </div>
                                     </div>

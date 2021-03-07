@@ -3,6 +3,8 @@ const {ReasonPhrases,StatusCodes,getReasonPhrase,getStatusCode}=  require('http-
 const md5 = require('md5');
 const jwtDecode = require('jwt-decode');
 const multer = require('multer');
+var metaphone = require('metaphone')
+
 
 const getUser = async (req,res) => {
     let token = req.headers.authorization;
@@ -802,6 +804,222 @@ const getLatestTeachers = async (req,res) => {
     //     message: 'Server Is running'
     // });
 }
+//Added by Malik Ahsan Aftab 
+const search = async (req,res) => {
+    console.log("A request recieved to search" , req.body )
+    //Making a variable to keep recording of values binded
+    let values = [];
+    let counter = 1;
+    //For teacher type
+    values.push(`teacher`);
+
+    //Check if user has short listed any classes
+    // classes: ["Secondary"], 
+    let classQuery = '';
+
+    //Making sure the classes are provided and atleast one class is provided with string length greater then 0
+    if(req.body.classes.length && req.body.classes.some(cls=>cls.trim().length > 0) ){
+        let tempInClassesQuery = [];
+        for(let i=0 ; i < req.body.classes.length ; i++)
+        {   
+            tempInClassesQuery.push(`$${++counter}`);
+            values.push(req.body.classes[i]);
+        }
+        // values.push ( Object.keys(req.body.classes).map(i=>`$${i+1}`) );
+        classQuery = `and ug.name in (${tempInClassesQuery.join()})`
+    }
+
+    // subjects: [], 
+    //Check if user has short listed any subjects
+    let subjectQuery = '';
+    if(req.body.subjects.length && req.body.subjects.some(subj=>subj.trim().length > 0) ){
+        let tempInSubjectsQuery = [];
+        for(let i=0 ; i < req.body.subjects.length ; i++)
+        {   
+            tempInSubjectsQuery.push(`$${++counter}`);
+            values.push(req.body.subjects[i]);
+        }
+        // values.push ( Object.keys(req.body.subjects).map(i=>`$${i+1}`) );
+        subjectQuery = `and us.name in (${tempInSubjectsQuery.join()})`
+    }
+    //check if gender is selected
+    let genderQuery = '';
+    // gender: "female", 
+    if(req.body.gender && ["female" , "male"].includes(req.body.gender)){
+        genderQuery = `and u.gender = $${++counter}`;
+        values.push(req.body.gender);
+    }
+    //check if experience is selected
+    //    experience: "all"
+    let experienceQuery = '';
+    if(req.body.experience && req.body.experience.split("-").length == 2){
+        experienceQuery = `and u.experience between $${++counter} and $${++counter}`;
+        values.push(parseInt(req.body.experience.split("-")[0]) );
+        values.push(parseInt(req.body.experience.split("-")[1] ));
+    }
+
+    //Minimum salary 
+    //    fee_range_min: -1
+    let minSalaryQuery = '';
+    if(req.body.fee_range_min && !isNaN(req.body.fee_range_min) && req.body.fee_range_min > -1){
+        minSalaryQuery = `and u.salary >= $${++counter}` ;
+        values.push(req.body.fee_range_min);
+    }
+    //MAximum salary
+    // fee_range_max: -1
+    let maxSalaryQuery = '';
+    if(req.body.fee_range_max && !isNaN(req.body.fee_range_max) && req.body.fee_range_max > -1){
+        maxSalaryQuery = `and u.salary <= $${++counter}` ;
+        values.push(req.body.fee_range_max);
+    }
+
+    //Handling search query
+    let searchText = '';
+    if(req.body.search && req.body.search.trim().length > 0){
+        searchText = `and ( uta.meta_name like $${++counter} OR u.name Ilike $${++counter})`;
+        values.push('%'+metaphone(req.body.search)+'%');
+        values.push('%'+req.body.search+'%');
+    }
+
+    // sort_fee: 1, 
+    //Now for pagination
+    //We have number of records
+    //We need
+    /* Total records */
+    /* Current page number */
+    let num_rows= isNaN(req.body.num_rows) ? 10 : req.body.num_rows  ; 
+    let skip = isNaN(req.body.skip) ? 0 : req.body.skip * num_rows ;
+    values.push(num_rows);
+    values.push(skip);
+
+    const searchQuery = {
+        text : `select * from (select 
+            u.id, 
+            u.name, 
+            u.image, 
+            u.qualification, 
+            u.curriculum, 
+            u.duration_of_commitment, 
+            string_agg(us.name, ', ') as subjects, 
+            sum( rat.rating ) / count( rat.rating ) ratings,
+            (select count(*) from ratings where ratings.rated_to=u.id) as reviewsCount ,  
+            string_agg( ug.name , ',') classes , 
+            u.experience ,
+            u.salary ,
+            count(*) over() as rowsFiltered
+          from 
+            users u 
+            left join user_grades ug on u.id = ug.user_id 
+            left join ratings rat on rat.rated_to = u.id 
+            left join user_subjects us on u.id = us.user_id 
+            left join user_target_areas uta on u.id = uta.user_id
+          where 
+            u.user_type = $1 ${classQuery} ${subjectQuery} ${genderQuery} ${experienceQuery} ${minSalaryQuery} ${maxSalaryQuery} ${searchText}
+          GROUP by 
+            u.id, 
+            u.name, 
+            u.image, 
+            u.qualification, 
+            u.curriculum, 
+            u.duration_of_commitment ,
+            u.experience ,
+            u.salary  ) as data
+            limit $${values.length-1} offset $${values.length}`,
+        values : values
+    }
+    //Now we need total records from table
+    //We need total filtered records
+    //
+    console.log("Response we have after searching :" , searchQuery)        
+ 
+    try {
+        const response  = await database.query(searchQuery);
+        console.log("Response we have after searching :" , response.rows)        
+        if (!response.rows[0]) {
+            return res.status(400).send({users: []});
+        }
+        else {
+            let data = response.rows;
+            res.status(200).json({
+                users : data
+            });
+        }
+    } catch(error) {
+        console.log("Error occured " , error )
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+    // res.status(200).json({
+    //     status: 1,
+    //     message: 'Server Is running'
+    // });
+}
+
+const uniqueClasses = async (req,res) => {
+    console.log("A request recieved to search" , req.body )
+    const getUniqueClasses = {
+        text : `SELECT distinct(name)
+        FROM public.user_grades;`,
+        values : []
+    }
+   
+    try {
+        const response  = await database.query(getUniqueClasses);
+        console.log("Response we have clsasses" , response)        
+        if (!response.rows[0]) {
+            return res.status(400).send({classes: []});
+        }
+        else {
+            let data = response.rows;
+            res.status(200).json({
+                classes : data
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+    // res.status(200).json({
+    //     status: 1,
+    //     message: 'Server Is running'
+    // });
+}
+
+const uniqueSubject = async (req,res) => {
+    console.log("A request recieved to search" , req.body )
+    const getUniqueSubject = {
+        text : `SELECT distinct(name)
+        FROM public.user_subjects;`,
+        values : []
+    }
+   
+    try {
+        const response  = await database.query(getUniqueSubject);
+        console.log("Response we have subject" , response)        
+        if (!response.rows[0]) {
+            return res.status(400).send({subjects: []});
+        }
+        else {
+            let data = response.rows;
+            res.status(200).json({
+                subjects : data
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            status: 0,
+            message: error
+        });
+    }
+    // res.status(200).json({
+    //     status: 1,
+    //     message: 'Server Is running'
+    // });
+}
 module.exports = {
     activateUser,
     forgotPassword,
@@ -819,4 +1037,7 @@ module.exports = {
     userRated,
     health,
     getLatestTeachers,
+    uniqueClasses,
+    uniqueSubject,
+    search
 }

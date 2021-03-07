@@ -14,9 +14,12 @@ import setAuthToken from '../../utils/setAuthToken';
 
 //Importing all the modals 
 import Modal from './../modals/hireMeModal';
+import RatingModal from './../modals/ratingsModal';
 
 //For toast notifications
 import toast  , { Toaster } from 'react-hot-toast';
+
+import './style.css';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
@@ -159,7 +162,7 @@ const Reviews = (props) =>{
             groupedRatings[i]["avgRating"] = groupedRatings[i]["count"]/ratings.length *100;
         }
     }
-    console.log("After ratings done" , groupedRatings)
+    // console.log("After ratings done" , groupedRatings)
     return (
         <motion.div className="courese-overview" id="reviews" 
             exit="out" 
@@ -207,6 +210,7 @@ const Reviews = (props) =>{
 const TeacherProfile = () => {
     //For modals
     const [showModal , setShowModal] = useState(false);
+    const [showRatingModal , setShowRatingModal] = useState(false);
 
     let match = useRouteMatch("/\profile/*/:id");
     const location = useLocation();
@@ -222,6 +226,17 @@ const TeacherProfile = () => {
             return ;
         }
         setShowModal(teacher)
+    }
+    //Method tp rate user
+    const rateClicked = (teacher)=>{
+        console.log("Ratings" , teacher)
+        //handling user not logged in
+        if (!localStorage.token) {
+            toast.error("Please login to hire "+teacher.name);
+            // history.push("/login");
+            return ;
+        }
+        setShowRatingModal(teacher)
     } 
     //Fetching teacher info
     useEffect( ()=>{
@@ -310,12 +325,13 @@ const TeacherProfile = () => {
                                                         <li key={key} className={teacherInfo && teacherInfo.rating > key ? "active" : "" } key={key}><i className="fa fa-star"></i></li>
                                                     ))}
                                                </ul>
+                                               <button className="btn radius-xl" onClick={()=>rateClicked(teacherInfo)}>Rate</button>                                              
                                             </div>
                                             <div className="price categories">
                                                 <span>Categories</span>
                                                 <h5 className="text-primary">{teacherInfo ? teacherInfo?.user_type?.toUpperCase() : '' }</h5>
                                             </div>
-                                        </div>
+                                        </div>    
                                         <div className="course-info-list scroll-page">
                                             <ul className="navbar">
                                                     <li>
@@ -374,6 +390,7 @@ const TeacherProfile = () => {
             </div>
             <Footer />            
             <Modal showModal={showModal} setShowModal={setShowModal}/>
+            <RatingModal showModal={showRatingModal} setShowModal={setShowRatingModal}/>
         </Fragment>
     )
 }

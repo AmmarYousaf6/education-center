@@ -53,7 +53,6 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Email Address</label>
                                             <input 
                                                 name="email" 
                                                 placeholder="Enter your email address"
@@ -70,7 +69,6 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group"> 
-                                            <label>Password</label>
                                             <input 
                                                 name="password" 
                                                 placeholder="Enter your password"

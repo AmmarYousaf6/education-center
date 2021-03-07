@@ -18,8 +18,8 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                         <div className="row d-flex justify-content-between">
                             <div className="topbar-left">
                                 <ul>
-                                    <li><a href="faq-1.html"><i className="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="javascript:;"><i className="fa fa-envelope-o"></i>support@hometutor.pk</a></li>
+                                    <li><a href="#!"><i className="fa fa-question-circle"></i>Ask a Question</a></li>
+                                    <li><a href="#!"><i className="fa fa-envelope-o"></i>support@hometutor.pk</a></li>
                                 </ul>
                             </div>
                             <div className="topbar-right">
@@ -49,7 +49,10 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                 <Link to="/"><img src="assets/images/logo.png" alt="" /></Link>
                             </div>
                             
-                            <button className="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <button className="navbar-toggler collapsed menuicon justify-content-end" 
+                                type="button" data-toggle="collapse" data-target="#menuDropdown" 
+                                aria-controls="menuDropdown" aria-expanded="false" 
+                                aria-label="Toggle navigation">
                                 <span></span>
                                 <span></span>
                                 <span></span>
@@ -58,18 +61,22 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                             <div className="secondary-menu">
                                 <div className="secondary-inner">
                                     <ul>
-                                        <li><a href="javascript:;" className="btn-link"><i className="fa fa-facebook"></i></a></li>
-                                        <li><a href="javascript:;" className="btn-link"><i className="fa fa-google-plus"></i></a></li>
-                                        <li><a href="javascript:;" className="btn-link"><i className="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#!" className="btn-link"><i className="fa fa-facebook"></i></a></li>
+                                        <li><a href="#!" className="btn-link"><i className="fa fa-google-plus"></i></a></li>
+                                        <li><a href="#!" className="btn-link"><i className="fa fa-linkedin"></i></a></li>
                                         
-                                        <li className="search-btn"><button id="quik-search-btn" type="button" className="btn-link"><i className></i></button></li>
+                                        <li className="search-btn">
+                                            <button id="quik-search-btn" type="button" className="btn-link">
+                                                <i className=""></i>
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             
                             <div className="nav-search-bar">
                                 <form action="#">
-                                    <input name="search" value="" type="text" className="form-control" placeholder="Type to search" />
+                                    <input name="search" defaultValue="" type="text" className="form-control" placeholder="Type to search" />
                                     <span><i className="ti-search"></i></span>
                                 </form>
                                 <span id="search-remove"><i className="ti-close"></i></span>
@@ -81,13 +88,13 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                 </div>
                                 <ul className="nav navbar-nav">	
                                     <li className="active"><Link to="/">Home</Link></li>
-                                    <li><a href="javascript:;">Tutors <i className="fa fa-chevron-down"></i></a>
+                                    <li><a href="#!">Tutors <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu">
                                             <li><a href="#">Home Tutors</a></li>
                                             <li><a href="#">Online Tutors</a></li>
                                         </ul>
                                     </li>
-                                    <li className="add-mega-menu"><a href="javascript:;">How it Works <i className="fa fa-chevron-down"></i></a>
+                                    <li className="add-mega-menu"><a href="#!">How it Works <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu add-menu">
                                             <li className="add-menu-left">
                                                 <h5 className="menu-adv-title">T&C For Tutors</h5>
@@ -102,10 +109,10 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                             </li>
                                         </ul>
                                     </li>
-                                    <li ><a href="javascript:;">About</a></li>
+                                    <li ><a href="#!">About</a></li>
                                     <li ><Link to="/contact">Contact Us</Link></li>
                                     {isAuthenticated && (
-                                        <li><a href="javascript:;">{user.name} <i className="fa fa-chevron-down"></i></a>
+                                        <li><a href="#!">{user.name} <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu">
                                             <li><Link to="/profile/update">Profile</Link></li>
                                             <li><a href="#">Option</a></li>
@@ -115,9 +122,9 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                     )}
                                 </ul>
                                 <div className="nav-social-link">
-                                    <a href="javascript:;"><i className="fa fa-facebook"></i></a>
-                                    <a href="javascript:;"><i className="fa fa-google-plus"></i></a>
-                                    <a href="javascript:;"><i className="fa fa-linkedin"></i></a>
+                                    <a href="#!"><i className="fa fa-facebook"></i></a>
+                                    <a href="#!"><i className="fa fa-google-plus"></i></a>
+                                    <a href="#!"><i className="fa fa-linkedin"></i></a>
                                 </div>
                             </div>
                             

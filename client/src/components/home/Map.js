@@ -30,7 +30,6 @@ const boundingBox = {
 const MapComponent = ({searchMap , latitude , longitude   }) => {
     //Pin pointing central point in other words centeral point of view 
     const centralPoint = { latitude : latitude , longitude : longitude };
-    console.log("Ya ma hn" , longitude , "Yh hamara latitude hy" , latitude , "Yh hamari pry hori hy" )
 
     let data =[];
     const customProvider = {
