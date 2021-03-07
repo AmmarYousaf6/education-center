@@ -19,7 +19,7 @@ const signUp = async (req,res,next) => {
         }).then((obj) => {
             res.email = obj.email;
             res.subject = 'Account activation';
-            res.body = '<a href="http://localhost:4000/users/activate/' + obj.userId + '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Activate</a>';
+            res.body = '<a href="http://hometutorpk.herokuapp.com/users/activate/' + obj.userId + '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Activate</a>';
             next();
         });
         res.status(200).json({

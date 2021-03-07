@@ -14,7 +14,13 @@ router.get('/activate/:userId',userController.activateUser);
 router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
 router.post('/reset-password',userController.resetPassword);
 router.put('/update-profile', authMiddleware.validateToken,upload.fields([{name: 'image', maxCount: 1}, {name: 'curriculum', maxCount: 1}]),userController.updateBasicProfile);
-router.post('/add-children', authMiddleware.validateToken,upload.fields([{name: 'image', maxCount: 1}]),userController.addChildren);
+
+router.get('/children', authMiddleware.validateToken,userController.getChildren);
+router.post('/children', authMiddleware.validateToken,userController.addChildren);
+router.get('/children/:childId', authMiddleware.validateToken,userController.getChild);
+router.put('/children', authMiddleware.validateToken,userController.updateChildren);
+router.delete('/children/:childId', authMiddleware.validateToken,userController.removeChild);
+
 
 router.get('/my-invites',authMiddleware.validateToken,userController.myInvites);
 router.get('/invite/:userId',authMiddleware.validateToken,userController.sendInvite);

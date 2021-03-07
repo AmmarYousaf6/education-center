@@ -296,26 +296,108 @@ const updateBasicProfile = async (req,res) => {
     
 }
 
+const getChildren = async (req, res) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+
+    const getChildren = {
+        text : 'SELECT * FROM children WHERE parent_id = $1',
+        values : [userInfo.userID]
+    }
+    try {
+        const query = database.query(getChildren).then(response => {
+            if(response.rows.length > 0){
+                res.status(200).json({
+                    status: 1,
+                    message: 'Success',
+                    data : response.rows
+                });
+            } else {
+                res.status(500).json({
+                    status: 0,
+                    message: 'No list of children found',
+                    data : []
+                });
+            }
+        })
+    } catch (err) {
+        callback(err);
+    }
+}
+
+const getChild = async (req, res) => {
+    const {childId} = req.params;
+    const getChild = {
+        text : 'SELECT * FROM children WHERE id = $1',
+        values : [childId]
+    }
+    const getUserSubjects = {
+        text : 'SELECT name FROM user_subjects WHERE user_id = $1',
+        values : [childId]
+    }
+    try {
+        
+        const query = database.query(getChild).then(async response => {
+            let data = response.rows[0];
+            
+            if(response.rows.length > 0){
+                const subjects  = await database.query(getUserSubjects);
+                data.subjects = subjects.rows;
+                res.status(200).json({
+                    status: 1,
+                    message: 'Success',
+                    data : response.rows[0]
+                });
+            } else {
+                res.status(500).json({
+                    status: 0,
+                    message: 'No user found',
+                    data : []
+                });
+            }
+        })
+    } catch (err) {
+        callback(err);
+    }
+}
+
 const addChildren = async (req,res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
-    let {name, qualification, summary, age} = req.body;
-    let image = req.files.image ? req.files.image[0].filename  : 'default.jpg';
+    let {name, qualification, subjects, summary, age, image} = req.body;
         /* Update user type */
-    console.log(req.body)
         const addChildren = {
             text : 'INSERT INTO children(parent_id, name, qualification, summary, age, image) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
             values : [userInfo.userID, name, qualification, summary, age, image]
         }
-        
         try {
             const response  = await database.query(addChildren);
             if (response.rowCount < 1) {
+
                 res.status(400).json({
                     status: 0,
                     message: 'Something went wrong. Please try again!',
                 });
             } else {
+                 /* Update subjects */
+            if(eval(subjects).length > 1){
+
+                let getSubjects = eval(subjects);
+                console.log('here')
+                for(let i = 0; i<getSubjects.length; i++){
+                    
+                    let text = 'INSERT INTO user_subjects(user_id, name) VALUES($1, $2) RETURNING *'
+                    let values = [response.rows[0].id, getSubjects[i].name];
+                    try {
+                        const query = await database.query(text, values).then((res) => {
+                        console.log('updated subjects')
+                        });
+                    } catch (err) {
+                        console.log(err.stack)
+                    }
+                }
+            }
+
                 res.status(200).json({
                     status: 1,
                     message: 'Success'
@@ -328,6 +410,82 @@ const addChildren = async (req,res) => {
             });
         }
 }
+
+const updateChildren = async (req,res) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let {name, summary, qualification, age, image, childId, subjects} = req.body;
+    console.log(childId)
+        /* Update user type */
+        const updateType = {
+            text : 'Update children SET name = $1, summary = $2, qualification = $3, age = $4, image = $5 WHERE id = $6',
+            values : [name, summary, qualification, age, image, childId]
+        }
+        
+        try {
+            const response  = await database.query(updateType);
+            if (response.rowCount < 1) {
+                res.status(400).json({
+                    status: 0,
+                    message: 'Cannot update user type',
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                status: 0,
+                message: err
+            });
+        }
+        /* ** */
+        /* Update subjects */
+        if(eval(subjects).length > 1){
+            /* Remove subjects if they exists */
+            const removeSubjects = {
+                text : 'DELETE FROM user_subjects WHERE user_id = $1',
+                values : [childId]
+            }
+            database.query(removeSubjects);
+            /* *** */
+            let getSubjects = eval(subjects);
+            for(let i = 0; i<getSubjects.length; i++){
+                let text = 'INSERT INTO user_subjects(user_id, name) VALUES($1, $2) RETURNING *'
+                let values = [childId, getSubjects[i].name];
+                try {
+                    const query = await database.query(text, values)
+                } catch (err) {
+                    console.log(err.stack)
+                }
+            }
+        }
+
+        res.status(200).json({
+            status: 1,
+            message: 'Child profile has been updated successfully!'
+        });
+    
+}
+
+const removeChild = async (req, res) => {
+    const {childId} = req.params;
+    const removeChild = {
+        text : 'DELETE FROM children WHERE id = $1',
+        values : [childId]
+    }
+    try {
+        database.query(removeChild);
+        res.status(200).json({
+            status: 1,
+            message: 'Child has been removed',
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 0,
+            message: err
+        });
+    }
+    
+}
+
 
 const getTeachers = async (req,res) => {
     let token = req.headers.authorization;
@@ -1026,7 +1184,11 @@ module.exports = {
     resetPassword,
     getUser,
     updateBasicProfile,
+    getChildren,
+    getChild,
     addChildren,
+    updateChildren,
+    removeChild,
     getTeachers,
     getProfileById,
     sendInvite,
