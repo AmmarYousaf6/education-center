@@ -55,7 +55,7 @@ const MailBox =  () => {
                         <li><a href="#"><i className="fa fa-home"></i>Home</a></li>
                         <li>Mailbox</li>
                     </ul>
-                    {/* <a href="mailbox-compose.html" class="btn btn-block col-2 ml-auto">Compose</a> */}
+                    {/* <a href="mailbox-compose.html" className="btn btn-block col-2 ml-auto">Compose</a> */}
                 </div>	
                 <div className="row">
                     {/* <!-- Your Profile Views Chart --> */}
@@ -63,9 +63,9 @@ const MailBox =  () => {
                         <div className="widget-box">
                             <div className="email-wrapper">
                                 {/* Start of email menu bar component */}
-                                <div class="email-menu-bar">
-                                    <div class="compose-mail">
-                                        <a href="javascript:void(0)" class="btn btn-block">My Connections</a>
+                                <div className="email-menu-bar">
+                                    <div className="compose-mail">
+                                        <a className="btn btn-block">My Connections</a>
                                     </div>
                                     {/* Start of Left User Menu List */}
                                     <Sidebar active={active} setActive={setActive} />

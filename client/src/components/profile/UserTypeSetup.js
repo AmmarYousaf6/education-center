@@ -79,7 +79,9 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                 
                             
                             </div>
-                            <Link to="/profile-setup-info" className="btn button-md assign-right"><i className="fa fa-arrow-right"></i> Next</Link>
+                            <Link to={(profile.userType == 'teacher' ? "/profile-setup-info-teacher" : "/profile-setup-info-parent")} className="btn button-md assign-right">
+                                <i className="fa fa-arrow-right"></i> Next
+                            </Link>
                             
                         </form>
                         <Alert />

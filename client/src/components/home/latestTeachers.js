@@ -12,7 +12,7 @@ import toast  , { Toaster } from 'react-hot-toast';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = 'http://localhost:4000/';
 
 //Actual component 
 const LatestTeachersComponent = ({setShowModal}) => {
@@ -69,25 +69,25 @@ const LatestTeachersComponent = ({setShowModal}) => {
       }    
     return (<div className="row">{Teachers &&
             Teachers.map((teacher , i) => (  
-                <div class="col-md-6 col-lg-3 col-sm-6 m-b30" key={i}>
-                        <div class="cours-bx">
-                            <div class="testimonial-thumb">
+                <div className="col-md-6 col-lg-3 col-sm-6 m-b30" key={i}>
+                        <div className="cours-bx">
+                            <div className="testimonial-thumb">
                                 <img src={mediaBaseUrl+teacher.image} alt=""/>
                             </div>
-                            <div class="info-bx text-center">
+                            <div className="info-bx text-center">
                                 <h5><a href="{teacher.id}">{teacher.name}</a></h5>
                                 <span>{teacher.qualification}</span>
                             </div>
-                            <div class="cours-more-info">
-                                <div class="review">
+                            <div className="cours-more-info">
+                                <div className="review">
                                     <span>{Math.ceil(teacher?.reviewscount )+' review'+(teacher?.reviewscount  == 1 ? '' : 's' )} </span>
-                                    <ul class="cours-star">
+                                    <ul className="cours-star">
                                         {([...Array(5).keys()].map(key=>(
-                                            <li key={key} className={teacher && teacher.ratings > key ? "active" : ""}><i class="fa fa-star"></i></li>
+                                            <li key={key} className={teacher && teacher.ratings > key ? "active" : ""}><i className="fa fa-star"></i></li>
                                         )))}
                                     </ul>
                                 </div>
-                                <div class="price">
+                                <div className="price">
                                     <del>$190</del>
                                     <h5>${teacher.salary}</h5>
                                 </div>
@@ -105,8 +105,8 @@ const LatestTeachersComponent = ({setShowModal}) => {
                                         <th>Experience</th><td>{teacher.experience} years</td>
                                     </tr>
                                 </table>
-                                <button class="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
-                                <button class="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
+                                <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
+                                <button className="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
                             </div>
                         </div>
                     </div>

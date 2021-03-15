@@ -93,7 +93,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                                 value={email}
                                                 onChange={e => onChange(e)}
                                             />
-                                            <span class="help span-help">A confirmation email will be sent to the address you provide above for account activation</span>
+                                            <span className="help span-help">A confirmation email will be sent to the address you provide above for account activation</span>
                                         </div>
                                     </div>
                                 </div>

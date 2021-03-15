@@ -59,7 +59,7 @@ const Index =  () => {
                                         <div className="icon-box">
                                             <h3><i className="ti-book"></i><span className="counter">30</span>K</h3>
                                         </div>
-                                        <span class="cours-search-text">100 Tutors.</span>
+                                        <span className="cours-search-text">100 Tutors.</span>
                                     </div>
                                 </div>
                                 <div className="col-md-4 col-sm-12">
@@ -77,57 +77,57 @@ const Index =  () => {
 
                 {/*  */}
                 
-                <div class="section-area section-sp1">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-6 m-b30">
-                                <h2 class="title-head ">Learn a new skill online<br /> <span class="text-primary color-green"> on your time</span></h2>
+                <div className="section-area section-sp1">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-6 m-b30">
+                                <h2 className="title-head ">Learn a new skill online<br /> <span className="text-primary color-green"> on your time</span></h2>
                                 
                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.</p>
-                                <a href="#" class="btn button-md margin-fix-btm">Join Now</a>
+                                <a href="#" className="btn button-md margin-fix-btm">Join Now</a>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 m-b30">
-                                        <div class="feature-container">
-                                            <div class="feature-md text-white m-b20 text-center-fix">
-                                                <a href="#" class="icon-cell"><img src="assets/images/icon/icon1.png" alt="" /></a> 
+                            <div className="col-lg-6">
+                                <div className="row">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 m-b30">
+                                        <div className="feature-container">
+                                            <div className="feature-md text-white m-b20 text-center-fix">
+                                                <a href="#" className="icon-cell"><img src="assets/images/icon/icon1.png" alt="" /></a> 
                                             </div>
-                                            <div class="icon-content">
-                                                <h5 class="ttr-tilte text-center color-green text-big-cust">Search</h5>
+                                            <div className="icon-content">
+                                                <h5 className="ttr-tilte text-center color-green text-big-cust">Search</h5>
                                                 <p className="text-center">Find home tutor according to your requirement.Hire tutor on single click.</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 m-b30">
-                                        <div class="feature-container">
-                                            <div class="feature-md text-white m-b20 text-center-fix">
-                                                <a href="#" class="icon-cell"><img src="assets/images/icon/icon2.png" alt="" /></a> 
+                                    <div className="col-lg-6 col-md-6 col-sm-6 m-b30">
+                                        <div className="feature-container">
+                                            <div className="feature-md text-white m-b20 text-center-fix">
+                                                <a href="#" className="icon-cell"><img src="assets/images/icon/icon2.png" alt="" /></a> 
                                             </div>
-                                            <div class="icon-content">
-                                                <h5 class="ttr-tilte text-center color-green text-big-cust">Select</h5>
+                                            <div className="icon-content">
+                                                <h5 className="ttr-tilte text-center color-green text-big-cust">Select</h5>
                                                 <p className="text-center">View tutors profile and hire a tutor who suits you best according to your need.</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 m-b30">
-                                        <div class="feature-container">
-                                            <div class="feature-md text-white m-b20 text-center-fix">
-                                                <a href="#" class="icon-cell"><img src="assets/images/icon/icon3.png" alt="" /></a> 
+                                    <div className="col-lg-6 col-md-6 col-sm-6 m-b30">
+                                        <div className="feature-container">
+                                            <div className="feature-md text-white m-b20 text-center-fix">
+                                                <a href="#" className="icon-cell"><img src="assets/images/icon/icon3.png" alt="" /></a> 
                                             </div>
-                                            <div class="icon-content">
-                                                <h5 class="ttr-tilte text-center color-green text-big-cust">Schedule</h5>
+                                            <div className="icon-content">
+                                                <h5 className="ttr-tilte text-center color-green text-big-cust">Schedule</h5>
                                                 <p className="text-center">Schedule a trial class with your required tutor in just 30 minutes.</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 m-b30">
-                                        <div class="feature-container">
-                                            <div class="feature-md text-white m-b20 text-center-fix">
-                                                <a href="#" class="icon-cell"><img src="assets/images/icon/icon4.png" alt="" /></a> 
+                                    <div className="col-lg-6 col-md-6 col-sm-6 m-b30">
+                                        <div className="feature-container">
+                                            <div className="feature-md text-white m-b20 text-center-fix">
+                                                <a href="#" className="icon-cell"><img src="assets/images/icon/icon4.png" alt="" /></a> 
                                             </div>
-                                            <div class="icon-content">
-                                                <h5 class="ttr-tilte text-center color-green text-big-cust">Study</h5>
+                                            <div className="icon-content">
+                                                <h5 className="ttr-tilte text-center color-green text-big-cust">Study</h5>
                                                 <p className="text-center">TheTutors handles the behind the scenes stuff so you can focus on your study.</p>
                                             </div>
                                         </div>
@@ -139,17 +139,17 @@ const Index =  () => {
                 </div>
 
                 {/*  */}
-                <div class="content-block">
-                    <div class="section-area section-sp2 popular-courses-bx">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12 heading-bx left text-center">
-                                    <h2 class="title-head title-head-cust text-uppercase">Best <span>Home Tutors</span></h2>
+                <div className="content-block">
+                    <div className="section-area section-sp2 popular-courses-bx">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-12 heading-bx left text-center">
+                                    <h2 className="title-head title-head-cust text-uppercase">Best <span>Home Tutors</span></h2>
                                     <p>We are working with best home tutors.We are providing home tutors in lahore, home tutor in islamabad, home tutor in karachi as well as students can find tutors online.Each tutor has an overview and interview with us.</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-md-8 col-sm-12">
+                            <div className="row">
+                                <div className="col-lg-12 col-md-8 col-sm-12">
                                         {/* Start of teacher dynamic section  */}
                                     {  <LatestTeachersComponent setShowModal={setShowModal}/> }
                                         {/* End of Four teachers section */}
@@ -163,40 +163,40 @@ const Index =  () => {
                     <MapComponent/>
                 </div>
                 {/*  */}
-                <div class="section-area section-sp2">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 heading-bx left">
-                                <h2 class="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
+                <div className="section-area section-sp2">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12 heading-bx left">
+                                <h2 className="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
                                 <p className="text-center">It is a long established fact that a reader will be distracted by the readable content of a page</p>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-8 col-sm-12">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-6 col-sm-12 m-b30">
-                                    <div class="testimonial-bx">
-                                        <div class="testimonial-thumb">
+                        <div className="col-lg-12 col-md-8 col-sm-12">
+                            <div className="row">
+                                <div className="col-md-6 col-lg-6 col-sm-12 m-b30">
+                                    <div className="testimonial-bx">
+                                        <div className="testimonial-thumb">
                                             <img src="assets/images/testimonials/pic1.jpg" alt="" />
                                         </div>
-                                        <div class="testimonial-info">
-                                            <h5 class="name">Peter Packer</h5>
+                                        <div className="testimonial-info">
+                                            <h5 className="name">Peter Packer</h5>
                                             <p>Student. FSC</p>
                                         </div>
-                                        <div class="testimonial-content">
+                                        <div className="testimonial-content">
                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-sm-12 m-b30">
-                                    <div class="testimonial-bx">
-                                        <div class="testimonial-thumb">
+                                <div className="col-md-6 col-lg-6 col-sm-12 m-b30">
+                                    <div className="testimonial-bx">
+                                        <div className="testimonial-thumb">
                                             <img src="assets/images/testimonials/pic2.jpg" alt="" />
                                         </div>
-                                        <div class="testimonial-info">
-                                            <h5 class="name">Roy Daniels</h5>
+                                        <div className="testimonial-info">
+                                            <h5 className="name">Roy Daniels</h5>
                                             <p>Student. Matric</p>
                                         </div>
-                                        <div class="testimonial-content">
+                                        <div className="testimonial-content">
                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...</p>
                                         </div>
                                     </div>

@@ -59,13 +59,13 @@ const Sidebar =  ({active , setActive}) => {
 
     return (
         <Fragment>  
-            <div class="email-menu-bar-inner">
+            <div className="email-menu-bar-inner">
             <ul>
             {otherUsers && otherUsers.map((user , i) => (  
-                     <li class="active_link">
+                     <li className="active_link">
                         < a className={active.session_id == user.session_id ? "active_user"  : ""} onClick={()=>setActive(user)}>
-                            <i class="fa fa-envelope-o"></i>{user.name} 
-                            <span class="badge badge-success">8</span>
+                            <i className="fa fa-envelope-o"></i>{user.name} 
+                            <span className="badge badge-success">8</span>
                         </a>
                     </li> 
             ))}

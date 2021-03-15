@@ -18,7 +18,7 @@ const Inbox =  () => {
                         <li><a href="#"><i className="fa fa-home"></i>Home</a></li>
                         <li>Mailbox</li>
                     </ul>
-                    <a href="mailbox-compose.html" class="btn btn-block col-2 ml-auto">Compose</a>
+                    <a href="mailbox-compose.html" className="btn btn-block col-2 ml-auto">Compose</a>
                 </div>	
                 <div className="row">
                     {/* <!-- Your Profile Views Chart --> */}
@@ -26,17 +26,17 @@ const Inbox =  () => {
                         <div className="widget-box">
                             <div className="email-wrapper">
                                 {/* Start of email menu bar component */}
-                                <div class="email-menu-bar">
-                                    <div class="compose-mail">
-                                        <a href="mailbox-compose.html" class="btn btn-block">Compose</a>
+                                <div className="email-menu-bar">
+                                    <div className="compose-mail">
+                                        <a href="mailbox-compose.html" className="btn btn-block">Compose</a>
                                     </div>
-                                    <div class="email-menu-bar-inner">
+                                    <div className="email-menu-bar-inner">
                                         <ul>
-                                            <li class="active"><a href="mailbox.html"><i class="fa fa-envelope-o"></i>Inbox <span class="badge badge-success">8</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-send-o"></i>Sent</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-file-text-o"></i>Drafts <span class="badge badge-warning">8</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-cloud-upload"></i>Outbox <span class="badge badge-danger">8</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-trash-o"></i>Trash</a></li>
+                                            <li className="active"><a href="mailbox.html"><i className="fa fa-envelope-o"></i>Inbox <span className="badge badge-success">8</span></a></li>
+                                            <li><a href="mailbox.html"><i className="fa fa-send-o"></i>Sent</a></li>
+                                            <li><a href="mailbox.html"><i className="fa fa-file-text-o"></i>Drafts <span className="badge badge-warning">8</span></a></li>
+                                            <li><a href="mailbox.html"><i className="fa fa-cloud-upload"></i>Outbox <span className="badge badge-danger">8</span></a></li>
+                                            <li><a href="mailbox.html"><i className="fa fa-trash-o"></i>Trash</a></li>
                                         </ul>
                                     </div>
                                 </div>                               

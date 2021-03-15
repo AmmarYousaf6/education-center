@@ -119,3 +119,7 @@ li{
 .closeModal{
     cursor: pointer;
 }
+
+.course-features li {
+	width :100% ;
+}

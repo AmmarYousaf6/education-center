@@ -19,8 +19,10 @@ import Main from './components/search/Main';
 import TeacherProfile from './components/profile/TeacherProfile';
 import ChangePassword from "./components/auth/ChangePassword";
 import UserTypeSetup from './components/profile/UserTypeSetup';
-import ProfileForm from './components/profile/ProfileForm';
-import BasicProfileSetup from './components/profile/BasicProfileSetup';
+import ProfileForm from './components/parent_profile/ProfileForm';
+import BasicParentProfileSetup from './components/parent_profile/BasicProfileSetupForParent';
+
+import BasicTeacherProfileSetup from './components/profile/BasicProfileSetupForTeacher';
 import MailBox from './components/mailbox/mailbox';
 
 
@@ -56,11 +58,14 @@ const App = () => {
               <Route exact path="/profile/inbox" component={TeacherProfile} />
 
               
-              <PrivateRoute exact path="/profile-setup-info" component={BasicProfileSetup} />
+              <PrivateRoute exact path="/profile-setup-info-teacher" component={BasicTeacherProfileSetup} />
+              <PrivateRoute exact path="/profile-setup-info-parent" component={BasicParentProfileSetup} />
               <PrivateRoute exact path="/profile-setup" component={UserTypeSetup} />
-              <PrivateRoute exact path="/profile/update" component={ProfileForm} />
+  
+              <PrivateRoute exact path="/profile/update/*" component={ProfileForm} />
+  
               <PrivateRoute exact path="/mailbox" component={MailBox} />
-              
+  
             </Switch>
           </section>
         </Fragment>

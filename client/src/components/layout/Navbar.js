@@ -114,7 +114,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                     {isAuthenticated && (
                                         <li><a href="#!">{user.name} <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu">
-                                            <li><Link to="/profile/update">Profile</Link></li>
+                                            <li><Link to="/profile/update/basic">Profile</Link></li>
                                             <li><a href="#">Option</a></li>
                                             <li><Link to="/mailbox" >Mailbox</Link></li>
                                         </ul>
