@@ -83,7 +83,7 @@ const SearchTeachers = ({
                 <div className="page-banner ovbl-dark" style={{backgroundImage:"url(assets/images/banner/banner3.jpg)" }}>
                     <div className="container">
                         <div className="page-banner-entry">
-                            <h1 className="text-white">LIST OF QUALIFIED TUTORS</h1>
+                            <h3 className="text-white">Better than a thousand days of diligent study is one day with a great teacher</h3>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ const SearchTeachers = ({
                                         </div>
                                     </div>
                                     <div className="widget widget_archive">
-                                        <h5 className="widget-title style-1">Refine Search</h5>
+                                        <h5 className="widget-title style-1">Advanced Search</h5>
                                         
                                         <div className="widget courses-search-bx placeani">
                                             <div className="form-group">

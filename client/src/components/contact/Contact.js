@@ -40,7 +40,7 @@ const Contact = () => {
                                             <li><i className="ti-location-pin"></i>75k Newcastle St. Ponte Vedra Beach, FL 309382 New York</li>
                                             <li><i className="ti-mobile"></i>0800-123456 (24/7 Support Line)</li>
                                             <li><i className="ti-mobile"></i>0800-8372984</li>
-                                            <li><i className="ti-email"></i>info@hometutor.com</li>
+                                            <li><i className="ti-email"></i>inquiries.hometutor@gmail.com</li>
                                         </ul>
                                     </div>
                                     

@@ -88,16 +88,20 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                 </div>
                                 <ul className="nav navbar-nav">	
                                     <li className="active"><Link to="/">Home</Link></li>
-                                    <li><a href="#!">Tutors <i className="fa fa-chevron-down"></i></a>
-                                        <ul className="sub-menu">
-                                            <li><a href="#">Home Tutors</a></li>
-                                            <li><a href="#">Online Tutors</a></li>
-                                        </ul>
-                                    </li>
+                                    <li ><a href="#!">About</a></li>
+                                    
                                     <li className="add-mega-menu"><a href="#!">How it Works <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu add-menu">
                                             <li className="add-menu-left">
                                                 <h5 className="menu-adv-title">T&C For Tutors</h5>
+                                                <ul>
+                                                    <li><a href="#">Rules & Regulations </a></li>
+                                                    <li><a href="#">Other</a></li>
+                                                    
+                                                </ul>
+                                            </li>
+                                            <li className="add-menu-left">
+                                                <h5 className="menu-adv-title">T&C For Parents</h5>
                                                 <ul>
                                                     <li><a href="#">Rules & Regulations </a></li>
                                                     <li><a href="#">Other</a></li>
@@ -109,7 +113,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                             </li>
                                         </ul>
                                     </li>
-                                    <li ><a href="#!">About</a></li>
+                                    <li ><Link to="/">Online Tutors</Link></li>
                                     <li ><Link to="/contact">Contact Us</Link></li>
                                     {isAuthenticated && (
                                         <li><a href="#!">{user.name} <i className="fa fa-chevron-down"></i></a>

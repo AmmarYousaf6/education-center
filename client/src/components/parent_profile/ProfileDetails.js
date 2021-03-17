@@ -98,7 +98,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
             };
             const config = {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             };
 

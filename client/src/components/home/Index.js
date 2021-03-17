@@ -45,32 +45,7 @@ const Index =  () => {
                             </div>
                         </div>
                         <div className="mw800 m-auto">
-                            <div className="row">
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-user"></i><span className="counter">5</span>M</h3>
-                                        </div>
-                                        <span className="cours-search-text">Over 5 Thousands student</span>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-book"></i><span className="counter">30</span>K</h3>
-                                        </div>
-                                        <span className="cours-search-text">100 Tutors.</span>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-12">
-                                    <div className="cours-search-bx m-b30">
-                                        <div className="icon-box">
-                                            <h3><i className="ti-layout-list-post"></i><span className="counter">20</span>K</h3>
-                                        </div>
-                                        <span className="cours-search-text">Learn Anythink Online.</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <h4 className="whiteText" >Your access to tutors verified by Our Scandinavian team of psychologists.</h4>
                         </div>
                     </div>
                 </div>
@@ -81,9 +56,9 @@ const Index =  () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-6 m-b30">
-                                <h2 className="title-head ">Learn a new skill online<br /> <span className="text-primary color-green"> on your time</span></h2>
+                                <h2 className="title-head ">Why Home Tution?</h2>
                                 
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.</p>
+                                <p>Recent studies have shown that engaging home tutors to increase our children’s academic abilities has shown a significant positive impact by augmenting the child’s academic performance. For the sake of individual attention and care home tuition is regarded as more effective than academies.</p>
                                 <a href="#" className="btn button-md margin-fix-btm">Join Now</a>
                             </div>
                             <div className="col-lg-6">
@@ -95,7 +70,7 @@ const Index =  () => {
                                             </div>
                                             <div className="icon-content">
                                                 <h5 className="ttr-tilte text-center color-green text-big-cust">Search</h5>
-                                                <p className="text-center">Find home tutor according to your requirement.Hire tutor on single click.</p>
+                                                <p className="text-center">“Find a trusted home tutor from your neighbourhood according to your child’s needs and requirements.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -106,7 +81,7 @@ const Index =  () => {
                                             </div>
                                             <div className="icon-content">
                                                 <h5 className="ttr-tilte text-center color-green text-big-cust">Select</h5>
-                                                <p className="text-center">View tutors profile and hire a tutor who suits you best according to your need.</p>
+                                                <p className="text-center">View tutors profiles and select the one that suits you.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -117,7 +92,7 @@ const Index =  () => {
                                             </div>
                                             <div className="icon-content">
                                                 <h5 className="ttr-tilte text-center color-green text-big-cust">Schedule</h5>
-                                                <p className="text-center">Schedule a trial class with your required tutor in just 30 minutes.</p>
+                                                <p className="text-center">Our Scandinavian team of psychologists have already carefully selected tutors. You and your child can now focus on study.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -145,7 +120,7 @@ const Index =  () => {
                             <div className="row">
                                 <div className="col-md-12 heading-bx left text-center">
                                     <h2 className="title-head title-head-cust text-uppercase">Best <span>Home Tutors</span></h2>
-                                    <p>We are working with best home tutors.We are providing home tutors in lahore, home tutor in islamabad, home tutor in karachi as well as students can find tutors online.Each tutor has an overview and interview with us.</p>
+                                    <p>If a child can’t learn the way we teach, maybe we should teach the way they learn” Ignacio Estrada</p>
                                 </div>
                             </div>
                             <div className="row">
@@ -168,7 +143,7 @@ const Index =  () => {
                         <div className="row">
                             <div className="col-md-12 heading-bx left">
                                 <h2 className="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
-                                <p className="text-center">It is a long established fact that a reader will be distracted by the readable content of a page</p>
+                                <p className="text-center">What a teacher is, is more important than what he teaches" Karl Menninger and remove it’s body.</p>
                             </div>
                         </div>
                         <div className="col-lg-12 col-md-8 col-sm-12">
