@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState , useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,16 +9,18 @@ import Alert from './../layout/Alert';
 //For toast notifications
 import toast, { Toaster } from 'react-hot-toast';
 
+import setAuthToken from '../../utils/setAuthToken';
+import axios from 'axios';
 
-import GooglePlacesAutocomplete , { geocodeByAddress, getLatLng }  from "react-google-places-autocomplete";
+import GooglePlacesAutocomplete , { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { Multiselect } from 'multiselect-react-dropdown';
 import TimeRangeSlider from 'react-time-range-slider';
 
 import { saveBasicProfile } from '../../actions/profile';
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = process.env.REACT_APP_SERVER_URL;
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
-const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user }, profile: { userType }, saveBasicProfile }) => {
+const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, profile: { userType }, saveBasicProfile }) => {
     const history = useHistory();
     const [subject, setSubject] = useState([]);
     const [grade, setGrade] = useState([]);
@@ -32,7 +34,70 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         introduction: '',
         curriculum: ''
     });
+    const capitalize = (s)=> s && s[0].toUpperCase() + s.slice(1);
 
+    const fetchTeacherInfo = async () => {
+        let data = [];
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        if (localStorage.token) {
+            setAuthToken(localStorage.token);
+        }
+        let resultToReturn = [];
+        try {
+            const teacherInfo = await axios.get(`${apiUrl}users/profile/`+user.id, config);
+            let teacher = teacherInfo.data.user;
+            //Setting simple fields 
+            setFormData({
+                experience : teacher.experience ,
+                qualification : teacher.qualification ,
+                age : teacher.age ,
+                salary : teacher.salary ,
+                introduction : teacher.video_introduction,
+                curriculum : teacher.curriculum
+            });
+            //Handling grades
+            setGrade(teacher.grades.map(grade=>({name : capitalize(grade.name) , id : grade.name})));
+
+            //Handling subjects
+            setSubject(teacher.subjects.map(subj=>({name : capitalize(subj.name) , id : subj.name})));
+
+            //Handling places 
+            setLocationValue(teacher.areas.map(a=>({location:a.name , lat : a.latitude , lng :a.longitude })));
+
+            //Handling time slots
+            for(let i=0 ; i < teacher.slots.length ; i++){
+                let thisSlot = teacher.slots[i];
+                switch(thisSlot.day){
+                    case "Monday" : setTimeMonday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
+                    case "Tuesday" : setTimeTuesday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
+                    case  "Wednesday" : setTimeWednesday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
+                    case  "Thursday" : setTimeThursday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
+                    case  "Friday" : setTimeFriday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day })  ;break;
+                }
+            }
+
+            //Handling image 
+            if(teacher.image){
+                setFileUrl(teacher.image);
+                setIsSelected(true);
+            }
+
+            console.log("Teacher info :::" , teacher)
+            // setChildren(teacherInfo.data.data);
+            // setProfile(teacherInfo.data );
+            // this will re render the view with new data            
+        } catch (err) {
+            console.log("Error occured in index", err);
+        }
+        return resultToReturn;
+    }
+    useEffect(() => {        
+        fetchTeacherInfo();
+    }, [user]);
     const { experience, qualification, age, salary, introduction, curriculum } = formData;
 
     const [timeMonday, setTimeMonday] = useState({ day: 'Monday', start: "00:00", end: "23:59" });
@@ -134,11 +199,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
             } 
             if(!formData.salary || isNaN(formData.salary) ){
                 throw "Invalid salary provided.";
-            }
-            if(!selectedFile)
-            {
-                throw "Please select a picture";
-            }
+            }            
             return false;
         } catch (err) {
             toast.error(err);
@@ -149,7 +210,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         if (validateForm()) {
             return;
         }
-        let timeSlot = { timeMonday, timeTuesday, timeWednesday , timeThursday , timeFriday  };
+        let timeSlot = { timeMonday, timeTuesday , timeWednesday , timeThursday , timeFriday };
         setTimeSlot(timeSlot);
         let postData = { 'subjects': subject, 'grades': grade, 'target_area': locationValue, 'slots': timeSlot, 'userType': userType }
         const data = new FormData();
@@ -158,8 +219,9 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         data.append('locationValue', JSON.stringify(locationValue) );
         data.append('profilePicture', selectedFile);
         data.append('timeSlot', JSON.stringify(timeSlot) );
-        data.append('userType', userType);
-        data.append('file', selectedFile);
+        data.append('userType', user.user_type);
+        if(selectedFile)
+            data.append('file', selectedFile);
         Object.keys(formData).forEach(k => data.append(k, formData[k]));
         console.log(data, "Gonna update in save changes method ", formData);
         saveBasicProfile(data, history);
@@ -176,16 +238,9 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
 
     return (
         <Fragment>
-            <div className="account-form">
-                <div className="account-head" style={{ backgroundImage: "url(assets/images/background/bg2.jpg)" }}>
-                    <Link to="/"><img src="assets/images/logo.png" width="300" alt="" /></Link>
-                </div>
+            <div className="account-form">                
                 <div className="account-form-inner">
-                    <div className="account-container account-container-custom">
-                        <div className="heading-bx left">
-                            <h2 className="title-head text-center title-head-text-cust">Almost Done ! <br /><span style={{ fontSize: "24px" }}>Please provide filter criteria to help us find the right match.</span></h2>
-
-                        </div>
+                    <div className="account-container account-container-custom">                        
                         <div className="teacher-section">
 
                             <form className="contact-bx">
@@ -325,7 +380,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                             }}
                                                         />
                                                     </div>
-                                                    {locationValue.map(value => (
+                                                    {locationValue && locationValue.map(value => (
                                                         <div className="suggested-items-sty" key={value.placeId}>
                                                             {value.location}
                                                             <span className="close-place">X</span>
@@ -439,7 +494,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
     );
 }
 
-BasicTeacherProfileSetup.propTypes = {
+TeacherProfileUpdate.propTypes = {
     login: PropTypes.func.isRequired,
     clearAlert: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool
@@ -451,4 +506,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { login, clearAlert, saveBasicProfile })(BasicTeacherProfileSetup);
+export default connect(mapStateToProps, { login, clearAlert, saveBasicProfile })(TeacherProfileUpdate);

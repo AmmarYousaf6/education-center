@@ -8,7 +8,6 @@ import { login } from '../../actions/auth';
 import './profile.css';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { personalForm } from './personal';
 
 import {saveBasicProfile} from '../../actions/profile';
 //File hosting api url i.e base url
@@ -67,7 +66,7 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
             };
     
 
-            const updateProfile = await axios.post(`${apiUrl}users/update-profile` , fd , config);
+            const updateProfile = await axios.post(`${apiUrl}users/update-teacher-profile` , fd , config);
             if (!updateProfile.data) {
                 throw "Something went wrong. Please try again";
             }            

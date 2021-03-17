@@ -8,6 +8,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import setAuthToken from '../../utils/setAuthToken';
 import  ProfileDetailsBasicForm  from "./ProfileDetails";
+import TeacherProfileUpdate from "./profileDetailsTeacher";
 import  ManageChildren  from "./children";
 import ChildModal from "./../modals/editChildModal";
 
@@ -43,7 +44,10 @@ const ProfileForm = ({ auth: { user, isAuthenticated, loading } }) => {
             let resultToReturn = [];
             try {
                 const profileDetails = await axios.get(`${apiUrl}users/`, config);
-                console.log("Profile details fetched", profileDetails)
+                if(user && user.user_type == null){
+                    user.user_type = profileDetails.data.user.user_type;
+                }
+                console.log("Profile details fetched", profileDetails , user )
 
                 // setProfile(profileDetails.data );
                 // this will re render the view with new data            
@@ -99,6 +103,12 @@ const ProfileForm = ({ auth: { user, isAuthenticated, loading } }) => {
 
                     </div>
                 </div>
+                {/* Teacher Update  */}
+                {user && user.user_type && user.user_type=='teacher' && (
+                    <TeacherProfileUpdate  />
+                )}
+                {user && user.user_type && user.user_type=='parent' && (
+
                 <div className="content">                    
                     <AnimatePresence exitBeforeEnter>
                         <Switch location={location} key={location.pathname}>
@@ -107,10 +117,10 @@ const ProfileForm = ({ auth: { user, isAuthenticated, loading } }) => {
                             </Route> 
                             <Route exact path="/profile/update/children">
                                 <ManageChildren showModal={showModal} setShowModal={setShowModal} />
-                            </Route> 
+                            </Route>                             
                         </Switch>
                     </AnimatePresence>    
-                </div>
+                </div> )}
             </div>
 
             {/* End of page tabs section     */}

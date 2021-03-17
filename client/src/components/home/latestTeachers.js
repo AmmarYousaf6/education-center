@@ -12,7 +12,8 @@ import toast  , { Toaster } from 'react-hot-toast';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 //Actual component 
 const LatestTeachersComponent = ({setShowModal}) => {
@@ -76,7 +77,7 @@ const LatestTeachersComponent = ({setShowModal}) => {
                             </div>
                             <div className="info-bx text-center">
                                 <h5><a href="{teacher.id}">{teacher.name}</a></h5>
-                                <span>{teacher.qualification}</span>
+                                <span>{teacher.qualification || "\u00A0"}</span>
                             </div>
                             <div className="cours-more-info">
                                 <div className="review">

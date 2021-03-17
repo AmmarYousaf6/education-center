@@ -13,7 +13,11 @@ router.get('/profile/:userId',authMiddleware.validateToken,userController.getPro
 router.get('/activate/:userId',userController.activateUser);
 router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
 router.post('/reset-password',userController.resetPassword);
-router.put('/update-profile', authMiddleware.validateToken,upload.fields([{name: 'image', maxCount: 1}, {name: 'curriculum', maxCount: 1}]),userController.updateBasicProfile);
+router.post('/update-teacher-profile', authMiddleware.validateToken , userController.uploadImageTeacher , userController.updateBasicProfile);
+router.post('/update-profile', authMiddleware.validateToken, userController.uploadImage ,userController.updateProfileDesc);
+router.post('/update-profile-desc', authMiddleware.validateToken ,userController.updateProfileDesc);
+
+router.post('/upload-image', authMiddleware.validateToken, userController.uploadImageOnly);
 
 router.get('/children', authMiddleware.validateToken,userController.getChildren);
 router.post('/children', authMiddleware.validateToken,userController.addChildren);
@@ -23,6 +27,7 @@ router.delete('/children/:childId', authMiddleware.validateToken,userController.
 
 
 router.get('/my-invites',authMiddleware.validateToken,userController.myInvites);
+router.get('/my-pending-invites',authMiddleware.validateToken,userController.myPendingInvites);
 router.get('/invite/:userId',authMiddleware.validateToken,userController.sendInvite);
 router.post('/invite',authMiddleware.validateToken,userController.updateInvite);
 

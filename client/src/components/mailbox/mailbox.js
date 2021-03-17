@@ -6,7 +6,7 @@ import Navbar from '../layout/Navbar';
 import './mailbox.css';
 import './style.css';
 import LatestMessagesComponent from './latestMessages';
-
+import RequestModal from '../modals/requestModal';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
 
@@ -17,6 +17,9 @@ const apiUrl = 'https://hometutorpk.herokuapp.com/';
 
 const MailBox =  () => {
     let [active , setActive] = useState(0);
+    //For modals
+    const [showModal , setShowModal] = useState(false);
+
     //Adding send message functionality
     let [message , setMessage ] = useState('');
     const sendMessage = ()=>{
@@ -65,7 +68,7 @@ const MailBox =  () => {
                                 {/* Start of email menu bar component */}
                                 <div className="email-menu-bar">
                                     <div className="compose-mail">
-                                        <a className="btn btn-block">My Connections</a>
+                                        <a className="btn btn-block text-light" onClick={()=>setShowModal(true)}>View Requests</a>
                                     </div>
                                     {/* Start of Left User Menu List */}
                                     <Sidebar active={active} setActive={setActive} />
@@ -91,6 +94,8 @@ const MailBox =  () => {
                         </div> 
                     </div>
                     {/* <!-- Your Profile Views Chart END--> */}
+
+                    <RequestModal showModal={showModal} setShowModal={setShowModal} />
                 </div>
             </div>
         </main>
