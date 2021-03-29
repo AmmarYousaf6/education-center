@@ -53,4 +53,7 @@ router.get('/uniqueSubjects', userController.uniqueSubject);
 //Search teachers
 router.post('/search' ,userController.search);
 
+//Views count 
+router.post('/views' ,userController.addView);
+
 module.exports = router;

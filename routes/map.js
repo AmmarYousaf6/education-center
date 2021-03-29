@@ -3,6 +3,9 @@ var router = express.Router();
 var mapController = require('../controller/mapController');
 
 /* GET home page. */
-router.get('/search/:search',mapController.search);
+router.get('/detail/:id',mapController.detail);
+
+router.post('/nearby',mapController.fetchNearbyTeachers);
+
 
 module.exports = router;

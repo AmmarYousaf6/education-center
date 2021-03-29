@@ -331,7 +331,7 @@ const getChildren = async (req, res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
     const getChildren = {
-        text : 'SELECT * FROM children WHERE parent_id = $1',
+        text : ' select ch.* , STRING_AGG (cs.name , \',\' ) as subjects from children ch left join child_subjects cs on ch.id=cs.child_id WHERE parent_id = $1 group by ch.id , ch.parent_id , ch.name , ch.qualification , ch.summary , ch.age , ch.status , ch.image  ',
         values : [userInfo.userID]
     }
     console.log(getChildren);
@@ -413,7 +413,7 @@ const addChildren = async (req,res) => {
                 console.log('here')
                 for(let i = 0; i<getSubjects.length; i++){
                     
-                    let text = 'INSERT INTO user_subjects(user_id, name) VALUES($1, $2) RETURNING *'
+                    let text = 'INSERT INTO child_subjects(child_id, name) VALUES($1, $2) RETURNING *'
                     let values = [response.rows[0].id, getSubjects[i].name];
                     try {
                         const query = await database.query(text, values).then((res) => {
@@ -466,14 +466,14 @@ const updateChildren = async (req,res) => {
         if(subjects && eval(subjects).length > 1){
             /* Remove subjects if they exists */
             const removeSubjects = {
-                text : 'DELETE FROM user_subjects WHERE user_id = $1',
+                text : 'DELETE FROM child_subjects WHERE child_id = $1',
                 values : [childId]
             }
             database.query(removeSubjects);
             /* *** */
             let getSubjects = eval(subjects);
             for(let i = 0; i<getSubjects.length; i++){
-                let text = 'INSERT INTO user_subjects(user_id, name) VALUES($1, $2) RETURNING *'
+                let text = 'INSERT INTO child_subjects(child_id, name) VALUES($1, $2) RETURNING *'
                 let values = [childId, getSubjects[i].name];
                 try {
                     const query = await database.query(text, values)
@@ -487,6 +487,7 @@ const updateChildren = async (req,res) => {
             message: 'Child profile has been updated successfully!'
         });
     
+
 }
 const removeChild = async (req, res) => {
     const {childId} = req.params;
@@ -568,6 +569,10 @@ const getProfileById = async (req,res) => {
         text : 'SELECT rating FROM ratings WHERE rated_to = $1',
         values : [userId]
     }
+    const getViewCount = {
+        text : 'SELECT count(*) FROM profile_views WHERE teacher_id = $1',
+        values : [userId]
+    }
     try {
         const response  = await database.query(getUserById);
         
@@ -587,13 +592,15 @@ const getProfileById = async (req,res) => {
                 const slots  = await database.query(getUserSlots);
                 const rating  = await database.query(getAverageRating);
                 const allRatings = await database.query(getAllRatings);
+                const viewsCount = await database.query(getViewCount);
                 // Map data
                 data.rating = rating.rows[0].averagerating;
                 data.subjects = subjects.rows;
                 data.grades = grades.rows;
                 data.areas = areas.rows;
                 data.slots = slots.rows;
-                data.ratings = allRatings.rows;                
+                data.ratings = allRatings.rows; 
+                data.viewsCount = viewsCount.rows;               
             }
             res.status(200).json({
                 status: 1,
@@ -985,17 +992,41 @@ const getLatestTeachers = async (req,res) => {
  
     try {
         const response  = await database.query(getLatest);
-        console.log("Response we have " , response)        
+        // console.log("Response we have " , response.rows)        
         if (!response.rows[0]) {
             return res.status(400).send({users: []});
         }
         else {
             let data = response.rows;
+            data = data.map(resp=>{
+                let uniqueSubjects;
+                let uniqueClasses;
+                if(resp.subjects == null )
+                {
+                    uniqueSubjects = '';
+                }else{
+                    let subjects = resp.subjects.split(",");
+                    uniqueSubjects =  [...new Set(subjects)].join(",");    
+                }
+                if(resp.classes == null )
+                {
+                    uniqueClasses = '';
+                }else{
+                    let classes = resp.classes.split(",");
+                    uniqueClasses =  [...new Set(classes)].join(",");    
+                }
+                delete resp.classes;
+                delete resp.subjects; 
+                return {...resp , subjects: uniqueSubjects , classes : uniqueClasses };
+            })
+
+
             res.status(200).json({
                 users : data
             });
         }
     } catch(error) {
+        console.log("Error , " , error)
         res.status(500).json({
             status: 0,
             message: error
@@ -1192,7 +1223,7 @@ const uniqueSubject = async (req,res) => {
    
     try {
         const response  = await database.query(getUniqueSubject);
-        console.log("Response we have subject" , response)        
+        // console.log("Response we have subject" , response)        
         if (!response.rows[0]) {
             return res.status(400).send({subjects: []});
         }
@@ -1219,7 +1250,7 @@ const streamUpload = (req) => {
     return new Promise((resolve, reject) => {
   
       let stream = cloudinary.v2.uploader.upload_stream(
-        { folder: "store/" , } ,
+        { folder: "edu_tutor/" , } ,
         (error, result) => {
           if (result) {
             resolve(result);
@@ -1228,7 +1259,7 @@ const streamUpload = (req) => {
           }
         }
       );
-    //   console.log("I am streamfier and req file is " , req.files , "body" , req.body)
+      console.log("I am streamfier and req file is " , req.files , "body" , req.body)
       streamifier.createReadStream(req.files.file.data).pipe(stream);
   
     });
@@ -1288,7 +1319,7 @@ const uploadImage = async function(req , res ){
 }
 const uploadImageOnly = async function(req , res ){
     //Configuring cloudinary
-    // console.log("Req body" , req.body , "Request files " , req.files)
+    console.log("Req body" , req.body , "Request files " , req.files)
     try{
       cloudinary.config(cloudinaryConf);
       let result = await streamUpload(req);
@@ -1324,7 +1355,32 @@ const uploadImageOnly = async function(req , res ){
             message: err
         });
     }
-}
+  }
+  const addView = async (req,res) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let {teacher} = req.body;
+    console.log("Add view teacher " , userInfo , teacher );
+    /* insert view */
+    const insertView = {
+        text : 'INSERT INTO public.profile_views(user_id, teacher_id) VALUES ( $1 , $2 )',
+        values : [ userInfo.userID , teacher ]
+    }
+    
+    try {
+        const response  = await database.query(insertView);
+        res.status(200).json({
+                status: 1,
+                message: 'View added.',
+            });            
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 0,
+            message: err
+        });
+    }
+  }
 module.exports = {
     activateUser,
     forgotPassword,
@@ -1353,5 +1409,6 @@ module.exports = {
     search , 
     uploadImage,
     uploadImageOnly ,
-    uploadImageTeacher
+    uploadImageTeacher ,
+    addView
 }
