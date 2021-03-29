@@ -1253,10 +1253,11 @@ const streamUpload = (req) => {
         { folder: "edu_tutor/" , } ,
         (error, result) => {
           if (result) {
+            let temp = result;
             let imgUrl = result.url.split("/");
-            result.url = imgUrl[imgUrl.length-1];
-            
-            resolve(result);
+            temp.url = imgUrl[imgUrl.length-1];
+            console.log("File after upload result object" , temp)
+            resolve(temp);
           } else {
             reject(error);
           }
