@@ -1253,6 +1253,9 @@ const streamUpload = (req) => {
         { folder: "edu_tutor/" , } ,
         (error, result) => {
           if (result) {
+            let imgUrl = result.url.split("/");
+            result.url = imgUrl[imgUrl.length-1];
+            
             resolve(result);
           } else {
             reject(error);
@@ -1319,7 +1322,7 @@ const uploadImage = async function(req , res ){
 }
 const uploadImageOnly = async function(req , res ){
     //Configuring cloudinary
-    console.log("Req body" , req.body , "Request files " , req.files)
+    // console.log("Req body" , req.body , "Request files " , req.files)
     try{
       cloudinary.config(cloudinaryConf);
       let result = await streamUpload(req);
@@ -1335,7 +1338,7 @@ const uploadImageOnly = async function(req , res ){
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
     let {name, age, file, summary} = req.body;
-    console.log(name, age, file, summary);
+    // console.log(name, age, file, summary , req.body , "<<<< Update profile description");
     /* Update user type */
     const updateType = {
         text : 'Update users SET name = $5 ,summary = $1, age = $2, image = $3 WHERE id = $4',
