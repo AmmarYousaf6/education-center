@@ -17,9 +17,9 @@ const signUp = async (req,res,next) => {
                 userId : res.rows[0].id
             };
         }).then((obj) => {
-            res.email = obj.email;
+            res.email = obj.email; 
             res.subject = 'Account activation';
-            res.body = '<a href="http://hometutorpk.herokuapp.com/users/activate/' + obj.userId + '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Activate</a>';
+            res.body = '<a href="'+process.env.HOST_URL+'/users/activate/' + obj.userId + '" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Activate</a>';
             next();
         });
         res.status(200).json({
@@ -127,6 +127,62 @@ const login =  (req,res) => {
     }
 }
 
+const validateToken = async (req,res) => {
+    const token = req.params.token;
+
+    const getUserByToken = {
+        text : 'SELECT id,name,email,status,user_type FROM users WHERE token = $1',
+        values : [token]
+    }
+    try {
+        const result =await database.query(getUserByToken);
+        console.log("Response we have" , result.rows);
+        if(result.rows.length > 0){
+            let user = {
+                id : result.rows[0].id,    name : result.rows[0].name,
+                email : result.rows[0].email,password : result.rows[0].password, 
+                status : result.rows[0].status, user_type : result.rows[0].user_type
+            };
+
+            const jsonToken = sign({
+                username: user.name,
+                userID: user.id,
+                user_type : user.user_type
+            },
+            process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: "24hr"
+            },
+            function(err, token) {
+                if (err) {
+                    return res.status(500).json({
+                        status : 0,
+                        message : err
+                    })
+                } else {
+                    return res.status(200).json({
+                        status : 1,
+                        message : 'login success',
+                        token : token
+                    })
+                }
+            });
+
+        } else {
+                throw "invalid token";
+                return res.status(500).json({
+                    status : 0,
+                    message : "invalid token"
+                })
+        }        
+    } catch (err) {
+        console.log("An error occuren while validating token" , err)
+        return res.status(500).json({
+            status : 0,
+            message : err
+        })
+    }
+    
+}
 const socialLogin =  (req,res) => {
     const {email, password} = req.body;
     if(validateSocialUser(req.body)){
@@ -236,6 +292,7 @@ function getSocialUserByEmail(email, callback){
 }
 module.exports = {
     signUp,
+    validateToken,
     socialSignUp,
     login,
     socialLogin,

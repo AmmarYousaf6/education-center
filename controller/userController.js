@@ -83,14 +83,19 @@ const getUser = async (req,res) => {
 }
 const activateUser = async (req,res,next) => {
     const userId = req.params.userId;
+    //Generating token
+    const rand=()=>Math.random(0).toString(36).substr(2);
+    const token=(length)=>(rand()+rand()+rand()+rand()).substr(0,length);
+    let createdToken = token(20);
+
     const activateUser = {
-        text : 'Update users SET status = 1 WHERE id = $1',
-        values : [userId]
+        text : 'Update users SET status = 1 , token = $1 WHERE id = $2',
+        values : [ createdToken , userId]
     }
     try {
         const query = await database.query(activateUser);
         if(query.rowCount > 0){
-            res.redirect(process.env.HOST_URL)
+            res.redirect(process.env.HOST_FRONT_URL+'/activate/'+createdToken);
         } else {
             res.status(500).json({
                 status: 0,
