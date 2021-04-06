@@ -11,6 +11,8 @@ const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const mapRouter = require('./routes/map');
 const settingRouter = require('./routes/setting');
+const contactRouter = require('./routes/contact');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -39,6 +41,8 @@ app.use('/auth', authRoutes);
 app.use('/chat', chatRoutes);
 app.use('/map', mapRouter );
 app.use('/settings', settingRouter);
+app.use('/contactus', contactRouter);
+
 
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname,'client/build/index.html'));

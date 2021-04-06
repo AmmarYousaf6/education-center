@@ -1114,6 +1114,8 @@ const search = async (req,res) => {
         values.push('%'+req.body.search+'%');
     }
     // sort_fee: 1, 
+    let orderQuery = ` order by u.salary ${req.body.sort_fee == '1' ? 'desc' : 'asc'}`;
+
     //Now for pagination
     //We have number of records
     //We need
@@ -1154,8 +1156,8 @@ const search = async (req,res) => {
             u.curriculum, 
             u.duration_of_commitment ,
             u.experience ,
-            u.salary  ) as data
-            limit $${values.length-1} offset $${values.length}`,
+            u.salary ${orderQuery} ) as data 
+            limit $${values.length-1} offset $${values.length} `,
         values : values
     }
     //Now we need total records from table
@@ -1165,7 +1167,7 @@ const search = async (req,res) => {
  
     try {
         const response  = await database.query(searchQuery);
-        console.log("Response we have after searching :" , response.rows)        
+        // console.log("Response we have after searching :" , response.rows)        
         if (!response.rows[0]) {
             return res.status(400).send({users: []});
         }

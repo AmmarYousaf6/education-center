@@ -2,6 +2,7 @@ const {database} = require('../config/database');
 const {ReasonPhrases,StatusCodes,getReasonPhrase,getStatusCode}=  require('http-status-codes');
 const jwtDecode = require('jwt-decode');
 var metaphone = require('metaphone')
+const axios = require('axios');
 
 const detail = async (req,res) => {
     let id = req.params.id ;
@@ -131,7 +132,38 @@ function isDistanceLessThenKm(lat1, lon1, lat2, lon2 , distance){  // generally 
     return Math.floor(d) < distance;//Distance is less then 2km
     // return d * 1000; // meters
 }
+
+//For geocodes
+async function fetchGeocodes(req , resp){
+    let googleServiceUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json`;
+    let params = {
+        key : 'AIzaSyBZfW5o5woRhFiHnAokXwfoVeZlfKfIvZE',
+        sessiontoken : 1234567890,
+        input : req.params.search
+    };
+    console.log("Fetch method is being called" , params );
+    googleServiceUrl = googleServiceUrl+'?key='+params.key+'&sessiontoken='+params.sessiontoken+'&input='+params.input;
+
+    try {
+        const response = await axios.get(googleServiceUrl);
+        let results= 
+                response.data
+                .predictions
+                .map(addr=>(
+                    {description : addr.description ,place_id : addr.place_id , 
+                        title : addr.structured_formatting.main_text}
+                ));  
+
+
+        return resp.status(200).json({status : 1 , data : results});        
+
+      } catch (error) {
+        console.log(error,"While fetching places error");
+      }
+      return resp.status(200).json({status : 1 , data : data});        
+}
 module.exports = {
     detail,
-    fetchNearbyTeachers
+    fetchNearbyTeachers ,
+    fetchGeocodes
 }
