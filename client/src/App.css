@@ -141,4 +141,7 @@
     padding: 16px 32px;
   }
 
+  .selectBtm{
+    padding-bottom: 7px !important;
+  }
   /* Tabs css */

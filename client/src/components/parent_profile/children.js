@@ -48,7 +48,7 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
         let resultToReturn = [];
         try {
             const childrenDetails = await axios.get(`${apiUrl}users/children`, config);
-            console.log("Gonna set children value ", childrenDetails.data)
+            console.log("Children fetched" , childrenDetails.data.data);
             setChildren(childrenDetails.data.data);
             // setProfile(childrenDetails.data );
             // this will re render the view with new data            
@@ -68,7 +68,14 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
             // history.push("/login");
             return ;
         }
-        setShowModal(child)
+        let obj= JSON.parse(JSON.stringify(child) );
+        if(obj.subjects)
+        {
+            console.log("Subjects if child are " , obj.subjects.split(",") )
+            obj.subjects = obj.subjects.split(",").map((subj , i)=>{ return {name : subj , id :subj } } ) ;
+        }
+        console.log("Gonna set modal with value " , obj);
+        setShowModal(obj)
     }
     const changeHandler = (event) => {
         const uploadFile = async (event) => {
@@ -152,7 +159,7 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                                     <li key={child.id} className="row">
                                                         <span className="new-users-text col-12">
                                                             <span className="new-users-pic">
-                                                                <img src={child.image} alt="" />
+                                                                <img src={mediaBaseUrl+ child.image} alt="" />
                                                             </span>
                                                             <ol className="course-features">
                                                                 <li >
@@ -170,6 +177,10 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                                                 <li>
                                                                     <span className="label">Qualification</span> 
                                                                     <span className="value">{child.qualification}</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span className="label">Subjects</span> 
+                                                                    <span className="value">{child.subjects}</span>
                                                                 </li>
                                                             </ol>
                                                         </span>

@@ -1,26 +1,49 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link  , useHistory} from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
-import MapComponent from './Map';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import MapComponent from './../maps/map';
 //Importing all the modals 
 import Modal from '../modals/hireMeModal';
 
 import LatestTeachersComponent from './latestTeachers';
+import GooglePlacesAutocomplete , { geocodeByAddress, getLatLng }  from "react-google-places-autocomplete";
+
+import { searchMap } from "../../actions/map_actions";
+import { queryData } from "../../actions/search";
 
 // var createReactClass = require('create-react-class');
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/' ;
+// const apiUrl = 'https://hometutorpk.herokuapp.com/' ;
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 
-const Index =  () => {    
+
+const Index =  ({inpSearch , searchMap , queryData}) => {    
     //For modals
     const [showModal , setShowModal] = useState(false);
+    const [locationValue, setLocationValue] = useState([]);
+    //For searching
+    const [searchInp , setSearchInp] = useState('');
+    //For redirects
+    const history = useHistory();
 
+    const handleValueChange = (e) => {
+        setSearchInp(e.target.value) ;
+    }
+    const applySearch = ()=>{
+        //Update redux first
+        queryData(searchInp);
+        history.push('/search');
+    }
     // const [showModal , setShowModal] = useState(true);
     useEffect(()=>{
-        
+        //Fetch all teachers for map
+        searchMap({settings : { all : 'true' }})
     }, []);
      return (
         <Fragment>  
@@ -35,17 +58,17 @@ const Index =  () => {
                                 <h2>FIND YOUR DESIRED TUTOR</h2>
                                 <h5>Own Your Feature Learning New Skills Online</h5>
                                 <form className="cours-search">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="What do you want to learn today?	"/>
+                                    <div className="input-group main-search">
+                                        <input type="text" className="form-control" onChange={handleValueChange} placeholder="What do you want to learn today?"/>
                                         <div className="input-group-append">
-                                            <Link to="/search" className="btn" >Search</Link> 
+                                            <button to="/search" className="btn" onClick={()=>applySearch()}>Search</button> 
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div className="mw800 m-auto">
-                        <h4 className="whiteText" >Your access to tutors verified by Our Scandinavian team of psychologists.</h4>
+                        <h4 className="whiteText" style={{"textAlign":"center"}} >Your access to tutors verified by Our Scandinavian team of psychologists.</h4>
                         </div>
                     </div>
                 </div>
@@ -56,10 +79,10 @@ const Index =  () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-6 m-b30">
-                                <h2 className="title-head ">Why Home Tution?</h2>
+                                <h2 className="title-head " style={{"textAlign":"center"}} >Why Home Tution?</h2>
                                 
                                 <p>Recent studies have shown that engaging home tutors to increase our children’s academic abilities has shown a significant positive impact by augmenting the child’s academic performance. For the sake of individual attention and care home tuition is regarded as more effective than academies.</p>
-                                <a href="#" className="btn button-md margin-fix-btm">Join Now</a>
+                                {/* <a href="#" className="btn button-md margin-fix-btm">Join Now</a> */}
                             </div>
                             <div className="col-lg-6">
                                 <div className="row">
@@ -138,12 +161,12 @@ const Index =  () => {
                     <MapComponent/>
                 </div>
                 {/*  */}
-                <div className="section-area section-sp2">
+                <div className="section-area section-sp2" style={{marginTop:'600px'}}>
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12 heading-bx left">
                                 <h2 className="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
-                                <p className="text-center">What a teacher is, is more important than what he teaches" Karl Menninger and remove it’s body.</p>
+                                <p className="text-center">What a teacher is, is more important than what he teaches" Karl Menninger.</p>
                             </div>
                         </div>
                         <div className="col-lg-12 col-md-8 col-sm-12">
@@ -189,5 +212,14 @@ const Index =  () => {
         </Fragment>
     );
 }
-
-export default Index;
+  Index.propTypes = {
+    inpSearch : PropTypes.string
+  };
+  const mapStateToProps = state => ({
+    inpSearch: state.Map.userInput ,
+  });
+  const mapDispatchToProps = {
+    searchMap ,
+    queryData
+  }
+export default connect(mapStateToProps, mapDispatchToProps  )( Index );

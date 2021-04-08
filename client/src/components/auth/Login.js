@@ -40,7 +40,7 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
         <Fragment>  
             <div className="account-form">
                 <div className="account-head" style={{backgroundImage:"url(assets/images/background/bg2.jpg)"}}>
-                    <Link to="/"><img src="assets/images/logo.png" width="300" alt="" /></Link>
+                    <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" width="300" alt="" /></Link>
                 </div>
                 <div className="account-form-inner">
                     <div className="account-container">

@@ -32,7 +32,8 @@ export const saveBasicProfile = (formData , history) => async dispatch => {
         // });
 
         dispatch(setAlert(res.data.message, 'success'));
-        setTimeout(()=>{history.push('/')} , 3000)
+        window.location.reload();
+        // setTimeout(()=>{history.push('/')} , 3000)
         //dispatch(loadUser());
     } catch (err) {
         console.log(err);

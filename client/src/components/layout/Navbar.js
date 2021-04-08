@@ -1,14 +1,19 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
-
+    const history = useHistory(); 
     const logoutUser = () => {
         logout();
       }
+      useEffect(()=>{
+        if(user && user.user_type == null){
+            history.push('/profile-setup');
+        }
+      },[user]);
 
     return (
         <Fragment>  
@@ -19,7 +24,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                             <div className="topbar-left">
                                 <ul>
                                     <li><a href="#!"><i className="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="#!"><i className="fa fa-envelope-o"></i>support@hometutor.pk</a></li>
+                                    <li><a href="#!"><i className="fa fa-envelope-o"></i>admin@zubnee.com</a></li>
                                 </ul>
                             </div>
                             <div className="topbar-right">
@@ -46,7 +51,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                         <div className="container clearfix">
                             
                             <div className="menu-logo">
-                                <Link to="/"><img src="assets/images/logo.png" alt="" /></Link>
+                                <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt="" /></Link>
                             </div>
                             
                             <button className="navbar-toggler collapsed menuicon justify-content-end" 
@@ -84,42 +89,36 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                             
                             <div className="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
                                 <div className="menu-logo">
-                                    <a href="index.html"><img src="assets/images/logo.png" alt="" /></a>
+                                    <a href="index.html"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt="" /></a>
                                 </div>
                                 <ul className="nav navbar-nav">	
                                     <li className="active"><Link to="/">Home</Link></li>
-                                    <li ><a href="#!">About</a></li>
-                                    
-                                    <li className="add-mega-menu"><a href="#!">How it Works <i className="fa fa-chevron-down"></i></a>
+                                    <li ><Link to="/about">About</Link></li>
+                                    <li className="add-mega-menu">
+                                        {/* <a href="javascript:;"> */}
+                                        <Link to="/how-it-works">
+                                            How it Works
+                                            <i className="fa fa-chevron-down"></i>
+                                        </Link>
+                                        {/* </a> */}
                                         <ul className="sub-menu add-menu">
                                             <li className="add-menu-left">
-                                                <h5 className="menu-adv-title">T&C For Tutors</h5>
                                                 <ul>
-                                                    <li><a href="#">Rules & Regulations </a></li>
-                                                    <li><a href="#">Other</a></li>
-                                                    
-                                                </ul>
-                                            </li>
-                                            <li className="add-menu-left">
-                                                <h5 className="menu-adv-title">T&C For Parents</h5>
-                                                <ul>
-                                                    <li><a href="#">Rules & Regulations </a></li>
-                                                    <li><a href="#">Other</a></li>
-                                                    
+                                                    <li><a href="#">T&C For Tutors</a></li>
+                                                    <li><a href="#">T&C For Parents</a></li>
                                                 </ul>
                                             </li>
                                             <li className="add-menu-right">
-                                                <img src="assets/images/adv/pic1.jpg" alt=""/>
+                                                <img src="assets/images/adv/pic1.jpg" alt="" />
                                             </li>
                                         </ul>
                                     </li>
                                     <li ><Link to="/">Online Tutors</Link></li>
                                     <li ><Link to="/contact">Contact Us</Link></li>
                                     {isAuthenticated && (
-                                        <li><a href="#!">{user.name} <i className="fa fa-chevron-down"></i></a>
+                                        <li><a href="#!">{user && (user.name)} <i className="fa fa-chevron-down"></i></a>
                                         <ul className="sub-menu">
                                             <li><Link to="/profile/update/basic">Profile</Link></li>
-                                            <li><a href="#">Option</a></li>
                                             <li><Link to="/mailbox" >Mailbox</Link></li>
                                         </ul>
                                     </li>

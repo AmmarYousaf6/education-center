@@ -59,7 +59,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                 setName(profileDetails.data.user.name);
                 setAge(profileDetails.data.user.age);
                 setSummary(profileDetails.data.user.summary);
-                setFileUrl(profileDetails.data.user.image);
+                setFileUrl(mediaBaseUrl+ profileDetails.data.user.image);
 
                 // setProfile(profileDetails.data );
                 // this will re render the view with new data            
@@ -98,7 +98,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
             };
             const config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             };
 
@@ -139,7 +139,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                     file: event.target.files[0],
                 };
                 let fd = new FormData();
-                fd.append("file", selectedFile);
+                fd.append("file", event.target.files[0]);
                 const config = {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -182,10 +182,10 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                                                             <div className="form-group row">
                                                                 <div className="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label containerImg">
                                                                     {!isSelected && (
-                                                                        <img src={user ? user.image : 'default.png'} alt="Avatar" className="image" />
+                                                                        <img src={user ? mediaBaseUrl+user.image : 'default.png'} alt="Avatar" className="image" />
                                                                     )}
                                                                     {isSelected && (
-                                                                        <img className="image-upload-ph image" src={fileUrl} />
+                                                                        <img className="image-upload-ph image" src={mediaBaseUrl+fileUrl} />
                                                                     )}
                                                                     <div className="middle">
                                                                         <div className="text" onClick={() => document.getElementById("profile_img").click()}>Change Image</div>

@@ -28,7 +28,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
         <Fragment>  
             <div className="account-form">
                 <div className="account-head" style={{backgroundImage:"url(assets/images/background/bg2.jpg)"}}>
-                    <Link to="/"><img src="assets/images/logo.png" width="300" alt="" /></Link>
+                    <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" width="300" alt="" /></Link>
                 </div>
                 <div className="account-form-inner">
                     <div className="account-container account-container-custom">
@@ -50,7 +50,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                                 </div>
                                                 <div className="pricingtable-title">
                                                     
-                                                    <p>I am a Teacher looking for Teaching opportunities</p>
+                                                    <p>I am a Teacher</p>
                                                 </div>
                                             </div>
                                             
@@ -62,14 +62,14 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                         <div className="pricingtable-inner">
                                             <div className={"pricingtable-main"+(profile.userType == 'parent' ? ' selected' : '')}> 
                                                 <div className="pricingtable-price"> 
-                                                    <span className="pricingtable-bx">Parent</span>
+                                                    <span className="pricingtable-bx" style={{fontSize: "55px" } }>Parent</span>
                                                     <span className="pricingtable-type-cust">
                                                     <img src="assets/images/testimonials/pic2.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
                                                 </div>
                                                 <div className="pricingtable-title">
                                                     
-                                                    <p>I am a parent looking for Teacher for my children</p>
+                                                    <p>I am a parent</p>
                                                 </div>
                                             </div>
                                             

@@ -13,7 +13,8 @@ import ReactStars from 'react-rating-stars-component'
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 
 

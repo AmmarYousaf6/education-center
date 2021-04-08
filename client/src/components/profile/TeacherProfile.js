@@ -23,7 +23,8 @@ import './style.css';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 const pageTransitions = {
     in : {
@@ -216,6 +217,7 @@ const TeacherProfile = () => {
     const location = useLocation();
 
     let [teacherInfo , setTeacherInfo] = useState(0);
+    let [viewCount , setViewCount] = useState(0);
 
     //Method to initiate hiring request 
     const hireMeClicked = (teacher)=>{
@@ -261,7 +263,7 @@ const TeacherProfile = () => {
             try {    
                 const allTeacherInfo = await axios.get(`${apiUrl}users/profile/${match.params.id}` , filters , config);
                 data = allTeacherInfo.data.user;
-                console.log("Data which is fetched" , data , allTeacherInfo);
+                console.log("Data which is fetched for teacher" , data , allTeacherInfo);
 
                 setTeacherInfo(data);
                 // setShowModal(data);
@@ -271,7 +273,34 @@ const TeacherProfile = () => {
             }
             return resultToReturn;
         }
-        fetchAllteacherInfo() }, [] );
+        //Increment view count
+        const addView  = async () => {
+            let data = [];
+            //Making an object of header authorization
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            if (localStorage.token) {
+                setAuthToken(localStorage.token);
+            }
+            let resultToReturn = [];
+            try {    
+                const addViewCount = await axios.post(`${apiUrl}users/views` , {teacher : match.params.id } , config);
+                data = addViewCount.data.user;
+                console.log("Data view count result " , data , addViewCount);
+
+                setViewCount(data);
+                // this will re render the view with new data            
+            } catch (err) {
+                console.log("Error occured in index" , err);        
+            }
+            return resultToReturn;
+        }
+        fetchAllteacherInfo(); 
+        addView();
+    }, [] );
 
     return (
         <Fragment>  
@@ -330,6 +359,7 @@ const TeacherProfile = () => {
                                             <div className="price categories">
                                                 <span>Categories</span>
                                                 <h5 className="text-primary">{teacherInfo ? teacherInfo?.user_type?.toUpperCase() : '' }</h5>
+                                                <h5 className="text-primary">{teacherInfo ? teacherInfo?.viewsCount[0]?.count +" views" : '' }</h5>
                                             </div>
                                         </div>    
                                         <div className="course-info-list scroll-page">

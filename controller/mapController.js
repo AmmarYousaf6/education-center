@@ -1,5 +1,6 @@
 const {database} = require('../config/database');
 const {ReasonPhrases,StatusCodes,getReasonPhrase,getStatusCode}=  require('http-status-codes');
+
 const jwtDecode = require('jwt-decode');
 var metaphone = require('metaphone')
 const axios = require('axios');
@@ -162,8 +163,33 @@ async function fetchGeocodes(req , resp){
       }
       return resp.status(200).json({status : 1 , data : data});        
 }
+
+async function fetchLatLong(req , resp){
+    let googleServiceUrl = `https://maps.googleapis.com/maps/api/place/details/json`;
+    let params = {
+        key : 'AIzaSyBZfW5o5woRhFiHnAokXwfoVeZlfKfIvZE',
+        sessiontoken : 1234567890,
+        place_id : req.params.place_id
+    };
+    console.log("Fetch method is being called" , params );
+    googleServiceUrl = googleServiceUrl+'?key='+params.key+'&sessiontoken='+params.sessiontoken+'&place_id='+params.place_id;
+
+    try {
+        const response = await axios.get(googleServiceUrl);
+        if(response.data){
+            return resp.status(200).json({status : 1 , data : response.data.result.geometry.location});    
+        } else {
+            return resp.status(200).json({status : 0 , data : [], message : 'Cannot find by plae'});       
+        }
+         
+
+      } catch (error) {
+        console.log(error,"While fetching places error");
+      } 
+}
 module.exports = {
     detail,
-    fetchNearbyTeachers ,
-    fetchGeocodes
+    fetchNearbyTeachers,
+    fetchGeocodes,
+    fetchLatLong
 }

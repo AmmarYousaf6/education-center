@@ -2107,7 +2107,6 @@ button.back-to-top {
     margin-top: 0;
     line-height: 32px;
     padding-left: 10px;
-    border-left: 5px solid var(--primary);
 }
 .heading-bx.left p{
 	max-width:500px;

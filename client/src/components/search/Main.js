@@ -155,7 +155,7 @@ const SearchTeachers = ({
                                         <div className="widget courses-search-bx placeani">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control" onChange={(evt)=>classSelected(evt.target.value)}>
+                                                    <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>classSelected(evt.target.value)}>
                                                         <option value="">Select Class</option>
                                                         {grades && grades.map((grade , i )=>(
                                                             <option value={grade.name} key={i}>{grade.name}</option>
@@ -166,7 +166,7 @@ const SearchTeachers = ({
                                             </div>
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control" onChange={(evt)=>subjectSelected(evt.target.value)}>
+                                                    <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>subjectSelected(evt.target.value)}>
                                                         <option value="">Select Subject</option>
                                                         {subjects && subjects.map( (subject  , i)=>(
                                                             <option value={subject.name} key={i}>{subject.name}</option>
@@ -189,7 +189,7 @@ const SearchTeachers = ({
                                             </div>
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control"  onChange={(evt)=>genderSelected(evt.target.value)}>
+                                                    <select name="dzName" required className="form-control selectBtm"  onChange={(evt)=>genderSelected(evt.target.value)}>
                                                         <option value="">Select Gender</option>
                                                         <option value="male">Male</option>
                                                         <option value="female">Female</option>
@@ -199,7 +199,7 @@ const SearchTeachers = ({
                                             </div>
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control"  onChange={(evt)=>feeRangeSelected(evt.target.value)}>
+                                                    <select name="dzName" required className="form-control selectBtm"  onChange={(evt)=>feeRangeSelected(evt.target.value)}>
                                                         <option value="">Select Fee Range</option>
                                                         <option value="0-5000">upto 5K </option>
                                                         <option value="5000-10000">5K to 10K</option>

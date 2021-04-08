@@ -16,7 +16,7 @@ export const icon = new Icon({
 });
 
 //File hosting api url i.e base url
-const mediaBaseUrl = "https://res.cloudinary.com/motors/image/upload/v1613943867/edu_tutor/";
+const mediaBaseUrl = "https://res.cloudinary.com/home-tutor/image/upload/v1613943867/edu_tutor/";
 
 const boundingBox = {
     north: -34.36,

@@ -95,16 +95,18 @@ const LatestTeachersComponent = ({setShowModal}) => {
                             </div>
                             <div>
                                 <table className="table tutor-table">
-                                    <tr>
-                                        <th width="20%">Subjects</th>
-                                        <td width="80%">{teacher.subjects}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Classes</th><td>{teacher.classes}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Experience</th><td>{teacher.experience} years</td>
-                                    </tr>
+                                    <tbody>
+                                        <tr>
+                                            <th width="20%">Subjects</th>
+                                            <td width="80%">{teacher.subjects}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Classes</th><td>{teacher.classes}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Experience</th><td>{teacher.experience} years</td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                                 <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
                                 <button className="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>

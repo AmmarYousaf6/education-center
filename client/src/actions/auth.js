@@ -17,6 +17,8 @@ import {
 
 import setAuthToken from '../utils/setAuthToken';
 
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
+
 export const loadUser = () => async dispatch => {
 
   if (localStorage.token) {
@@ -24,7 +26,7 @@ export const loadUser = () => async dispatch => {
   }
 
   try {
-    const res = await axios.get('/users');
+    const res = await axios.get(apiUrl+'users');
     dispatch({
       type: USER_LOADED,
       payload: res.data.user
@@ -46,7 +48,7 @@ export const login = (email, password) => async dispatch => {
   const body = JSON.stringify({ email, password });
   console.log(body);
   try {
-    const res = await axios.post('/auth/login', body, config);
+    const res = await axios.post(apiUrl+'auth/login', body, config);
     console.log(res);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -75,7 +77,7 @@ export const socialLogin = (email, name, gender, image) => async dispatch => {
   const body = JSON.stringify({ email, name, gender, image });
   console.log(body);
   try {
-    const res = await axios.post('/auth/social-login', body, config);
+    const res = await axios.post(apiUrl+'auth/social-login', body, config);
     console.log(res);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -94,7 +96,7 @@ export const socialLogin = (email, name, gender, image) => async dispatch => {
 };
 
 // Register User
-export const register = (formData) => async dispatch => {
+export const register = (formData, history) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -104,17 +106,19 @@ export const register = (formData) => async dispatch => {
   const body = JSON.stringify(formData);
   console.log(body);
   try {
-    const res = await axios.post('/auth/signup', body, config);
+    const res = await axios.post(apiUrl+'auth/signup', body, config);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data
     });
 
     dispatch(setAlert(res.data.message, 'success'));
-    //dispatch(loadUser());
+    setTimeout(()=>{history.push('/login')} , 3000)
+
+    dispatch(loadUser()); 
   } catch (err) {
     console.log(err);
-    const error = err.response.data;
+    const error = err.response ? err.response.data : {message :'Something went wrong while registering'};
 
     if (error) {
       dispatch(setAlert(error.message, 'danger'));
@@ -138,7 +142,7 @@ export const forgetPassword = (formData) => async dispatch => {
   const body = JSON.stringify(formData );
   console.log(body);
   try {
-    const res = await axios.post('/users/forgot-password', body, config);
+    const res = await axios.post(apiUrl+'users/forgot-password', body, config);
     console.log(res);
     dispatch({
       type: FORGET_PASSWORD_SUCCESS,
@@ -173,7 +177,7 @@ export const resetPassword = (formData) => async dispatch => {
   const body = JSON.stringify(formData );
   console.log(body);
   try {
-    const res = await axios.post('/users/reset-password', body, config);
+    const res = await axios.post(apiUrl+'users/reset-password', body, config);
     dispatch({
       type: RESET_PASSWORD_SUCCESS,
       payload: res.data

@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState , useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect , useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import Logout from './Logout';
 import GoogleSignup from './GoogleSignup';
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import Alert from './../layout/Alert';
 
 const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
-
+    const history =useHistory();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -20,7 +20,9 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
         gender: '',
         type: 'manual'
     });
-
+    useEffect(()=>{
+        console.log("Value changed for set Alert" , setAlert);
+    } , []);
     const {
         name, email, password, confirmPassword, gender
     } = formData;
@@ -35,7 +37,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
         if (password !== confirmPassword) {
           setAlert('Password and Confirm Password fields does not match', 'danger');
         } else {
-          register(formData);
+          register(formData , history);
         }
     };
 
@@ -54,7 +56,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
         <Fragment>  
             <div className="account-form">
                 <div className="account-head" style={{backgroundImage:"url(assets/images/background/bg2.jpg)"}}>
-                <Link to="/"><img src="assets/images/logo.png"  width="300" alt="" /></Link>
+                <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg"  width="300" alt="" /></Link>
                 </div>
                 <div className="account-form-inner">
                     <div className="account-container">
@@ -134,7 +136,8 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                     <div className="form-group">
                                         <div className="input-group"> 
                                             <select 
-                                                className="form-control" 
+                                                name="gender"
+                                                className="form-control selectBtm" 
                                                 placeholder="Select Gender"
                                                 value={gender}
                                                 onChange={e => onChange(e)}

@@ -23,7 +23,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
     const [subject, setSubject] = useState([]);
     const [grade, setGrade] = useState([]);
     const [locationValue, setLocationValue] = useState([]);
-
+    const [beingSaved, setBeingSaved] = useState(false);
     const [formData, setFormData] = useState({
         experience: '',
         qualification: '',
@@ -32,7 +32,6 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         introduction: '',
         curriculum: ''
     });
-
     const { experience, qualification, age, salary, introduction, curriculum } = formData;
 
     const [timeMonday, setTimeMonday] = useState({ day: 'Monday', start: "00:00", end: "23:59" });
@@ -100,21 +99,16 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         } else if (day == 'Friday') {
             setTimeFriday({ start: time.start, end: time.end, day: day });
         }
-        console.log(day);
         //setTimeSlot([{day: 'Monday', start: time.start, end: time.end}, ...timeSlot]);
     }
 
     const handleValueChange = (e) => {
         let placeId = e.value.place_id;
-        console.log("Location changed " , e.value );
         let location = e.label;
-        console.log(placeId);
         geocodeByAddress(e.label )
         .then(results => getLatLng(results[0]))
         .then(({ lat, lng }) =>{
             setLocationValue([{ location, lat ,lng }, ...locationValue]);
-            console.log('Successfully got latitude and longitude', locationValue );
-
         });
         // setLocationValue([{ location, placeId }, ...locationValue]);
 
@@ -141,11 +135,13 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
             }
             return false;
         } catch (err) {
+            setBeingSaved(false);
             toast.error(err);
             return true;
         }
     }
     const saveChanges = () => {
+        setBeingSaved(true);
         if (validateForm()) {
             return;
         }
@@ -178,7 +174,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         <Fragment>
             <div className="account-form">
                 <div className="account-head" style={{ backgroundImage: "url(assets/images/background/bg2.jpg)" }}>
-                    <Link to="/"><img src="assets/images/logo.png" width="300" alt="" /></Link>
+                    <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" width="300" alt="" /></Link>
                 </div>
                 <div className="account-form-inner">
                     <div className="account-container account-container-custom">
@@ -413,7 +409,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                     {isSelected && (
                                                         <img className="image-upload-ph" src={fileUrl} />
                                                     )}
-                                                    <label for="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
+                                                    <label htmlFor="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
                                                         <i className="fa fa-cloud-upload"></i> Upload Your Picture
                                                 </label>
 
@@ -421,9 +417,13 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                         </div>
                                         <div className="col-lg-12 text-right">
-                                            <button type="reset" className="btn" onClick={saveChanges}>Save Changes</button>
+                                            <button type="reset" className="btn" onClick={saveChanges}>
+                                            {!beingSaved && ('Save Changes')}
+                                                {beingSaved && (
+                                                    <img src="assets/images/loader.gif" className="ratingLoader" />
+                                                )}
+                                                </button>
                                         </div>
-
                                     </div>
                                 </div>
                             </form>

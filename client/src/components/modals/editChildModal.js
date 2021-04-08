@@ -4,6 +4,7 @@ import { motion , AnimatePresence } from 'framer-motion';
 
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
+import { Multiselect } from 'multiselect-react-dropdown';
 
 
 //For toast notifications
@@ -34,7 +35,7 @@ const modalTransitions = {
 const ChildModal = ({showModal , setShowModal}) =>{
     const [name , setName ]=useState(null);
     const [age  , setAge ]=useState(null);
-    const [qualification , setQualification ]=useState(null);
+    const [qualification , setQualification ]=useState('');
     const [summary , setSummary]=useState(null);
     
     const [beingSaved , setBeingSaved] = useState(null);
@@ -44,11 +45,32 @@ const ChildModal = ({showModal , setShowModal}) =>{
     const [isSelected, setIsSelected] = useState(false);
 
     const [error_message  , setErrorMessage ] = useState(null);
+    const [subject, setSubject] = useState([]);
+    const [grade, setGrade] = useState([]);
 
     useEffect( () => {
         //Fetch if user has already requested data showModal
         console.log("Show modal details" , showModal ,process.env , "Environment")
-    } , [] );
+        if(showModal)
+        {
+            if(showModal.qualification){
+                let gradeSelected = gradeList.filter(grade=>(grade.name.toLowerCase() == showModal.qualification.toLowerCase()) );
+                let id = '';
+                if(gradeList)
+                  id = gradeList[0].id;
+                if(gradeSelected && gradeSelected.length){
+                    console.log("Grade filtered" , gradeSelected);
+                    id = gradeSelected[0].id;
+                }
+                setQualification (id);
+            }else{
+                if(gradeList){
+                    let id = gradeList[0].id;
+                    setQualification (id);
+                }
+            }
+        }
+    } , [showModal] );
     const resetForm =() => {
         setAge(null);
         setName(null);
@@ -58,7 +80,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
         setSelectedFile(null);
         setIsSelected(null);
     }
-    //Making a funtion to initiate hiring request
+    //Making a funtion to initiate send data request
     const update  = async () => {
         setBeingSaved(true);
 
@@ -114,7 +136,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
             let childInfo = { 
                 name : name , summary : summary  , 
                 qualification : qualification , image : fileUrl  , 
-                age : age  };
+                age : age , subjects : subject };
             console.log("Gonna post value for children" , childInfo );
             let childAjax;
             if(typeof showModal == 'object'){
@@ -154,6 +176,29 @@ const ChildModal = ({showModal , setShowModal}) =>{
         }
         return resultToReturn;
     }
+    const subjectList = [
+        { name: "English", id: "english" },
+        { name: "Urdu", id: "urdu" },
+        { name: "Islamiat", id: "islamiat" },
+        { name: "Maths", id: "maths" },
+        { name: "Science", id: "science" },
+        { name: "Social Studies", id: "socialStudies" },
+        { name: "Computer Science", id: "computerScience" },
+        { name: "Physics", id: "physics" },
+        { name: "Chemistry", id: "chemistry" },
+        { name: "Bio", id: "bio" },
+    ];
+
+    const gradeList = [
+        { name: "Primary", id: "primary" },
+        { name: "O Levels", id: "oLevels" },
+        { name: "A Levels", id: "aLevels" },
+        { name: "Secondary", id: "secondary" },
+        { name: "Matric", id: "matric" },
+        { name: "FSC", id: "fsc" },
+
+    ];
+
     const changeHandler = (event) => {
         const uploadFile = async (event) => {
             setSelectedFile(event.target.files[0]);
@@ -192,6 +237,13 @@ const ChildModal = ({showModal , setShowModal}) =>{
         };
         uploadFile(event);
     }
+    
+    const styleObject = {
+        chips: { // To change css chips(Selected options)
+            background: "#398b67"
+        },
+
+    }
     return (
         <AnimatePresence exitBeforeEnter>
             {
@@ -211,10 +263,10 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                     <div className="text-center"> 
                                         <div className="containerImg">
                                             {!isSelected && (
-                                                <img src={ (typeof showModal == 'object') ? (showModal.image) : (mediaBaseUrl+'default.png')} alt="Avatar" className="image rounded-circle"  style={{maxWidth :"unset" , height: "100px",  width:"100px"}}  />
+                                                <img src={ (typeof showModal == 'object') ? (mediaBaseUrl+showModal.image) : (mediaBaseUrl+'default.png')} alt="Avatar" className="image rounded-circle"  style={{maxWidth :"unset" , height: "100px",  width:"100px"}}  />
                                             )}
                                             {isSelected && (
-                                                <img className="image-upload-ph image" src={fileUrl} style={{maxWidth :"unset" , height: "100px",  width:"100px"}} />
+                                                <img className="image-upload-ph image" src={mediaBaseUrl+fileUrl} style={{maxWidth :"unset" , height: "100px",  width:"100px"}} />
                                             )}
                                             <div className="middle">
                                                 <div className="text" onClick={() => document.getElementById("profile_img").click()}>Change Image</div>
@@ -224,39 +276,63 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                         <h3 className="mt-2">{typeof showModal == 'object' ? ('Edit '+showModal.name) : ('Add child')}</h3> 
                                         {/* <start of body */}
                                         <div className="row placeani">
-								<div className="col-lg-12 ">
-									<div className="form-group">
-										<div className="input-group">
-											<input name="name" type="text" required="" className="form-control valid-character" placeholder="Name" onChange={(event)=>setName(event.target.value)} defaultValue={showModal && showModal.name}/>
-										</div>
-									</div>
-								</div>
-								<div className="col-lg-6">
-									<div className="form-group">
-										<div className="input-group"> 
-											<input name="qualification" type="text" className="form-control" required="" onChange={(event)=>setQualification(event.target.value)} placeholder="qualification" defaultValue={showModal && showModal.qualification} />
-										</div>
-									</div>
-								</div>
-								<div className="col-lg-6">
-									<div className="form-group">
-										<div className="input-group">
-											<input name="age" type="text" required="" className="form-control int-value" onChange={(event)=>setAge(event.target.value)} placeholder="age" defaultValue={showModal && showModal.age} />
-										</div>
-									</div>
-								</div>
-								<div className="col-lg-12">
-									<div className="form-group">
-										<div className="input-group">
-											<textarea name="summary" rows="1" className="form-control" required="" onChange={(event)=>setSummary(event.target.value)} placeholder="summary" defaultValue={showModal && showModal.summary}></textarea>
-										</div>
-									</div>
-								</div>
+                                        <div className="col-lg-6 ">
+                                            <div className="form-group">
+                                                <div className="input-group">
+                                                    <input name="name" type="text" required="" className="form-control valid-character" placeholder="Name" onChange={(event)=>setName(event.target.value)} defaultValue={showModal && showModal.name}/>
+                                                </div>
+                                            </div>
+                                        </div>                                
+                                        <div className="col-lg-6">
+                                            <div className="form-group">
+                                                <div className="input-group">
+                                                    <input name="age" type="text" required="" className="form-control int-value" onChange={(event)=>setAge(event.target.value)} placeholder="age" defaultValue={showModal && showModal.age} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-lg-12">
+                                                <div className="form-group">
+                                                    <div className="input-group">
+                                                        <select
+                                                            className="form-control"
+                                                            value={showModal && (qualification || '')} // Preselected value to persist in dropdown
+                                                            onChange={(event)=>setQualification(event.target.value)}
+                                                        >      
+                                                          {gradeList && (gradeList.map(grade=>(<option value={grade.id} key={grade.id}>{grade.name}</option>)) )}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                        </div>
+
+
+                                        <div className="col-lg-12">
+                                            <div className="form-group">
+                                                <div className="input-group">
+                                                    <textarea name="summary" rows="1" style={{height:'58px'}} className="form-control" required="" onChange={(event)=>setSummary(event.target.value)} placeholder="summary" defaultValue={showModal && showModal.summary}></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-12">
+                                                <div className="form-group">
+                                                    <div className="input-group">
+                                                        <Multiselect
+                                                            className="form-control"
+                                                            styleObject={styleObject}
+                                                            selectedValues={showModal && (showModal.subjects)}
+                                                            options={subjectList} // Options to display in the dropdown
+                                                            onSelect={setSubject} // Function will trigger on select event
+                                                            onRemove={setSubject} // Function will trigger on remove event
+                                                            displayValue="name" // Property name to display in the dropdown options
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
 							</div>                                        
                             {/* End of body */}
                                         <div>
                                             <button className="btn mr-4  " onClick={()=>update()}>
-                                                Yes 
+                                                Save
                                                 {
                                                     beingSaved && ( <img src="assets/images/loader.gif" className="ratingLoader" />)
                                                 }

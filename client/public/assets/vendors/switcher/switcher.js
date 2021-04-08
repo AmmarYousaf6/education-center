@@ -58,7 +58,7 @@ $(function(){
     // Color changer
     jQuery(".skin-1").on('click',function(){
         jQuery(".skin").attr("href", "assets/css/color/color-1.css");
-		jQuery(".menu-logo img").attr("src", "assets/images/logo.png");
+		jQuery(".menu-logo img").attr("src", "https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg");
 		jQuery(".header-transparent .menu-logo img").attr("src", "assets/images/logo-white.png");
 		jQuery(".pt-logo img").attr("src", "assets/images/logo-white.png");
         return false;

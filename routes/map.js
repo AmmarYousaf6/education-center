@@ -9,5 +9,7 @@ router.post('/nearby',mapController.fetchNearbyTeachers);
 
 //For google maps
 router.get('/places/:search',mapController.fetchGeocodes);
+router.get('/latlong/:place_id',mapController.fetchLatLong);
+
 
 module.exports = router;

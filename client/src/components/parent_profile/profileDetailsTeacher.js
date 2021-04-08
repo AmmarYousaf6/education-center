@@ -24,6 +24,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
     const history = useHistory();
     const [subject, setSubject] = useState([]);
     const [grade, setGrade] = useState([]);
+    const [beingSaved, setBeingSaved] = useState(false);
     const [locationValue, setLocationValue] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -52,12 +53,12 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
             let teacher = teacherInfo.data.user;
             //Setting simple fields 
             setFormData({
-                experience : teacher.experience ,
-                qualification : teacher.qualification ,
-                age : teacher.age ,
-                salary : teacher.salary ,
-                introduction : teacher.video_introduction,
-                curriculum : teacher.curriculum
+                experience : teacher.experience || '',
+                qualification : teacher.qualification || '',
+                age : teacher.age  || 0,
+                salary : teacher.salary || 0,
+                introduction : teacher.video_introduction || '',
+                curriculum : teacher.curriculum || ''
             });
             //Handling grades
             setGrade(teacher.grades.map(grade=>({name : capitalize(grade.name) , id : grade.name})));
@@ -82,7 +83,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
 
             //Handling image 
             if(teacher.image){
-                setFileUrl(teacher.image);
+                setFileUrl(mediaBaseUrl+ teacher.image);
                 setIsSelected(true);
             }
 
@@ -207,6 +208,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
         }
     }
     const saveChanges = () => {
+        setBeingSaved(true);
         if (validateForm()) {
             return;
         }
@@ -257,7 +259,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                                             className="form-control"
                                                             required=""
                                                             autoComplete="one-time-code"
-                                                            value={experience}
+                                                            value={experience || ""}
                                                             onChange={e => onChange(e)}
                                                         />
                                                     </div>
@@ -380,8 +382,8 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                                             }}
                                                         />
                                                     </div>
-                                                    {locationValue && locationValue.map(value => (
-                                                        <div className="suggested-items-sty" key={value.placeId}>
+                                                    {locationValue && locationValue.map((value,i) => (
+                                                        <div className="suggested-items-sty" key={i}>
                                                             {value.location}
                                                             <span className="close-place">X</span>
                                                         </div>
@@ -468,7 +470,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                                     {isSelected && (
                                                         <img className="image-upload-ph" src={fileUrl} />
                                                     )}
-                                                    <label for="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
+                                                    <label htmlFor="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
                                                         <i className="fa fa-cloud-upload"></i> Upload Your Picture
                                                 </label>
 
@@ -476,7 +478,12 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                             </div>
                                         </div>
                                         <div className="col-lg-12 text-right">
-                                            <button type="reset" className="btn" onClick={saveChanges}>Save Changes</button>
+                                        <button type="reset" className="btn" onClick={saveChanges}>
+                                            {!beingSaved && ('Save Changes')}
+                                                {beingSaved && (
+                                                    <img src="assets/images/loader.gif" className="ratingLoader" />
+                                                )}
+                                                </button>
                                         </div>
 
                                     </div>

@@ -1,9 +1,105 @@
-import React, { Fragment } from 'react';
+import React, { Fragment , useEffect , useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
+import toast, { Toaster } from 'react-hot-toast';
+import Alert from './../layout/Alert';
+import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 const Contact = () => {
+    const [beingSent, setBeingSent] = useState(false);
+    const [storeInfo , setStoreInfo] =  useState({});
+    const initialState = {
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+    };
+    const [formData, setFormData] = useState(initialState);
+
+    const {
+        name, email, phone, subject, message
+    } = formData;
+    const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const validateForm = () => {
+        try {
+            if (!formData.name ) {
+                throw "Invalid name provided.";
+            }
+            if(!formData.email ){
+                throw "Invalid email provided.";
+            }
+            if(!formData.phone ){
+                throw "Invalid phone provided.";
+            } 
+            if(!formData.subject){
+                throw "Invalid subject provided.";
+            } 
+            if(!formData.message){
+                throw "Invalid message provided.";
+            }
+            return false;
+        } catch (err) {
+            toast.error(err);
+            setBeingSent(false);
+            return true;
+        }
+    }
+    useEffect(()=>{
+        // we define our url and parameters to be sent along
+        let url = apiUrl+'settings/';
+            
+        // we use the fetch API to call HERE Maps with our parameters
+        return fetch(url )
+            // when a response is returned we extract the json data
+            .then(response => response.json())
+            // and this data we dispatch for processing in locations of teachers
+            .then(data =>{
+                console.log("We have settings details " , data.data);
+                let objSerialized = [];
+                data.data.forEach(d=>{
+                    objSerialized[d.key]= d.value
+                })
+                setStoreInfo(objSerialized);
+            })
+            .catch(error => console.error(error))
+
+    }, []);
+    const sendMessage = async ()=>{
+        setBeingSent(true);
+        //Validate fields 
+        if (validateForm()) {
+            return;
+        }
+
+        //Send message
+        console.log("Sending message" , formData);
+        const config = {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          };
+        
+        const body = JSON.stringify(formData);
+        try {
+            const res = await axios.post(apiUrl+'contactus', body, config);
+            toast.success("Message sent");
+
+            console.log("Response of conteact us" , res);
+            //Clear the form
+            setFormData(initialState);
+        } catch (err) {
+            toast.error("Something went wrong while sending message");
+            const error = err.response.data;
+        }
+        
+        setBeingSent(false);        
+    }   
+
     return (
         <Fragment> 
             <Navbar />
@@ -34,13 +130,12 @@ const Contact = () => {
                             <div className="col-lg-5 col-md-5 m-b30">
                                 <div className="bg-primary text-white contact-info-bx">
                                     <h2 className="m-b10 title-head text-center">Contact <span>Information</span></h2>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                                     <div className="widget widget_getintuch">	
                                         <ul>
-                                            <li><i className="ti-location-pin"></i>75k Newcastle St. Ponte Vedra Beach, FL 309382 New York</li>
-                                            <li><i className="ti-mobile"></i>0800-123456 (24/7 Support Line)</li>
-                                            <li><i className="ti-mobile"></i>0800-8372984</li>
-                                            <li><i className="ti-email"></i>inquiries.hometutor@gmail.com</li>
+                                            <li><i className="ti-location-pin"></i>{storeInfo && (storeInfo.address)}</li>
+                                            <li><i className="ti-mobile"></i>{storeInfo && (storeInfo.phone)}</li>
+                                            <li><i className="ti-mobile"></i>{storeInfo && (storeInfo.landline)}</li>
+                                            <li><i className="ti-email"></i>{storeInfo && (storeInfo.email)}</li>
                                         </ul>
                                     </div>
                                     
@@ -51,60 +146,60 @@ const Contact = () => {
                                 <div className="ajax-message"></div>
                                     <div className="heading-bx left">
                                         <h2 className="title-head text-center title-head-cust">Get In <span>Touch</span></h2>
-                                        <p>It is a long established fact that a reader will be distracted by the readable content of a page</p>
+                                        <p>{storeInfo  && (storeInfo.contact_sub_heading)}</p>
                                     </div>
                                     <div className="row placeani">
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <label>Your Name</label>
-                                                    <input name="name" type="text" required className="form-control valid-character" />
+                                                    <input name="name" type="text" required className="form-control valid-character" placeholder="Name" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <label>Your Email Address</label>
-                                                    <input name="email" type="email" className="form-control" required  />
+                                                    <input name="email" type="email" className="form-control" placeholder="Email" required onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <label>Your Phone</label>
-                                                    <input name="phone" type="text" required className="form-control int-value" />
+                                                    <input name="phone" type="text" required className="form-control int-value" placeholder="Phone" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <label>Subject</label>
-                                                    <input name="subject" type="text" required className="form-control" />
+                                                    <input name="subject" type="text" required className="form-control" placeholder="Subject" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <label>Type Message</label>
-                                                    <textarea name="message" rows="4" className="form-control" required ></textarea>
+                                                    <textarea name="message" rows="4" className="form-control" placeholder="message" required onChange={e => onChange(e)} ></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div className="col-lg-12 text-center">
-                                            <button name="submit" type="submit" value="Submit" className="btn button-md"> Send Message</button>
+                                            <button name="submit" type="button" className="btn button-md" onClick={()=>sendMessage()}> 
+                                                {!beingSent && ('Send Message')}
+                                                {beingSent && (
+                                                    <img src="assets/images/loader.gif" className="ratingLoader" />
+                                                )}
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                            <Alert />
+                            <Toaster />
+
                         </div>
-                        <div className="col-lg-12 col-md-12 p-lr0 d-flex">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3448.1298878182047!2d-81.38369578541523!3d30.204840081824198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e437ac927a996b%3A0x799695b1a2b970ab!2sNona+Blue+Modern+Tavern!5e0!3m2!1sen!2sin!4v1548177305546" className="align-self-stretch d-flex" style={{width:"100%", width:"100%", minHeight: "300px"}} allowfullscreen></iframe>
-					</div>
                     </div>
                     
                 </div>

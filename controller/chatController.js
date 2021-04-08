@@ -42,15 +42,9 @@ const getLatestMessages = async (req,res,next) => {
     //Edited by Malik Ahsan Aftab
     //I cant know the purpose of if and else for user types
     userId = userInfo.userID;
-
-    // if(userInfo.user_type == 'parent'){
-    //     userId = userInfo.userID;
-    // } else {
-    //     userId = req.params.userId;
-    // }
     const getMessages = {
         //Query changed by malik ahsan aftab
-        text : 'SELECT chat_messages.*,name,image FROM user_connections JOIN chat_messages ON chat_messages.chat_session_id = user_connections.id JOIN users ON users.id = chat_messages.sender_id  WHERE user_connections.user_id = $1 AND sender_id != $1 OR 1=1ORDER BY id DESC LIMIT 3 ',
+        text : 'SELECT chat_messages.*,name,image FROM user_connections JOIN chat_messages ON chat_messages.chat_session_id = user_connections.id JOIN users ON users.id = chat_messages.sender_id  WHERE user_connections.user_id = $1 AND sender_id != $1 ORDER BY id DESC LIMIT 3 ',
         values : [userId]
     }
     try {

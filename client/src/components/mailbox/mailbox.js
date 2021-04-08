@@ -13,7 +13,8 @@ import axios from 'axios';
 import  Sidebar  from './sidebar';
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 const MailBox =  () => {
     let [active , setActive] = useState(0);

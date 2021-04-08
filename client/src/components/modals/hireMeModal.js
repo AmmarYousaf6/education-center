@@ -11,7 +11,8 @@ import toast  , { Toaster } from 'react-hot-toast';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 const backdrop ={
     visible : { opacity : 1 },
@@ -85,6 +86,7 @@ const Modal = ({showModal , setShowModal}) =>{
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
+                        key="4"
                     >
                         <motion.div className="modal-body"
                             variants={modalTransitions}

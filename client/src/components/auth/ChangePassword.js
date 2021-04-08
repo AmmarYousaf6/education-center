@@ -32,7 +32,7 @@ const ChangePassword = ({ login, clearAlert, isAuthenticated, match, setAlert, r
         <Fragment>
             <div className="account-form">
                 <div className="account-head" style={{backgroundImage:"url(assets/images/background/bg2.jpg)"}}>
-                    <Link to="/"><img src="assets/images/logo.png" alt=""  width="300" /></Link>
+                    <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt=""  width="300" /></Link>
                 </div>
                 <div className="account-form-inner">
                     <div className="account-container">
