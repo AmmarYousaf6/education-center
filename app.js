@@ -4,6 +4,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 const fileupload = require('express-fileupload');
+const session = require('express-session');
+const passport = require('passport');
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -35,6 +38,33 @@ if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, 'public')));
 }
 
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'SECRET'
+  }));
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
+  passport.serializeUser(function (user, cb) {
+    cb(null, user);
+  });
+  
+  passport.deserializeUser(function (obj, cb) {
+    cb(null, obj);
+  });
+
+  passport.use(new LinkedInStrategy({
+    clientID: process.env.LINKEDIN_CLIENT_ID,
+    clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+    callbackURL: process.env.LINKEDIN_CALLBACK_URL,
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  }, function (token, tokenSecret, profile, done) {
+    return done(null, profile);
+  }
+  ));
+  
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRoutes);
