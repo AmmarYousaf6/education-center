@@ -223,11 +223,16 @@ const socialLogin =  (req,res) => {
                                 message : err
                             })
                         } else {
-                            return res.status(200).json({
-                                status : 1,
-                                message : 'login success',
-                                token : token
-                            })
+                            if(req.body.method == 'linkedin'){
+                                res.redirect(process.env.HOST_FRONT_URL+'/success-page/token='+token);
+                            } else {
+                                return res.status(200).json({
+                                    status : 1,
+                                    message : 'login success',
+                                    token : token
+                                })
+                            }
+                            
                         }
                     });
             } else {
