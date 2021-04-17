@@ -224,7 +224,7 @@ const socialLogin =  (req,res) => {
                             })
                         } else {
                             if(req.body.method == 'linkedin'){
-                                res.redirect(process.env.HOST_FRONT_URL+'/success-page/token='+token);
+                                res.redirect(process.env.HOST_FRONT_URL+'/success-page/'+token);
                             } else {
                                 return res.status(200).json({
                                     status : 1,
