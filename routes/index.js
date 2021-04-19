@@ -16,11 +16,6 @@ router.get('/profile', isLoggedIn,authMiddleware.validateSocialSignup,authMiddle
     }
 
     res.redirect(process.env.HOST_FRONT_URL+'/email='+req.user.emails[0].value+'&name='+req.user.name.givenName+' '+req.user.name.familyName);
-  //   res.status(200).json({
-  //     status : 1,
-  //     data : userResponse,
-  //     message : 'success'
-  // });
 });
 
 router.get('/auth/linkedin', passport.authenticate('linkedin', {

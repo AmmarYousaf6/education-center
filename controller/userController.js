@@ -807,8 +807,8 @@ const myPendingInvites = async (req,res,next) => {
         else {
             res.status(200).json({
                 status: 1,
-                message: 'Connection requests',
-                data : response.rows
+                message: userInfo.user_type == 'teacher' ? 'Connection requests' : 'No data found',
+                data : userInfo.user_type == 'teacher' ? response.rows : []
             });
         }
     } catch (err) {
