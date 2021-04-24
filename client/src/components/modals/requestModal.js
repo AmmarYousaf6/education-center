@@ -219,10 +219,11 @@ const RequestModal = ({ showModal, setShowModal }) => {
                                     <div className="card mt-5 pb-5" style={{width: '500px'}}>
                                         <div className="d-flex flex-row justify-content-between p-3 adiv "> 
                                             <i className="fas "></i> 
-                                            <span className="pb-3">Resquest List</span> 
+                                            <span className="pb-3">Requests List</span> 
                                             <i className="closeModal" onClick={()=>setShowModal(false)}>x</i> 
                                         </div>
                                         <div className="mt-2 p-4 text-center">
+                                        {inviteLst && (
                                             <table>
                                                 <thead>
                                                     <tr>
@@ -234,22 +235,25 @@ const RequestModal = ({ showModal, setShowModal }) => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {inviteLst && inviteLst.map((inv , k)=>(
+                                                    {inviteLst.map((inv , k)=>(
                                                     <tr key={inv.session_id}>
                                                         <td>{k+1}</td>
                                                         <td>{inv.name}</td>
                                                         <td>{inv.gender}</td>
-                                                        <td>{inv.summary}</td>
+                                                        <td style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak : 'break-all'}}>{inv.summary}</td>
                                                         <td>
                                                         <button className="btn btn-xs " style={{padding: "5px"}} onClick={()=>updateRequest(inv.session_id, 'accepted')}>Accept</button>
-                                                        <button className="btn btn-xs btn-danger" style={{padding: "5px"}} onClick={()=>updateRequest(inv.session_id, 'reject')}>Reject</button>
+                                                        <button className="btn btn-xs btn-danger m-1" style={{padding: "5px"}} onClick={()=>updateRequest(inv.session_id, 'reject')}>Reject</button>
                                                         </td>
                                                     </tr>
                                                     ))
                                                     }
+                                                    
 
                                                 </tbody>
                                             </table>
+                                        )}
+                                        {typeof inviteLst == 'object' && inviteLst.length == 0 && (<span>No requests found</span>)}
                                             { error_message && 
                                                 (<div className="validation-errors">{error_message}</div>)
                                             }

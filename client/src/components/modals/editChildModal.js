@@ -176,17 +176,24 @@ const ChildModal = ({showModal , setShowModal}) =>{
         }
         return resultToReturn;
     }
-    const subjectList = [
+    const subjectList = [        
         { name: "English", id: "english" },
-        { name: "Urdu", id: "urdu" },
-        { name: "Islamiat", id: "islamiat" },
-        { name: "Maths", id: "maths" },
-        { name: "Science", id: "science" },
-        { name: "Social Studies", id: "socialStudies" },
-        { name: "Computer Science", id: "computerScience" },
-        { name: "Physics", id: "physics" },
-        { name: "Chemistry", id: "chemistry" },
-        { name: "Bio", id: "bio" },
+    { name: "Urdu", id: "urdu" },
+    { name: "Islamiat", id: "islamiat" },
+    { name: "Maths", id: "maths" },
+    { name: "Science", id: "science" },
+    { name: "Social Studies", id: "socialStudies" },
+    { name: "Computer Science", id: "computerScience" },
+    { name: "Physics", id: "physics" },
+    { name: "Chemistry", id: "chemistry" },
+    {name : "Biology" , id : "biology" },
+    {name : "Business" , id : "business" },
+    {name : "Economics" , id : "economics" },
+    {name : "Accounting" , id : "accounting" },
+    {name : "Sociology" , id : "sociology" },
+    {name : "Psychology" , id : "psychology" },
+    {name : "Art" , id : "art" },
+    {name : "FSc/FA" , id  : "fsc/fa" }
     ];
 
     const gradeList = [

@@ -110,7 +110,7 @@ const Contact = () => {
                     <div className="container">
                         <div className="page-banner-entry">
                             <h1 className="text-white text-uppercase">Contact Us</h1>
-                            <div className="addr-header"><i className="ti-location-pin"></i>75k Newcastle St. Ponte Vedra Beach, FL 309382 New York</div>
+                            <div className="addr-header">Email@ {storeInfo && (storeInfo.email)}</div>
                         </div>
                     </div>
                 </div>

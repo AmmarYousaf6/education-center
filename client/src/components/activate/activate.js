@@ -7,7 +7,7 @@ import Navbar from '../layout/Navbar';
 import { dispatch } from 'react-hot-toast';
 import {LOGIN_SUCCESS
   } from '../../actions/types';
-import {loadUser} from '../../actions/auth';  
+import {loadUserAfterWait} from '../../actions/auth';  
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 const ActivateAccount = ({loggedin}) => {
@@ -68,8 +68,10 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: LOGIN_SUCCESS,
             payload: payload
-        })
-        loadUser();
+        });
+        console.log("Gonna load user" , localStorage.token);
+        window.location.href ="/login";
+        // loadUserAfterWait() ;  
     }  
   });
 export default connect(mapStateToProps, mapDispatchToProps )(ActivateAccount);

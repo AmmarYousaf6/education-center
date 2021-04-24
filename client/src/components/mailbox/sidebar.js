@@ -66,7 +66,7 @@ const Sidebar =  ({active , setActive}) => {
                      <li className="active_link">
                         < a className={active.session_id == user.session_id ? "active_user"  : ""} onClick={()=>setActive(user)}>
                             <i className="fa fa-envelope-o"></i>{user.name} 
-                            <span className="badge badge-success">8</span>
+                            {/* <span className="badge badge-success">8</span> */}
                         </a>
                     </li> 
             ))}

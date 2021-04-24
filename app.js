@@ -15,6 +15,8 @@ const chatRoutes = require('./routes/chatRoutes');
 const mapRouter = require('./routes/map');
 const settingRouter = require('./routes/setting');
 const contactRouter = require('./routes/contact');
+const testimonialsRouter = require('./routes/testimonials');
+
 
 var app = express();
 
@@ -72,6 +74,7 @@ app.use('/chat', chatRoutes);
 app.use('/map', mapRouter );
 app.use('/settings', settingRouter);
 app.use('/contactus', contactRouter);
+app.use('/testimonials', testimonialsRouter);
 
 
 app.get('*', (req,res) =>{

@@ -8,7 +8,7 @@ import Alert from './../layout/Alert';
 // refresh token
 import { refreshTokenSetup } from '../../utils/refreshToken';
 
-const clientId = '588498246428-vaf175ercn260neuau5ovjta8d0ln14j.apps.googleusercontent.com';
+const clientId = '466175062837-shljfphqt7dg4k8rjl0ui8jkqfshijh3.apps.googleusercontent.com';
 
 const GoogleSignup = ({ socialLogin }) => {
   const onSuccess = (res) => {

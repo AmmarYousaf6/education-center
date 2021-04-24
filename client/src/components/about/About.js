@@ -59,11 +59,16 @@ const About = () => {
 				<div className="container">
 					<div className="row align-items-center d-flex">
 						<div className="col-lg-12 col-md-12 heading-bx">
-							<h2 className="m-b10">Our Story</h2>
+							<h2 className="m-b10 text-center"><u>Welcome to the Zubnee Team</u></h2>
 							<p>
-							<h5 className="fw4"><ul><b>Zubnee a platform for parents and teachers.</b></ul></h5>
-							
-								Zubnee is an online platform which provides a platform for tutors and parents to collaborate with ease. The system provides a connecting mechanism with ease in mind.</p>
+							    {/* <h5 className="fw4"><ul><b>Zubnee a platform for parents and teachers.</b></ul></h5> */}
+                                We are a team of Scandinavian academics with roots in Pakistan, who believe that there is a better way of finding a tutor for your child. We believe that the shortest path from A to B is the straight line.  Our passion is the Future of Pakistan. Our Obsession is it's children. Our goal is to educate and polish them. Our mission is to make every single child recognize it's strengths and excel in it's field. 
+                                The huge amount of talent that we have seen in Pakistan simply needs to be brought to light. How? By finding a Zubni tutor with our advanced search options - without wasting time on confusing groups with loads of ads from agencies providing tutors. 
+                                <br />
+                                <center className="elementToFadeInAndOut"> 
+                                    Zubnee is a free of cost service - created to make Pakistani children shine.
+                                </center>
+                            </p>
 						</div>
 						
 					</div>

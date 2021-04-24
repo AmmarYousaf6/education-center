@@ -72,7 +72,7 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
                 throw "Something went wrong. Please try again";
             }            
             toast.success(updateProfile.data.message)
-            history.push("/");        
+            window.location.href = '/';     
 
         } catch (err) {
             console.log("Error occured "   , err);

@@ -1162,8 +1162,7 @@ const search = async (req,res) => {
     }
     //Now we need total records from table
     //We need total filtered records
-    //
-    console.log("Response we have after searching :" , searchQuery)        
+
  
     try {
         const response  = await database.query(searchQuery);
@@ -1199,7 +1198,6 @@ const uniqueClasses = async (req,res) => {
    
     try {
         const response  = await database.query(getUniqueClasses);
-        console.log("Response we have clsasses" , response)        
         if (!response.rows[0]) {
             return res.status(400).send({classes: []});
         }

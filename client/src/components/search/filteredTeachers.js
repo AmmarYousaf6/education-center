@@ -82,8 +82,8 @@ const FilteredTeachers = ({results}) => {
                             </tr>
                         </tbody>
                     </table>
-                    <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
-                    <button className="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
+                    {/* <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button> */}
+                    <button style={{width:'100%'}} className="btn button-md profile-view-btn view-filtered-profile-button" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
                 </div>
             </div>
         </div>

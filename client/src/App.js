@@ -27,7 +27,7 @@ import ActivateAccount from './components/activate/activate';
 
 import BasicTeacherProfileSetup from './components/profile/BasicProfileSetupForTeacher';
 import MailBox from './components/mailbox/mailbox';
-
+import SocialLogin from './components/sociallogin/handleLogin';
 
 
 if (localStorage.token) {
@@ -62,6 +62,7 @@ const App = () => {
               <Route exact path="/profile/details/*" component={TeacherProfile} />
               <Route exact path="/profile/inbox" component={TeacherProfile} />
               <Route exact path="/activate/*" component={ActivateAccount} />
+              <Route exact path="/success-page/*" component={SocialLogin} />
               
               <PrivateRoute exact path="/profile-setup-info-teacher" component={BasicTeacherProfileSetup} />
               <PrivateRoute exact path="/profile-setup-info-parent" component={BasicParentProfileSetup} />

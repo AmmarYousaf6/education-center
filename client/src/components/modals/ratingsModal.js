@@ -48,7 +48,6 @@ const RatingModal = ({ showModal, setShowModal }) => {
         count: 5,
         color1: '#216044',
         color2: '#216044',
-        colot: '#216044',
         emptyIcon: `<i className='far fa-star'></i>`,
         halfIcon: `<i className='fa fa-star-half-alt'></i>`,
         fullIcon: `<i className='fa fa-star'></i>`,
@@ -156,7 +155,7 @@ const RatingModal = ({ showModal, setShowModal }) => {
                                             <i className="closeModal" onClick={()=>setShowModal(false)}>x</i> </div>
                                         <div className="mt-2 p-4 text-center">
                                             <ReactStars
-                                                {...star} />
+                                                {...star}  />
                                             <div className="form-group mt-4"> 
                                                 <textarea className="form-control" rows="4" placeholder="Feedback" onChange={feedbackProvided}></textarea> 
                                             </div>
@@ -172,7 +171,7 @@ const RatingModal = ({ showModal, setShowModal }) => {
                                                     }
                                                 </button> 
                                             </div>
-                                            <p className="mt-3">Continue without sending feedback</p>
+                                            <p className="mt-3" onClick={()=>setShowModal(false)}>Continue without sending feedback</p>
                                         </div>
                                     </div>
                                 {/* <div className="card p-3 py-4">

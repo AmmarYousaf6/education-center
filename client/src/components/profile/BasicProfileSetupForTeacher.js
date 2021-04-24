@@ -67,7 +67,14 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         { name: "Computer Science", id: "computerScience" },
         { name: "Physics", id: "physics" },
         { name: "Chemistry", id: "chemistry" },
-        { name: "Bio", id: "bio" },
+        {name : "Biology" , id : "biology" },
+        {name : "Business" , id : "business" },
+        {name : "Economics" , id : "economics" },
+        {name : "Accounting" , id : "accounting" },
+        {name : "Sociology" , id : "sociology" },
+        {name : "Psychology" , id : "psychology" },
+        {name : "Art" , id : "art" },
+        {name : "FSc/FA" , id  : "fsc/fa" }
     ];
 
     const gradeList = [
@@ -190,6 +197,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Experience</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="experience"
@@ -206,6 +214,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Qualification</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="qualification"
@@ -225,6 +234,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                <label className="col-form-label">Age</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="age"
@@ -241,6 +251,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Salary</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="salary"
@@ -260,6 +271,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Video link</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="introduction"
@@ -278,6 +290,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Subjects</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={subjectList} // Options to display in the dropdown
@@ -293,6 +306,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
 
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Grades</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={gradeList} // Options to display in the dropdown
@@ -310,6 +324,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Areas</label>
                                                     <div className="input-group">
                                                         <GooglePlacesAutocomplete
                                                             placeholder="Select areas"
@@ -324,7 +339,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                     {locationValue.map(value => (
                                                         <div className="suggested-items-sty" key={value.placeId}>
                                                             {value.location}
-                                                            <span className="close-place">X</span>
+                                                            <span className="close-place" onClick={()=>locationValue.filter(l=>l.placeId != value.placeId)}> X</span>
                                                         </div>
                                                     ))}
                                                 </div>

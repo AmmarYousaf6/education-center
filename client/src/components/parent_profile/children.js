@@ -71,10 +71,8 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
         let obj= JSON.parse(JSON.stringify(child) );
         if(obj.subjects)
         {
-            console.log("Subjects if child are " , obj.subjects.split(",") )
             obj.subjects = obj.subjects.split(",").map((subj , i)=>{ return {name : subj , id :subj } } ) ;
         }
-        console.log("Gonna set modal with value " , obj);
         setShowModal(obj)
     }
     const changeHandler = (event) => {

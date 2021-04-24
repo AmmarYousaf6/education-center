@@ -134,7 +134,14 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
         { name: "Computer Science", id: "computerScience" },
         { name: "Physics", id: "physics" },
         { name: "Chemistry", id: "chemistry" },
-        { name: "Bio", id: "bio" },
+        {name : "Biology" , id : "biology" },
+        {name : "Business" , id : "business" },
+        {name : "Economics" , id : "economics" },
+        {name : "Accounting" , id : "accounting" },
+        {name : "Sociology" , id : "sociology" },
+        {name : "Psychology" , id : "psychology" },
+        {name : "Art" , id : "art" },
+        {name : "FSc/FA" , id  : "fsc/fa" }
     ];
 
     const gradeList = [
@@ -184,6 +191,10 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
         });
         // setLocationValue([{ location, placeId }, ...locationValue]);
 
+    }
+    const removeArea = (location) =>{
+        let tempLocationValue = locationValue.filter(loc=>loc.location != location);
+        setLocationValue(tempLocationValue);
     }
     const validateForm = () => {
         try {
@@ -251,6 +262,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Experience</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="experience"
@@ -267,6 +279,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Qualification</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="qualification"
@@ -286,6 +299,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Age</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="age"
@@ -302,6 +316,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Salary</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="salary"
@@ -321,7 +336,8 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
-                                                    <div className="input-group">
+                                                    <label className="col-form-label">Video link</label>
+                                                    <div className="input-group">                                                        
                                                         <input
                                                             name="introduction"
                                                             placeholder="Enter your introduction video link"
@@ -339,6 +355,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Subjects</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={subjectList} // Options to display in the dropdown
@@ -354,6 +371,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
 
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Grades</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={gradeList} // Options to display in the dropdown
@@ -371,6 +389,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Areas</label>
                                                     <div className="input-group">
                                                         <GooglePlacesAutocomplete
                                                             placeholder="Select areas"
@@ -385,7 +404,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                                     {locationValue && locationValue.map((value,i) => (
                                                         <div className="suggested-items-sty" key={i}>
                                                             {value.location}
-                                                            <span className="close-place">X</span>
+                                                            <span className="close-place" onClick={() => removeArea(value.location)}> X</span>
                                                         </div>
                                                     ))}
                                                 </div>

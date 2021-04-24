@@ -145,3 +145,6 @@
     padding-bottom: 7px !important;
   }
   /* Tabs css */
+  .react-stars span{
+    height: 80 px !important;
+  }

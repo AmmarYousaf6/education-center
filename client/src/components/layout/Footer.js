@@ -16,10 +16,10 @@ const Footer = () => {
 
                                         <h5 className="footer-title ">Follow Us</h5>
                                         <ul className="list-inline contact-social-bx">
-                                            <li className="mr-2"><a href="#" className="btn outline radius-xl radius-color"><i className="fa fa-facebook"></i></a></li>
-                                            <li className="mr-2"><a href="#" className="btn outline radius-xl radius-color"><i className="fa fa-twitter"></i></a></li>
-                                            <li className="mr-2"><a href="#" className="btn outline radius-xl radius-color"><i className="fa fa-linkedin"></i></a></li>
-                                            <li className="mr-2"><a href="#" className="btn outline radius-xl radius-color"><i className="fa fa-google-plus"></i></a></li>
+                                            <li className="mr-2"><a href="#" className="radius-xl radius-color"><i className="fa fa-facebook"></i></a></li>
+                                            <li className="mr-2"><a href="#" className="radius-xl radius-color"><i className="fa fa-twitter"></i></a></li>
+                                            <li className="mr-2"><a href="#" className="radius-xl radius-color"><i className="fa fa-linkedin"></i></a></li>
+                                            <li className="mr-2"><a href="#" className="radius-xl radius-color"><i className="fa fa-google-plus"></i></a></li>
                                         </ul>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@ const Footer = () => {
                 <div className="footer-bottom">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-12 col-md-12 col-sm-12 text-center footer-bold">© Copyright 2021 Home Tutor</div>
+                            <div className="col-lg-12 col-md-12 col-sm-12 text-center footer-bold">© Copyright 2021 Zubnee</div>
                         </div>
                     </div>
                 </div>

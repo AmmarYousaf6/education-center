@@ -25,7 +25,7 @@ const ControlsState = {
         longitude : 73.105629
     },
     range: {
-      max: 500,
+      max: 50,
       value: 0
     },
     rangetype: "distance",

@@ -1,29 +1,41 @@
-import React, { Fragment , useState } from 'react';
+import React, { Fragment , useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './mailbox.css';
 import './style.css';
 import LatestMessagesComponent from './latestMessages';
 import RequestModal from '../modals/requestModal';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 import  Sidebar  from './sidebar';
+
+
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
 // const apiUrl = 'https://hometutorpk.herokuapp.com/';
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
-const MailBox =  () => {
+const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
     let [active , setActive] = useState(0);
     //For modals
     const [showModal , setShowModal] = useState(false);
 
+    useEffect(()=>{
+        console.log("User info found" , user);
+      },[user]);
+
     //Adding send message functionality
     let [message , setMessage ] = useState('');
     const sendMessage = ()=>{
+            if(message.trim().length == 0 ){        
+                toast.error("Please enter a message");
+                return ;
+            }
             let data = [];
             //Making an object of header authorization
             const config = {
@@ -31,7 +43,6 @@ const MailBox =  () => {
                     'Content-Type': 'application/json'
                 }
             };
-            console.log("The token is "  , localStorage.token )
             if (localStorage.token) {
                 setAuthToken(localStorage.token);
             }
@@ -45,7 +56,6 @@ const MailBox =  () => {
                   .catch(function (error) {
                     console.log(error , "send error");
                   })
-
     }
 
     return (
@@ -78,15 +88,11 @@ const MailBox =  () => {
                                 {/* End of email menu bar componeenyt  */}                                
                                 <div className="mail-list-container">
                                     <div className="mail-toolbar">                                        
-                                        <div className="mail-search-bar">
-                                            <input type="text" className="form-control" placeholder="Type Message" onChange={(evt)=>setMessage(evt.target.value)} />
+                                        <div className="mail-search-bar" style={{width : '40%'}}>
+                                            <textarea type="text" className="form-control" placeholder="Type Message" rows={1} onChange={(evt)=>setMessage(evt.target.value)} />
                                         </div>
                                         <div className="dropdown all-msg-toolbar">
-                                            <span className="btn btn-info-icon" data-toggle="dropdown" onClick={()=>sendMessage()}>Send</span>                                            
-                                        </div> 
-                                        <div className="next-prev-btn">
-                                            <a href="#"><i className="fa fa-angle-left"></i></a>
-                                            <a href="#"><i className="fa fa-angle-right"></i></a>
+                                            <span className="btn btn-info-icon" data-toggle="dropdown" style={{background : '#216044'}} onClick={()=>sendMessage()}>Send</span>                                            
                                         </div>
                                     </div>
                                     <LatestMessagesComponent active={active}/>
@@ -100,8 +106,17 @@ const MailBox =  () => {
                 </div>
             </div>
         </main>
+        <Toaster />
+
         </Fragment>
 );
 }
+MailBox.propTypes = {
+    auth: PropTypes.object.isRequired,
+};
 
-export default MailBox;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+  
+export default connect(mapStateToProps)(MailBox);

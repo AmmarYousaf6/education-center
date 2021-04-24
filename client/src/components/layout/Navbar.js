@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
+const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logout }) => {
     const history = useHistory(); 
     const logoutUser = () => {
         logout();
@@ -14,7 +14,9 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
             history.push('/profile-setup');
         }
       },[user]);
-
+      const openMailClient = () => {
+        window.location.href = "mailto:admin@zubnee.com?subject=Subject&body=message%20goes%20here";
+      }
     return (
         <Fragment>  
             <header className="header rs-nav">
@@ -24,7 +26,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                             <div className="topbar-left">
                                 <ul>
                                     <li><a href="#!"><i className="fa fa-question-circle"></i>Ask a Question</a></li>
-                                    <li><a href="#!"><i className="fa fa-envelope-o"></i>admin@zubnee.com</a></li>
+                                    <li><a href="#!" onClick={()=>openMailClient()}><i className="fa fa-envelope-o"></i>admin@zubnee.com</a></li>
                                 </ul>
                             </div>
                             <div className="topbar-right">
@@ -113,10 +115,16 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
                                             </li>
                                         </ul>
                                     </li>
-                                    <li ><Link to="/">Online Tutors</Link></li>
+                                    {/* <li ><Link to="/">Online Tutors</Link></li> */}
                                     <li ><Link to="/contact">Contact Us</Link></li>
                                     {isAuthenticated && (
-                                        <li><a href="#!">{user && (user.name)} <i className="fa fa-chevron-down"></i></a>
+                                        <li><a href="#!">
+                                            {user && (user.name)} 
+                                                {notifications && notifications.length > 0 && (
+                                                    <span class="badge badge-info" style={{margin: '5px'}}>{notifications.length}</span>
+                                                )}
+                                                <i className="fa fa-chevron-down"></i>
+                                            </a>
                                         <ul className="sub-menu">
                                             <li><Link to="/profile/update/basic">Profile</Link></li>
                                             <li><Link to="/mailbox" >Mailbox</Link></li>
