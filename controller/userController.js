@@ -183,6 +183,40 @@ const resetPassword = async (req,res,next) => {
         });
     }
 }
+const updateBasicProfileToParent = async (req,res , image) => {
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let {userType } = req.body;
+    console.log( userType , "<<User type :::::");
+
+    const updateType = {
+        text : 'Update users SET user_type = $1 WHERE id = $2',
+        values : [userType ,  userInfo.userID]
+    }
+    
+    try {
+        const response  = await database.query(updateType);
+        if (response.rowCount < 1) {
+            res.status(400).json({
+                status: 0,
+                message: 'Cannot update user type',
+            });
+        }else{
+            res.status(200).json({
+                status: 0,
+                message: 'User type updated',
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 0,
+            message: err
+        });
+    }
+        /* ** */
+    
+}
 
 const updateBasicProfile = async (req,res , image) => {
     let token = req.headers.authorization;
@@ -1010,14 +1044,16 @@ const getLatestTeachers = async (req,res) => {
                 {
                     uniqueSubjects = '';
                 }else{
-                    let subjects = resp.subjects.split(",");
+                    let subjects = resp.subjects.split(",").map(s=>s.toLowerCase());
+              
                     uniqueSubjects =  [...new Set(subjects)].join(",");    
                 }
                 if(resp.classes == null )
                 {
                     uniqueClasses = '';
                 }else{
-                    let classes = resp.classes.split(",");
+                    let classes = resp.classes.split(",").map(c=>c.toLowerCase());
+              
                     uniqueClasses =  [...new Set(classes)].join(",");    
                 }
                 delete resp.classes;
@@ -1191,7 +1227,7 @@ const search = async (req,res) => {
 const uniqueClasses = async (req,res) => {
     console.log("A request recieved to search" , req.body )
     const getUniqueClasses = {
-        text : `SELECT distinct(name)
+        text : `SELECT DISTINCT ON ( UPPER(name) ) name
         FROM public.user_grades;`,
         values : []
     }
@@ -1203,6 +1239,7 @@ const uniqueClasses = async (req,res) => {
         }
         else {
             let data = response.rows;
+            
             res.status(200).json({
                 classes : data
             });
@@ -1221,7 +1258,7 @@ const uniqueClasses = async (req,res) => {
 const uniqueSubject = async (req,res) => {
     console.log("A request recieved to search" , req.body )
     const getUniqueSubject = {
-        text : `SELECT distinct(name)
+        text : `SELECT DISTINCT ON (UPPER(name)) name
         FROM public.user_subjects;`,
         values : []
     }
@@ -1394,6 +1431,7 @@ module.exports = {
     activateUser,
     forgotPassword,
     resetPassword,
+    updateBasicProfileToParent,
     getUser,
     updateBasicProfile,
     updateProfileDesc , 

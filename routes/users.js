@@ -14,6 +14,8 @@ router.get('/activate/:userId',userController.activateUser);
 router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
 router.post('/reset-password',userController.resetPassword);
 router.post('/update-teacher-profile', authMiddleware.validateToken , userController.uploadImageTeacher , userController.updateBasicProfile);
+router.post('/update-profile-to-parent', authMiddleware.validateToken , userController.updateBasicProfileToParent);
+
 router.post('/update-profile', authMiddleware.validateToken, userController.uploadImage ,userController.updateProfileDesc);
 router.post('/update-profile-desc', authMiddleware.validateToken ,userController.updateProfileDesc);
 
