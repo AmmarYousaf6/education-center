@@ -257,7 +257,7 @@ const updateBasicProfile = async (req,res , image) => {
         }
         /* ** */
         /* Update subjects */
-        if(subject && eval(subject).length > 1){
+        if(subject && eval(subject).length > 0){
             /* Remove subjects if they exists */
             const removeSubjects = {
                 text : 'DELETE FROM user_subjects WHERE user_id = $1',
@@ -280,7 +280,7 @@ const updateBasicProfile = async (req,res , image) => {
             }
         }
         /* Update grades */
-        if(grade && eval(grade).length > 1){
+        if(grade && eval(grade).length > 0){
             /* Remove grades if they exists */
             const removeGrades = {
                 text : 'DELETE FROM user_grades WHERE user_id = $1',
@@ -300,19 +300,16 @@ const updateBasicProfile = async (req,res , image) => {
                 }
             }
         }
-        console.dir(target_area, { depth: null });
         // console.log(JSON.stringify(target_area) , "<<<")
         /* Update Target Area */
-        if(target_area && eval(target_area).length > 1){
+        if(target_area && eval(target_area).length > 0){
             /* Remove target_area if they exists */
             const removetarget_area = {
                 text : 'DELETE FROM user_target_areas WHERE user_id = $1',
                 values : [userInfo.userID]
             }
-            database.query(removetarget_area);
             /* *** */
             let gettarget_area = eval(target_area);
-            console.log("Targeted areas " , gettarget_area);
             for(let i = 0; i<gettarget_area.length; i++){
                 let text = 'INSERT INTO user_target_areas(user_id, name, latitude , longitude , meta_name ) VALUES($1, $2 , $3, $4, $5) RETURNING *'
                 let values = [userInfo.userID, gettarget_area[i].location , gettarget_area[i].lat , gettarget_area[i].lng , metaphone(gettarget_area[i].location) ];
@@ -332,6 +329,7 @@ const updateBasicProfile = async (req,res , image) => {
                 values : [userInfo.userID]
             }
             database.query(removeslots);
+            console.log("Slots   :: " , slots);
             /* *** */
             let slotKeys= Object.keys(JSON.parse(slots) );
             let getSlots = JSON.parse(slots);
@@ -1133,14 +1131,14 @@ const search = async (req,res) => {
     let minSalaryQuery = '';
     if(req.body.fee_range_min && !isNaN(req.body.fee_range_min) && req.body.fee_range_min > -1){
         minSalaryQuery = `and u.salary >= $${++counter}` ;
-        values.push(req.body.fee_range_min);
+        values.push(parseInt(req.body.fee_range_min) );
     }
     //MAximum salary
     // fee_range_max: -1
     let maxSalaryQuery = '';
     if(req.body.fee_range_max && !isNaN(req.body.fee_range_max) && req.body.fee_range_max > -1){
         maxSalaryQuery = `and u.salary <= $${++counter}` ;
-        values.push(req.body.fee_range_max);
+        values.push(parseInt(req.body.fee_range_max) );
     }
     //Handling search query
     let searchText = '';
@@ -1196,6 +1194,7 @@ const search = async (req,res) => {
             limit $${values.length-1} offset $${values.length} `,
         values : values
     }
+    console.log("Search query",  searchQuery);
     //Now we need total records from table
     //We need total filtered records
 
@@ -1208,6 +1207,30 @@ const search = async (req,res) => {
         }
         else {
             let data = response.rows;
+            data = data.map(resp=>{
+                let uniqueSubjects;
+                let uniqueClasses;
+                if(resp.subjects == null )
+                {
+                    uniqueSubjects = '';
+                }else{
+                    let subjects = resp.subjects.split(",").map(s=>s.toLowerCase().trim() );
+              
+                    uniqueSubjects =  [...new Set(subjects)].join(",");    
+                }
+                if(resp.classes == null )
+                {
+                    uniqueClasses = '';
+                }else{
+                    let classes = resp.classes.split(",").map(c=>c.toLowerCase());
+              
+                    uniqueClasses =  [...new Set(classes)].join(",");    
+                }
+                console.log("Unique subjects " , uniqueSubjects , "Classes : " , uniqueClasses);
+                delete resp.classes;
+                delete resp.subjects; 
+                return {...resp , subjects: uniqueSubjects , classes : uniqueClasses };
+            });
             res.status(200).json({
                 users : data
             });
