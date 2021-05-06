@@ -225,7 +225,6 @@ const updateBasicProfile = async (req,res , image) => {
     let target_area = locationValue;
     let slots = timeSlot;
 
-    console.log(typeof target_area , eval(target_area) , ":::::");
     if(userType == 'teacher' || userType == 'parent'){
         /* Update user type */
         let imageQry ='';
@@ -302,14 +301,26 @@ const updateBasicProfile = async (req,res , image) => {
         }
         // console.log(JSON.stringify(target_area) , "<<<")
         /* Update Target Area */
+        /* Remove target_area if they exists */
+        let text = 'DELETE FROM user_target_areas WHERE user_id = $1';
+        let values = [userInfo.userID];
+        try{
+            let areaDeleted = await database.query(text , values);
+        }catch(err){
+            console.log("An error occured while deleting user_target_areas" , err)
+        }    
         if(target_area && eval(target_area).length > 0){
-            /* Remove target_area if they exists */
-            const removetarget_area = {
-                text : 'DELETE FROM user_target_areas WHERE user_id = $1',
-                values : [userInfo.userID]
-            }
             /* *** */
             let gettarget_area = eval(target_area);
+            //Making a unique array of areas
+            let areas = [];
+            for(let i = 0; i<gettarget_area.length; i++){
+                areas[ gettarget_area[i].lat+"__"+gettarget_area[i].lng] = gettarget_area[i];
+            }
+            gettarget_area = Object.values(areas);
+        
+            //Make the array unique first
+            
             for(let i = 0; i<gettarget_area.length; i++){
                 let text = 'INSERT INTO user_target_areas(user_id, name, latitude , longitude , meta_name ) VALUES($1, $2 , $3, $4, $5) RETURNING *'
                 let values = [userInfo.userID, gettarget_area[i].location , gettarget_area[i].lat , gettarget_area[i].lng , metaphone(gettarget_area[i].location) ];

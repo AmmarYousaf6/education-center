@@ -11,7 +11,7 @@ router.get('/',authMiddleware.validateToken,userController.getUser);
 router.get('/teachers',authMiddleware.validateToken,userController.getTeachers);
 router.get('/profile/:userId',authMiddleware.validateToken,userController.getProfileById);
 router.get('/activate/:userId',userController.activateUser);
-router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmail);
+router.post('/forgot-password',userController.forgotPassword, emailMiddleware.sendEmailForgotPassword);
 router.post('/reset-password',userController.resetPassword);
 router.post('/update-teacher-profile', authMiddleware.validateToken , userController.uploadImageTeacher , userController.updateBasicProfile);
 router.post('/update-profile-to-parent', authMiddleware.validateToken , userController.updateBasicProfileToParent);
