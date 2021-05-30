@@ -30,7 +30,7 @@ const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 
 const SearchTeachers = ({   
-    sort_fee , classes ,subject ,gender ,fee_range_min ,fee_range_max, searchText ,
+    sort_fee , classes ,subject ,gender ,fee_range_min ,fee_range_max, searchText , statusOfSearch ,
     sortByFee , sortByFeeDes , classSelected , subjectSelected , 
     experienceSelected , genderSelected , feeRangeSelected , applyFilters , changeNumTeachers , 
     queryData , loadData , status , results }) => {
@@ -68,8 +68,8 @@ const SearchTeachers = ({
         }, [] );
 
         //Just in case user has typed some search value
-        const searchChanged = (searchStr)=>{
-            queryData(searchStr)
+        const searchChanged = (searchStr, evt)=>{        
+             queryData(searchStr)
         }
         //Handlick click event
         const searchClicked = ()=>{
@@ -115,7 +115,7 @@ const SearchTeachers = ({
                                     <div className="col-md-4 ">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control" onChange={(evt)=>sortByFee(evt.target.value)}>
+                                                    <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>sortByFee(evt.target.value)}>
                                                         <option value="1">Sort By Fee</option>
                                                         <option value="1">High - Low</option>
                                                         <option value="0">Low - High</option>                                                
@@ -126,7 +126,7 @@ const SearchTeachers = ({
                                     <div className="col-md-4 ">
                                         <div className="form-group">
                                             <div className="input-group">
-                                                <select name="dzName" required className="form-control" onChange={(evt)=>changeNumTeachers(evt.target.value)}>
+                                                <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>changeNumTeachers(evt.target.value)}>
                                                     <option value="10">10 teachers</option>
                                                     <option value="20">20 teachers</option>
                                                     <option value="50">50 teachers</option>                                                
@@ -141,22 +141,22 @@ const SearchTeachers = ({
                             </div>
                             <div className="row">
                                 <div className="col-lg-3 col-md-4 col-sm-12 m-b30">
-                                    <div className="widget courses-search-bx placeani">
-                                        <div className="form-group">
-                                            <div className="input-group">
-                                                {/* <label>Search Tutor</label> */}
-                                                <input name="dzName" type="text" required className="form-control" placeholder="Search" onChange={(evt)=>searchChanged(evt.target.value)}/>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="widget widget_archive">
                                         <h5 className="widget-title style-1">Advanced Search</h5>
+                                        <div className="widget courses-search-bx placeani">
+                                            <div className="form-group">
+                                                <div className="input-group">
+                                                    {/* <label>Search Tutor</label> */}
+                                                    <input name="dzName" type="text" required className="form-control" placeholder="Search By Name and Location" onChange={(evt)=>searchChanged(evt.target.value )} onKeyDown={(evt)=>{ if(evt.which == 13 || evt.keyCode == 13) searchClicked();}}/>
+                                                </div>
+                                            </div>
+                                        </div>
                                         
                                         <div className="widget courses-search-bx placeani">
                                             <div className="form-group">
                                                 <div className="input-group">
                                                     <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>classSelected(evt.target.value)}>
-                                                        <option value="">Select Class</option>
+                                                        <option value=""> Class</option>
                                                         {grades && grades.map((grade , i )=>(
                                                             <option value={grade.name} key={i}>{grade.name}</option>
                                                         ) )}
@@ -167,7 +167,7 @@ const SearchTeachers = ({
                                             <div className="form-group">
                                                 <div className="input-group">
                                                     <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>subjectSelected(evt.target.value)}>
-                                                        <option value="">Select Subject</option>
+                                                        <option value=""> Subject</option>
                                                         {subjects && subjects.map( (subject  , i)=>(
                                                             <option value={subject.name} key={i}>{subject.name}</option>
                                                         ) )}
@@ -176,13 +176,13 @@ const SearchTeachers = ({
                                             </div>
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <select name="dzName" required className="form-control" onChange={(evt)=>experienceSelected(evt.target.value)}>
-                                                        <option value="">Select Experience</option>
+                                                    <select name="dzName" required className="form-control selectBtm" onChange={(evt)=>experienceSelected(evt.target.value)}>
+                                                        <option value="">Experience</option>
                                                         <option value="1-5">1 - 5 Years</option>
                                                         <option value="5-10">5 - 10 Years</option>
                                                         <option value="10-15">10 - 15 Years</option>
                                                         <option value="15-20">15 - 20 Years</option>
-                                                        <option value="20-25">20 - 25 Years</option>
+                                                        <option value="20-50">20 + Years</option>
                                                     </select>
                                                 </div>
 
@@ -190,7 +190,7 @@ const SearchTeachers = ({
                                             <div className="form-group">
                                                 <div className="input-group">
                                                     <select name="dzName" required className="form-control selectBtm"  onChange={(evt)=>genderSelected(evt.target.value)}>
-                                                        <option value="">Select Gender</option>
+                                                        <option value="">Gender</option>
                                                         <option value="male">Male</option>
                                                         <option value="female">Female</option>
                                                         <option value="other">Other</option>
@@ -200,12 +200,14 @@ const SearchTeachers = ({
                                             <div className="form-group">
                                                 <div className="input-group">
                                                     <select name="dzName" required className="form-control selectBtm"  onChange={(evt)=>feeRangeSelected(evt.target.value)}>
-                                                        <option value="">Select Fee Range</option>
-                                                        <option value="0-5000">upto 5K </option>
-                                                        <option value="5000-10000">5K to 10K</option>
-                                                        <option value="10000-15000">10K to 15K</option>
-                                                        <option value="15000-20000">15K to 20K</option>
-                                                        <option value="20000-25000">20K to 25K</option>
+                                                        <option value="">Fee Range</option>
+                                                        <option value="0-15000">upto 15K </option>
+                                                        <option value="15000-30000">15K to 30K</option>
+                                                        <option value="30000-45000">30K to 45K</option>
+                                                        <option value="45000-60000">45K to 60K</option>
+                                                        <option value="60000-75000">60K to 75K</option>
+                                                        <option value="75000-90000">75K to 90K</option>
+                                                        <option value="90000-105000">90K to 105K</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -219,6 +221,7 @@ const SearchTeachers = ({
                                     <div className="row">
                                         {/* Start of filtered teachers */}
                                             {status=='succeeded' ? <FilteredTeachers /> : false}
+                                            
                                         {/* End of filtered teachers */}
 
                                         {/* Start of Pagination */}
@@ -256,7 +259,8 @@ const SearchTeachers = ({
     fee_range_min :   state.filterStore.fee_range_min , //Means not provided otherwise we would have min max
     fee_range_max :  state.filterStore.fee_range_max, //Means not provided
     status : state.filterStore.status ,
-    searchText : state.filterStore.search , 
+    searchText : state.filterStore.searchString ,
+    statusOfSearch : state.filterStore.status , 
     results : state.filterStore.results 
   });
   const mapDispatchToProps = {

@@ -7,28 +7,31 @@ import Navbar from '../layout/Navbar';
 import { dispatch } from 'react-hot-toast';
 import {LOGIN_SUCCESS
   } from '../../actions/types';
-import {loadUserAfterWait} from '../../actions/auth';  
+import {loadUser} from '../../actions/auth';  
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
-const ActivateAccount = ({loggedin}) => {
-    const [activeMessage , setActiveMessage]= useState('Activating');
+const SocialLogin = ({loggedin}) => {
+    const [activeMessage , setActiveMessage]= useState('Logging in');
     const [beingActivated , setBeingActivated] = useState(true);
-    let match = useRouteMatch("/activate/:token");
+    let match = useRouteMatch("/success-page/:token");
 
     useEffect(()=>{
         const validateToken = async () =>{
-            console.log("Token info after matching" , match);
+            console.log("I am social login page and token info after matching" , match );
             try{
-                // we define our url and parameters to be sent along
-                let url = apiUrl+'auth/token/'+match.params.token;
+                // // we define our url and parameters to be sent along
+                // let url = apiUrl+'auth/token/'+match.params.token;
                     
-                // we use the fetch API to call HERE Maps with our parameters
-                let result = await axios.get(url );
-                // when a response is returned we extract the json data
-                console.log(" we have response" , result.data );
-                setBeingActivated(false);
-                setActiveMessage('Congratulations! Your profile has been activated. You will be logged in soon.');
-                loggedin(result.data);
+                // // we use the fetch API to call HERE Maps with our parameters
+                // let result = await axios.get(url );
+                // // when a response is returned we extract the json data
+                // console.log(" we have response" , result.data );
+                // setBeingActivated(false);
+                // setActiveMessage('Profile is now active');
+                let token = match.params;
+                loggedin(token);
+                setTimeout(function(){ window.location.href="/"}  , 40000 );
+
             }catch(e){
                 console.log("Error occured" , e)
             }
@@ -48,7 +51,6 @@ const ActivateAccount = ({loggedin}) => {
                                                 <img src="assets/images/loader.gif" className="ratingLoader" />
                                             )
                             }
-
                         </h3>
                     </div>
                     {/* <!-- Our Status END ==== --> */}
@@ -68,10 +70,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: LOGIN_SUCCESS,
             payload: payload
-        });
-        console.log("Gonna load user" , localStorage.token);
-        window.location.href ="/login";
-        // loadUserAfterWait() ;  
+        })
+        loadUser();
     }  
   });
-export default connect(mapStateToProps, mapDispatchToProps )(ActivateAccount);
+export default connect(mapStateToProps, mapDispatchToProps )(SocialLogin);

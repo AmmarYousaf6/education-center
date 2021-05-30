@@ -42,8 +42,8 @@ const ForgetPassword = ({ setAlert, clearAlert, forgetPassword }) => {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Your Email Address</label>
                                             <input 
+                                                placeholder="Your Email Address"
                                                 name="email" 
                                                 type="email" 
                                                 required="" 

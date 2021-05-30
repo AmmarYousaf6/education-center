@@ -46,7 +46,7 @@ const Login = ({ login, clearAlert, isAuthenticated, auth: {user} }) => {
                     <div className="account-container">
                         <div className="heading-bx left">
                             <h2 className="title-head">Login to your <span>Account</span></h2>
-                            <p>Don't have an account? <Link to="/register">Create one here</Link></p>
+                            <p style={{textAlign:'left'}}>Don't have an account? <Link to="/register">Create one here</Link></p>
                         </div>	
                         <form className="contact-bx" onSubmit={e => onSubmit(e)}>
                             <div className="row placeani">

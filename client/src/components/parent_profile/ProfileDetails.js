@@ -38,36 +38,36 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
     const [summary, setSummary] = useState('');
     //Will be used for redirects
     let history = useHistory();
-
-    useEffect(() => {
-        const fetchProfileData = async () => {
-            let data = [];
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            if (localStorage.token) {
-                setAuthToken(localStorage.token);
+    const fetchProfileData = async () => {
+        let data = [];
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
             }
-            let resultToReturn = [];
-            try {
-                const profileDetails = await axios.get(`${apiUrl}users/`, config);
-                console.log("Profile details fetched", profileDetails)
-
-
-                setName(profileDetails.data.user.name);
-                setAge(profileDetails.data.user.age);
-                setSummary(profileDetails.data.user.summary);
-                setFileUrl(mediaBaseUrl+ profileDetails.data.user.image);
-
-                // setProfile(profileDetails.data );
-                // this will re render the view with new data            
-            } catch (err) {
-                console.log("Error occured in index", err);
-            }
-            return resultToReturn;
+        };
+        if (localStorage.token) {
+            setAuthToken(localStorage.token);
         }
+        let resultToReturn = [];
+        try {
+            const profileDetails = await axios.get(`${apiUrl}users/`, config);
+            console.log("Profile details fetched", profileDetails)
+
+
+            setName(profileDetails.data.user.name);
+            setAge(profileDetails.data.user.age);
+            setSummary(profileDetails.data.user.summary);
+            setFileUrl(mediaBaseUrl+ profileDetails.data.user.image);
+
+            // setProfile(profileDetails.data );
+            // this will re render the view with new data            
+        } catch (err) {
+            console.log("Error occured in index", err);
+        }
+        return resultToReturn;
+    }
+    useEffect(() => {
+        
         fetchProfileData();
     }, []);
     const saveChanges = async () => {
@@ -89,12 +89,13 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
             if (!summary || summary.length < 6) {
                 throw { msg: "Summary must be atleast 6 characters long.", validationFailed: true };
             }
+            let fileUrlArr = fileUrl.split('/');
 
             let dataBody = {
                 name: name,
                 age: age,
                 summary: summary,
-                file: fileUrl
+                file: fileUrlArr[fileUrlArr.length-1]
             };
             const config = {
                 headers: {
@@ -209,7 +210,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                                                                 </div>
                                                             </div>
                                                             <div className="form-group row">
-                                                                <label className="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Age </label>
+                                                                <label className="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Age (Years)</label>
                                                                 <div className="col-12 col-sm-9 col-md-9 col-lg-7">
                                                                     <input className="form-control" type="text" value={age ? age : ''} onChange={(event) => setAge(event.target.value)} />
                                                                 </div>
@@ -240,7 +241,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                                                                                 )
                                                                             }
                                                                         </button>
-                                                                        <button type="reset" className="btn-secondry" onClick={() => history.push('/')}>Cancel</button>
+                                                                        <button type="reset" className="btn-secondry" onClick={() => fetchProfileData()}>Cancel</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

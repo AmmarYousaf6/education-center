@@ -379,7 +379,7 @@ const getChildren = async (req, res) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
     const getChildren = {
-        text : ' select ch.* , STRING_AGG (cs.name , \',\' ) as subjects from children ch left join child_subjects cs on ch.id=cs.child_id WHERE parent_id = $1 group by ch.id , ch.parent_id , ch.name , ch.qualification , ch.summary , ch.age , ch.status , ch.image  ',
+        text : ' select ch.* , STRING_AGG (cs.name , \' , \' ) as subjects from children ch left join child_subjects cs on ch.id=cs.child_id WHERE parent_id = $1 group by ch.id , ch.parent_id , ch.name , ch.qualification , ch.summary , ch.age , ch.status , ch.image  ',
         values : [userInfo.userID]
     }
     console.log(getChildren);
@@ -1021,6 +1021,8 @@ const getLatestTeachers = async (req,res) => {
             left join user_subjects us on u.id = us.user_id 
           where 
             u.user_type = $1
+          and
+           u.id IN (SELECT rated_to FROM (SELECT rated_to, AVG(rating) as average_rating FROM ratings GROUP BY rated_to LIMIT 4) as averageRating)
           GROUP by 
             u.id, 
             u.name, 
@@ -1029,13 +1031,8 @@ const getLatestTeachers = async (req,res) => {
             u.curriculum, 
             u.duration_of_commitment ,
             u.experience ,
-            u.salary ) as data
-            limit $2`,
-        values : ['teacher' , 4]
-    }
-    const getUserById = {
-        text : 'SELECT * FROM users WHERE user_type = $1 ',
-        values : ['teacher', 20]
+            u.salary ) as data`,
+        values : ['teacher']
     }
  
     try {
@@ -1092,7 +1089,7 @@ const search = async (req,res) => {
     console.log("A request recieved to search" , req.body )
     //Making a variable to keep recording of values binded
     let values = [];
-    let counter = 1;
+    let counter = 1; 
     //For teacher type
     values.push(`teacher`);
     //Check if user has short listed any classes
@@ -1158,8 +1155,15 @@ const search = async (req,res) => {
         values.push('%'+metaphone(req.body.search)+'%');
         values.push('%'+req.body.search+'%');
     }
+    //Make sure the teacher himself is not in the list
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    let id = userInfo.userID;
+    let userIdQuery = ++counter;
+    values.push(id);
+    
     // sort_fee: 1, 
-    let orderQuery = ` order by u.salary ${req.body.sort_fee == '1' ? 'desc' : 'asc'}`;
+    let orderQuery = ` order by LENGTH(u.salary) ${req.body.sort_fee == '1' ? 'desc' : 'asc'}, u.salary ${req.body.sort_fee == '1' ? 'desc' : 'asc'}`;
 
     //Now for pagination
     //We have number of records
@@ -1193,7 +1197,8 @@ const search = async (req,res) => {
             left join user_target_areas uta on u.id = uta.user_id
           where 
             u.user_type = $1 ${classQuery} ${subjectQuery} ${genderQuery} ${experienceQuery} ${minSalaryQuery} ${maxSalaryQuery} ${searchText}
-          GROUP by 
+            and u.id != $${userIdQuery}
+            GROUP by 
             u.id, 
             u.name, 
             u.image, 

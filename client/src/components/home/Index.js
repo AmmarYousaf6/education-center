@@ -4,6 +4,7 @@ import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import MapComponent from './../maps/map';
 //Importing all the modals 
@@ -31,6 +32,31 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
     const [searchInp , setSearchInp] = useState('');
     //For redirects
     const history = useHistory();
+    //For testimonials
+    const [testimonials , setTestimonials] =  useState();
+    //For Settings
+    const [settings , setSettings] = useState();
+
+    useEffect(()=>{
+        // we define our url and parameters to be sent along
+        let url = apiUrl+'settings/';
+            
+        // we use the fetch API to call HERE Maps with our parameters
+        return fetch(url )
+            // when a response is returned we extract the json data
+            .then(response => response.json())
+            // and this data we dispatch for processing in locations of teachers
+            .then(data =>{
+                console.log("We have settings details " , data.data);
+                let objSerialized = [];
+                data.data.forEach(d=>{
+                    objSerialized[d.key]= d.value
+                })
+                setSettings(objSerialized);
+            })
+            .catch(error => console.error(error))
+
+    }, []);
 
     const handleValueChange = (e) => {
         setSearchInp(e.target.value) ;
@@ -44,6 +70,20 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
     useEffect(()=>{
         //Fetch all teachers for map
         searchMap({settings : { all : 'true' }})
+        //Fetch Testimonial Data
+        const fetchTestimonials =  async () => {
+            try {    
+                const allTestimonials = await axios.get(`${apiUrl}testimonials` );
+                let data = allTestimonials.data.data;
+
+                setTestimonials(data);
+                // this will re render the view with new data            
+            } catch (err) {
+                console.log("Error occured in index fetch testimonials " , err);        
+            }
+        }
+
+        fetchTestimonials();
     }, []);
      return (
         <Fragment>  
@@ -56,19 +96,21 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                         <div className="row">
                             <div className="col-md-12 text-center text-white">
                                 <h2>FIND YOUR DESIRED TUTOR</h2>
-                                <h5>Own Your Feature Learning New Skills Online</h5>
+                                <h5>Get your child prepared for the future</h5>
                                 <form className="cours-search">
-                                    <div className="input-group main-search">
-                                        <input type="text" className="form-control" onChange={handleValueChange} placeholder="What do you want to learn today?"/>
+                                    {/* <div className="input-group main-search"> */}
+                                        {/* <input type="text" className="form-control" onChange={handleValueChange} placeholder="Search tutors by name or location"/> */}
                                         <div className="input-group-append">
-                                            <button to="/search" className="btn" onClick={()=>applySearch()}>Search</button> 
+                                            <button to="/search" className="btn" style={{width : '100%'}} onClick={()=>applySearch()}>Search</button> 
                                         </div>
-                                    </div>
+                                    {/* </div> */}
                                 </form>
                             </div>
                         </div>
                         <div className="mw800 m-auto">
-                        <h4 className="whiteText" style={{"textAlign":"center"}} >Your access to tutors verified by Our Scandinavian team of psychologists.</h4>
+                        <h4 className="whiteText" style={{"textAlign":"center"}} >
+                                Your access to a world of tutors on a platform delivered by our Scandinavian Team of Psychologists
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -78,13 +120,13 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                 <div className="section-area section-sp1">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-6 m-b30">
+                            <div className="col-lg-12 m-b30">
                                 <h2 className="title-head " style={{"textAlign":"center"}} >Why Home Tution?</h2>
                                 
                                 <p>Recent studies have shown that engaging home tutors to increase our children’s academic abilities has shown a significant positive impact by augmenting the child’s academic performance. For the sake of individual attention and care home tuition is regarded as more effective than academies.</p>
                                 {/* <a href="#" className="btn button-md margin-fix-btm">Join Now</a> */}
                             </div>
-                            <div className="col-lg-6">
+                            <div className="col-lg-12">
                                 <div className="row">
                                     <div className="col-lg-6 col-md-6 col-sm-6 m-b30">
                                         <div className="feature-container">
@@ -143,7 +185,7 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                             <div className="row">
                                 <div className="col-md-12 heading-bx left text-center">
                                     <h2 className="title-head title-head-cust text-uppercase">Best <span>Home Tutors</span></h2>
-                                    <p>If a child can’t learn the way we teach, maybe we should teach the way they learn” Ignacio Estrada</p>
+                                    <p>“If a child can’t learn the way we teach, maybe we should teach the way they learn” </p>
                                 </div>
                             </div>
                             <div className="row">
@@ -165,40 +207,28 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12 heading-bx left">
-                                <h2 className="title-head text-uppercase text-center title-head-cust">what people <span>says</span></h2>
-                                <p className="text-center">What a teacher is, is more important than what he teaches" Karl Menninger.</p>
+                                <h2 className="title-head text-uppercase text-center title-head-cust">what people <span>say</span></h2>
+                                <p className="text-center">{settings && settings['WHAT_PEOPLE_SAYS']}</p>
                             </div>
                         </div>
                         <div className="col-lg-12 col-md-8 col-sm-12">
                             <div className="row">
-                                <div className="col-md-6 col-lg-6 col-sm-12 m-b30">
-                                    <div className="testimonial-bx">
-                                        <div className="testimonial-thumb">
-                                            <img src="assets/images/testimonials/pic1.jpg" alt="" />
-                                        </div>
-                                        <div className="testimonial-info">
-                                            <h5 className="name">Peter Packer</h5>
-                                            <p>Student. FSC</p>
-                                        </div>
-                                        <div className="testimonial-content">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-lg-6 col-sm-12 m-b30">
-                                    <div className="testimonial-bx">
-                                        <div className="testimonial-thumb">
-                                            <img src="assets/images/testimonials/pic2.jpg" alt="" />
-                                        </div>
-                                        <div className="testimonial-info">
-                                            <h5 className="name">Roy Daniels</h5>
-                                            <p>Student. Matric</p>
-                                        </div>
-                                        <div className="testimonial-content">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...</p>
+                                {testimonials && testimonials.map(tm=>(
+                                    <div className="col-md-6 col-lg-6 col-sm-12 m-b30" key={tm.id}> 
+                                        <div className="testimonial-bx">
+                                            <div className="testimonial-thumb">
+                                                <img src={"assets/images/testimonials/"+tm.image} alt="" />
+                                            </div>
+                                            <div className="testimonial-info">
+                                                <h5 className="name">{tm.name}</h5>
+                                                <p>{tm.role}</p>
+                                            </div>
+                                            <div className="testimonial-content">
+                                                <p>{tm.description}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>

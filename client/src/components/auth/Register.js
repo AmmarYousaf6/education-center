@@ -9,9 +9,11 @@ import { register } from '../../actions/auth';
 import { setAlert, clearAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
 import Alert from './../layout/Alert';
+import TermsModal from './../modals/terms';
 
 const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
     const history =useHistory();
+    const [ aggreement , setAggreement ] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -20,6 +22,9 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
         gender: '',
         type: 'manual'
     });
+    const [ beingSaved , setBeingSaved ] = useState(false);
+    const [showModal , setShowModal ] = useState(false);
+
     useEffect(()=>{
         console.log("Value changed for set Alert" , setAlert);
     } , []);
@@ -30,14 +35,19 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
     const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = e => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
         clearAlert();
+        
         if (password !== confirmPassword) {
           setAlert('Password and Confirm Password fields does not match', 'danger');
+        }else if(!aggreement){
+          setAlert('Please indicate that you accept the Terms and Conditions', 'danger');
         } else {
-          register(formData , history);
+          setBeingSaved(true);
+          await register(formData , history);
+          setBeingSaved(false);
         }
     };
 
@@ -47,7 +57,9 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
           errors["password"] = "Please and confirm password didn't match";
         }
     }
-
+    const registerClicked = () =>{
+        setShowModal(true);
+    }
     if (isAuthenticated) {
         return <Redirect to="/" />;
     }
@@ -62,7 +74,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                     <div className="account-container">
                         <div className="heading-bx left">
                             <h2 className="title-head">Sign Up <span>Now</span></h2>
-                            <p>Login Your Account <Link to="/login">Click here</Link></p>
+                            <p style={{textAlign :'left'}}>Login Your Account <Link to="/login">Click here</Link></p>
                         </div>	
                         <form className="contact-bx" onSubmit={e => onSubmit(e)}>
                             <div className="row placeani">
@@ -104,7 +116,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                         <div className="input-group"> 
                                             <input 
                                                 name="password" 
-                                                placeholder="Enter your password"
+                                                placeholder="Password"
                                                 type="password" 
                                                 className="form-control" 
                                                 required="" 
@@ -120,7 +132,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                         <div className="input-group"> 
                                             <input 
                                                 name="confirmPassword" 
-                                                placeholder="Enter your confirm password"
+                                                placeholder="Confirm password"
                                                 type="password" 
                                                 className="form-control" 
                                                 required="" 
@@ -150,12 +162,21 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                                     </div>
                                 </div>
 
-                                <div className="col-lg-12">
-                                    <input type="checkbox" /><span className="terms-condit">I Accept Terms and Conditions</span>
+                                <div className="col-lg-12 ">
+                                <div className="custom-control custom-checkbox">
+                                            <input type="checkbox" className="custom-control-input" id="customCheckbox" checked={aggreement} onChange={() => setAggreement(!aggreement)} />
+                                            <label className="custom-control-label" htmlFor="customCheckbox">By continuing, you agree to the <span className="text-blue cursor-pointer" onClick={()=>history.push('/conditions/')}><u>Terms of Service</u></span> </label>
+                                        </div>                                    
                                 </div>
 
                                 <div className="col-lg-12 m-b30 mt-5">
-                                    <button name="submit" type="submit" value="Submit" className="btn button-md">Sign Up</button>
+                                    <button name="submit" type="submit"  value="Submit" className="btn button-md">
+                                        Sign Up
+                                        {
+                                            beingSaved && ( <img src="assets/images/loader.gif" className="ratingLoader" />)
+                                        }
+
+                                    </button>
                                 </div>
 
                                 <div className="col-lg-12">
@@ -174,6 +195,7 @@ const Register = ({ setAlert, clearAlert, register, isAuthenticated}) => {
                     </div>
                 </div>
             </div>
+            <TermsModal showModal={showModal} setShowModal={setShowModal}></TermsModal>
         </Fragment>
     );
 }

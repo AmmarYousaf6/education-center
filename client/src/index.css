@@ -11,3 +11,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@keyframes animationName {
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}
+@-o-keyframes animationName{
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}
+@-moz-keyframes animationName{
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}
+@-webkit-keyframes animationName{
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}   
+.elementToFadeInAndOut {
+   -webkit-animation: animationName 5s infinite;
+   -moz-animation: animationName 5s infinite;
+   -o-animation: animationName 5s infinite;
+    animation: animationName 5s infinite;
+    color: green;
+    font-weight: bold;
+}
+.react-stars > span{
+  height: 40px !important;
+  padding-top:10px;
+}

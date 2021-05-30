@@ -13,7 +13,7 @@ import { debounce } from "throttle-debounce";
 const SettingsComponent = ({controls , updateSettings}) =>{
   const [filters , setFilters] = useState(controls);
   useEffect(()=>{
-    console.log("Settings Component use effect called" , controls)
+    // console.log("Settings Component use effect called" , controls)
     setFilters(controls);
   } , []);
   // we are making settings directly in the controls object which is being passed on to the updateSettings() function up top
@@ -52,38 +52,6 @@ const SettingsComponent = ({controls , updateSettings}) =>{
     // we have different kinds of settings in here. The components should be quite self-explanatory. Whenever a button is clicked we call handleSettings() and this way pass on our setting through to our state.
     return (
       <div className="mt3">
-        <Divider />
-        <Label size="small">{"Range type"}</Label>
-        <div className="mt3">
-          <Button.Group basic size="small">
-            {Object.keys({ distance: {}, fee: {} }).map((key, i) => (
-              <Button
-                active={key === filters.rangetype}
-                key={i}
-                mode={key}
-                onClick={() => handleSettings("rangetype", key)}
-              >
-                {key}
-              </Button>
-            ))}
-          </Button.Group>
-        </div>
-        <Divider />
-        <Label size="small">{"Maximum range"}</Label>
-        <div className="mt3">
-          <Slider
-            discrete
-            color="grey"
-            value={filters.range.value}
-            inverted={false}
-            settings={rangeSettings.settings}
-          />
-          <div className="mt2">
-            <Label className="mt2" color="grey" size={"mini"}>
-              {filters.range.value + (filters.rangetype === "fee" ? "K" : " kilometers")}
-            </Label>
-          </div>
-        </div>
         <Divider />
       </div>
     )

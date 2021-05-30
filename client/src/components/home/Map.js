@@ -135,7 +135,7 @@ const MapComponent = ({searchMap , latitude , longitude   }) => {
                 <Marker 
                     key={obj.latitude+'__'+obj.longitude} 
                     position={[obj.latitude , obj.longitude]} 
-                    icon={new Icon({iconUrl : obj.icon ? "/assets/images/"+obj.icon : "/assets/images/default.png" , iconSize : [100 , 100 ]})}
+                    icon={new Icon({iconUrl : obj.icon ? "/assets/images/userMarker.png" : "/assets/images/userMarker.png" , iconSize : [100 , 100 ]})}
                     onClick={()=>{setActivePark(obj); console.log("active park" , activePark , setActivePark ); }}
                 >            
                 </Marker>)

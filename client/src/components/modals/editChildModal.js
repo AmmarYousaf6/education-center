@@ -118,9 +118,9 @@ const ChildModal = ({showModal , setShowModal}) =>{
                     setAge(showModal.age);
                 }
             }
-            if(!fileUrl){
-                throw {msg : "Please select a file" , validation : true};
-            }
+            // if(!fileUrl){
+            //     throw {msg : "Please select a file" , validation : true};
+            // }
             if(!name){
                 throw {msg : "Please provide name" , validation : true};
             }
@@ -130,9 +130,9 @@ const ChildModal = ({showModal , setShowModal}) =>{
             if(!qualification){
                 throw {msg : "Please provide qualification" , validation : true};
             }
-            if(!summary){
-                throw {msg : "Please provide summary" , validation : true};
-            }
+            // if(!summary){
+            //     throw {msg : "Please provide summary" , validation : true};
+            // }
             let childInfo = { 
                 name : name , summary : summary  , 
                 qualification : qualification , image : fileUrl  , 
@@ -176,7 +176,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
         }
         return resultToReturn;
     }
-    const subjectList = [
+    const subjectList = [        
         { name: "English", id: "english" },
         { name: "Urdu", id: "urdu" },
         { name: "Islamiat", id: "islamiat" },
@@ -186,7 +186,15 @@ const ChildModal = ({showModal , setShowModal}) =>{
         { name: "Computer Science", id: "computerScience" },
         { name: "Physics", id: "physics" },
         { name: "Chemistry", id: "chemistry" },
-        { name: "Bio", id: "bio" },
+        {name : "Biology" , id : "biology" },
+        {name : "Business" , id : "business" },
+        {name : "Economics" , id : "economics" },
+        {name : "Accounting" , id : "accounting" },
+        {name : "Sociology" , id : "sociology" },
+        {name : "Psychology" , id : "psychology" },
+        {name : "Art" , id : "art" },
+        {name : "FSc/FA" , id  : "fsc/fa" },
+        {name : "Holy Quran" , id  : "holyQuran" }
     ];
 
     const gradeList = [
@@ -201,6 +209,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
 
     const changeHandler = (event) => {
         const uploadFile = async (event) => {
+            setBeingSaved(true);
             setSelectedFile(event.target.files[0]);
             setIsSelected(true);
             // setFileUrl(URL.createObjectURL(event.target.files[0]));
@@ -232,7 +241,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
                 console.log("Error occured ", err);
                 toast.error("Something went wrong while uploading image");
             } finally {
-
+                setBeingSaved(false);
             }
         };
         uploadFile(event);
@@ -262,22 +271,29 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                 <div className="card p-3 py-4">
                                     <div className="text-center"> 
                                         <div className="containerImg">
-                                            {!isSelected && (
-                                                <img src={ (typeof showModal == 'object') ? (mediaBaseUrl+showModal.image) : (mediaBaseUrl+'default.png')} alt="Avatar" className="image rounded-circle"  style={{maxWidth :"unset" , height: "100px",  width:"100px"}}  />
-                                            )}
-                                            {isSelected && (
-                                                <img className="image-upload-ph image" src={mediaBaseUrl+fileUrl} style={{maxWidth :"unset" , height: "100px",  width:"100px"}} />
-                                            )}
-                                            <div className="middle">
-                                                <div className="text" onClick={() => document.getElementById("profile_img").click()}>Change Image</div>
-                                                <input type="file" id="profile_img" name="profile_image" onChange={changeHandler} style={{maxWidth :"unset" , height: "100px",  width:"100px"}} />
-                                            </div>
+                                        <div className="avatar-upload">
+                                                    <div className="avatar-edit" >
+                                                        <input type="file" id="profile_img" name="profile_image" onChange={changeHandler} style={{maxWidth :"unset" , height: "100px",  width:"100px"}} />
+                                                        <label htmlFor="profile_img" ></label>
+                                                    </div>
+                                                    <div className="avatar-preview">  
+                                                        {!isSelected && (
+                                                            <div id="imagePreview" style={{backgroundImage: 'url('+((showModal && typeof showModal == 'object' && showModal.image.length) ? (mediaBaseUrl+showModal.image) : (mediaBaseUrl+'default.png'))+')'}}>
+                                                            </div>    
+                                                        )}
+                                                        {isSelected && (                                                            
+                                                            <div id="imagePreview" style={{backgroundImage: 'url('+mediaBaseUrl+fileUrl+')'}}>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
                                         </div>                                        
                                         <h3 className="mt-2">{typeof showModal == 'object' ? ('Edit '+showModal.name) : ('Add child')}</h3> 
                                         {/* <start of body */}
                                         <div className="row placeani">
                                         <div className="col-lg-6 ">
                                             <div className="form-group">
+                                                <label className="input-label">Name</label>
                                                 <div className="input-group">
                                                     <input name="name" type="text" required="" className="form-control valid-character" placeholder="Name" onChange={(event)=>setName(event.target.value)} defaultValue={showModal && showModal.name}/>
                                                 </div>
@@ -285,17 +301,19 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                         </div>                                
                                         <div className="col-lg-6">
                                             <div className="form-group">
+                                            <label className="input-label">Age (years)</label>
                                                 <div className="input-group">
-                                                    <input name="age" type="text" required="" className="form-control int-value" onChange={(event)=>setAge(event.target.value)} placeholder="age" defaultValue={showModal && showModal.age} />
+                                                    <input name="age" type="number" required="" className="form-control int-value" onChange={(event)=>setAge(event.target.value)} placeholder="age" defaultValue={showModal && showModal.age} />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="col-lg-12">
                                                 <div className="form-group">
+                                                <label className="input-label">Grade</label>
                                                     <div className="input-group">
                                                         <select
-                                                            className="form-control"
+                                                            className="form-control selectBtm"
                                                             value={showModal && (qualification || '')} // Preselected value to persist in dropdown
                                                             onChange={(event)=>setQualification(event.target.value)}
                                                         >      
@@ -308,6 +326,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
 
                                         <div className="col-lg-12">
                                             <div className="form-group">
+                                            <label className="input-label">Summary</label>
                                                 <div className="input-group">
                                                     <textarea name="summary" rows="1" style={{height:'58px'}} className="form-control" required="" onChange={(event)=>setSummary(event.target.value)} placeholder="summary" defaultValue={showModal && showModal.summary}></textarea>
                                                 </div>
@@ -315,6 +334,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                         </div>
                                         <div className="col-lg-12">
                                                 <div className="form-group">
+                                                <label className="input-label">Subjects</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             className="form-control"

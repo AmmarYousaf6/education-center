@@ -71,13 +71,19 @@
 	align-items: flex-end;
 	flex-wrap: wrap;
   }
-  .tabs ul li {
+
+  .tabs ul li  {
 	box-sizing: border-box;
 	flex: 1;
 	width: 25%;
 	padding: 0 10px;
 	text-align: center;
   }
+ .multiselect-container ul li {
+	width: 100%;
+	padding: 0 10px;
+	text-align: left;
+ }
   .new-user-list ul li {
 	box-sizing: border-box;
 	width: 100%;
@@ -958,7 +964,6 @@
 	margin: auto;
 }
 .menu-links .nav > li .add-menu{
-    display: flex;
 	width:420px;
 }
 .add-menu-left{
@@ -2287,7 +2292,6 @@ button.back-to-top {
 	display: inline-block;
 	font-size: 13px;
 	text-transform: capitalize;
-	font-family: ;
 	margin-right: 5px;
 }
 .media-post li a{

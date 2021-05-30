@@ -63,10 +63,10 @@ const Sidebar =  ({active , setActive}) => {
             <div className="email-menu-bar-inner">
             <ul>
             {otherUsers && otherUsers.map((user , i) => (  
-                     <li className="active_link">
+                     <li className="active_link" key={i}>
                         < a className={active.session_id == user.session_id ? "active_user"  : ""} onClick={()=>setActive(user)}>
                             <i className="fa fa-envelope-o"></i>{user.name} 
-                            <span className="badge badge-success">8</span>
+                            {/* <span className="badge badge-success">8</span> */}
                         </a>
                     </li> 
             ))}

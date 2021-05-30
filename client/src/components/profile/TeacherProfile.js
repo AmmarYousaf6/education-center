@@ -1,4 +1,7 @@
 import React, { Fragment, useEffect , useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 //For routing
 import { BrowserRouter as Router ,  Link , NavLink , Switch , Route , useRouteMatch, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
@@ -96,7 +99,7 @@ const ClassesAndSubjects = (props) => {
                                         </ul>
                                         <div className="widget_tag_cloud">
                                             <div className="tagcloud">
-                                                <a href="#">{props?.userInfo.salary} /Per Month (For all subjects)</a>
+                                                <span>{props?.userInfo.salary} /Per Month (For all subjects)</span>
                                             </div>
                                         </div>
                                     </span>
@@ -208,7 +211,7 @@ const Reviews = (props) =>{
                 </motion.div>
     )
 }
-const TeacherProfile = () => {
+const TeacherProfile = ({ login, isAuthenticated, auth: {user}  }) => {
     //For modals
     const [showModal , setShowModal] = useState(false);
     const [showRatingModal , setShowRatingModal] = useState(false);
@@ -239,7 +242,7 @@ const TeacherProfile = () => {
             return ;
         }
         setShowRatingModal(teacher)
-    } 
+    }
     //Fetching teacher info
     useEffect( ()=>{
         const fetchAllteacherInfo  = async () => {
@@ -296,6 +299,9 @@ const TeacherProfile = () => {
             } catch (err) {
                 console.log("Error occured in index" , err);        
             }
+            //Scrolling to top
+            setTimeout(()=>window.scrollTo({ top: 0, behavior: 'smooth' }) , 500);
+            
             return resultToReturn;
         }
         fetchAllteacherInfo(); 
@@ -333,7 +339,9 @@ const TeacherProfile = () => {
                                     <div className="course-detail-bx">
                                         
                                         <div className="course-buy-now text-center">
-                                            <button className="btn radius-xl text-uppercase" onClick={()=>hireMeClicked(teacherInfo)}>Hire Me Now</button>
+                                            {user && user.user_type && user.user_type == 'parent' && (
+                                                <button className="btn radius-xl text-uppercase" onClick={()=>hireMeClicked(teacherInfo)}>Hire Me Now</button>
+                                            )}
                                         </div>
                                         <div className="teacher-bx">
                                             <div className="teacher-info">
@@ -424,5 +432,10 @@ const TeacherProfile = () => {
         </Fragment>
     )
 }
-
-export default TeacherProfile;
+  
+  const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    auth: state.auth 
+  });
+  
+  export default connect(mapStateToProps, { })(TeacherProfile);

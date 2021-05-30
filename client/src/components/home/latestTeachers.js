@@ -2,7 +2,7 @@ import React , { useState , useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Link ,  useHistory  } from 'react-router-dom';
-
+import { connect } from 'react-redux';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
 import { createReactClass } from 'create-react-class';
@@ -12,11 +12,11 @@ import toast  , { Toaster } from 'react-hot-toast';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
-// const apiUrl = 'https://hometutorpk.herokuapp.com/';
+// const apiUrl = 'https://hometuftorpk.herokuapp.com/';
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 //Actual component 
-const LatestTeachersComponent = ({setShowModal}) => {
+const LatestTeachersComponent = ( { auth: { user, isAuthenticated, loading }  , setShowModal} ) => {
     let [Teachers , setTeachers] = useState(0);
     //Will be used for redirects
     let history = useHistory();
@@ -58,7 +58,7 @@ const LatestTeachersComponent = ({setShowModal}) => {
         setShowModal(teacher)
        } 
       //Mwthos to initiate view profile request
-      const viewProfileClicked = (teacher)=>{
+      const viewProfileClicked = (teacher)=>{ 
         //handling user not logged in
         if (!localStorage.token) {
             toast.error("Please login to view "+teacher.name+" details");
@@ -76,7 +76,7 @@ const LatestTeachersComponent = ({setShowModal}) => {
                                 <img src={mediaBaseUrl+teacher.image} alt=""/>
                             </div>
                             <div className="info-bx text-center">
-                                <h5><a href="{teacher.id}">{teacher.name}</a></h5>
+                                <h5><a style={{cursor : 'pointer'}} onClick={()=>viewProfileClicked(teacher)}>{teacher.name}</a></h5>
                                 <span>{teacher.qualification || "\u00A0"}</span>
                             </div>
                             <div className="cours-more-info">
@@ -89,8 +89,7 @@ const LatestTeachersComponent = ({setShowModal}) => {
                                     </ul>
                                 </div>
                                 <div className="price">
-                                    <del>$190</del>
-                                    <h5>${teacher.salary}</h5>
+                                    <h5>Rs. {teacher.salary}/_</h5>
                                 </div>
                             </div>
                             <div>
@@ -108,8 +107,10 @@ const LatestTeachersComponent = ({setShowModal}) => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
-                                <button className="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
+                                {(user == null || (user && user.user_type!='teacher') ) && (
+                                    <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
+                                )}
+                                <button className="btn button-md profile-view-btn" style={{ width : (user && user.user_type=='teacher') ? '100%' : ''}   } onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
                             </div>
                         </div>
                     </div>
@@ -118,6 +119,13 @@ const LatestTeachersComponent = ({setShowModal}) => {
             <Toaster/>
             </div>);
 }
-
   
-export default  LatestTeachersComponent ;
+LatestTeachersComponent.propTypes = {
+    auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+  
+export default connect(mapStateToProps)(LatestTeachersComponent);

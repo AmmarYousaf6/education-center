@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
+
 // const apiUrl = 'https://hometutorpk.herokuapp.com/';
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 const pageTransitions = {
@@ -71,10 +72,8 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
         let obj= JSON.parse(JSON.stringify(child) );
         if(obj.subjects)
         {
-            console.log("Subjects if child are " , obj.subjects.split(",") )
             obj.subjects = obj.subjects.split(",").map((subj , i)=>{ return {name : subj , id :subj } } ) ;
         }
-        console.log("Gonna set modal with value " , obj);
         setShowModal(obj)
     }
     const changeHandler = (event) => {
@@ -154,12 +153,13 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                     <div className="widget-inner row ">
                                         <div className="new-user-list col-12 row" style={{ }}>
                                             <ol className="col-12">
-                                                {children!=null && children.length == 0 && (<h1>No childrens yet</h1>)}
+                                                {children!=null && children.length == 0 && (<h1>No children yet</h1>)}
                                                 {children && children.map(child => (
                                                     <li key={child.id} className="row">
                                                         <span className="new-users-text col-12">
-                                                            <span className="new-users-pic">
-                                                                <img src={mediaBaseUrl+ child.image} alt="" />
+                                                            <span className="new-users-pic" >
+                                                            
+                                                                <img src={ (child && typeof child == 'object' && child.image.length) ? (mediaBaseUrl+child.image) : (mediaBaseUrl+'default.png')} style={{width:'200px' , height:'200px'}} alt="" />
                                                             </span>
                                                             <ol className="course-features">
                                                                 <li >
@@ -168,14 +168,14 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                                                 </li>
                                                                 <li>
                                                                     <span className="label">Age</span> 
-                                                                    <span className="value">{child.age}</span>
+                                                                    <span className="value">{child.age}  &nbsp;Years</span>
                                                                 </li>
                                                                 <li>
                                                                     <span className="label">Summary</span> 
                                                                     <span className="value">{child.summary}</span>
                                                                 </li>
                                                                 <li>
-                                                                    <span className="label">Qualification</span> 
+                                                                    <span className="label">Grade</span> 
                                                                     <span className="value">{child.qualification}</span>
                                                                 </li>
                                                                 <li>

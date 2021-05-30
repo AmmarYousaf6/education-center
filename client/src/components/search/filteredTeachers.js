@@ -42,7 +42,9 @@ const FilteredTeachers = ({results}) => {
         }
         history.push("/profile/details/"+teacher.id);        
       }    
-    return (<div className="row col-12">{results &&
+    return (<div className="row col-12">
+        {results && results.length == 0 && (<h3>No results found</h3>)}
+        {results &&
         results.map((teacher , i) => (  
             <div className="col-md-6 col-lg-4 col-sm-6 m-b30" key={i}>
             <div className="cours-bx">
@@ -50,7 +52,7 @@ const FilteredTeachers = ({results}) => {
                     <img src={mediaBaseUrl+teacher.image} alt=""/>
                 </div>
                 <div className="info-bx text-center">
-                    <h5><a href="{teacher.id}">{teacher.name}</a></h5>
+                <h5><a style={{cursor : 'pointer'}} onClick={()=>viewProfileClicked(teacher)}>{teacher.name}</a></h5>
                     <span>{teacher.qualification || "\u00A0"}</span>
                 </div>
                 <div className="cours-more-info">
@@ -82,8 +84,8 @@ const FilteredTeachers = ({results}) => {
                             </tr>
                         </tbody>
                     </table>
-                    <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button>
-                    <button className="btn button-md profile-view-btn" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
+                    {/* <button className="btn button-md hire-now-btn" onClick={()=>hireMeClicked(teacher)}>Hire Now</button> */}
+                    <button style={{width:'100%'}} className="btn button-md profile-view-btn view-filtered-profile-button" onClick={()=>viewProfileClicked(teacher)}>View Profile</button>
                 </div>
             </div>
         </div>

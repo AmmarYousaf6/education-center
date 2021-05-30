@@ -45,6 +45,10 @@ export const defaulticon = new Icon({
   iconUrl: "/assets/images/default.png",
   iconSize: [50, 50]
 });
+export const teacherIcon = new Icon({
+  iconUrl: "/assets/images/userMarker.png",
+  iconSize: [50, 50]
+});
 
 
 //File hosting api url i.e base url
@@ -230,7 +234,7 @@ const MapComponent = ({userInput , results ,  teachers , isFetching , isFetching
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
     {teachers && (teachers.map((teacher,i)=>(
-          <Marker position={[teacher.latitude , teacher.longitude]} key={i} icon={defaulticon} 
+          <Marker position={[teacher.latitude , teacher.longitude]} key={i} icon={teacherIcon} 
           onClick={()=>{ fetchTeacherDetail(teacher) }}
           >
           </Marker>

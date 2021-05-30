@@ -1,29 +1,70 @@
-import React, { Fragment , useState } from 'react';
+import React, { Fragment , useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/Navbar';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './mailbox.css';
 import './style.css';
 import LatestMessagesComponent from './latestMessages';
 import RequestModal from '../modals/requestModal';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 import  Sidebar  from './sidebar';
+
+// import introJs from 'intro.js';
+import introJs from 'intro.js/intro.js';
+
+import 'intro.js/introjs.css';
+
+
 //File hosting api url i.e base url
 const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
 // const apiUrl = 'https://hometutorpk.herokuapp.com/';
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
-const MailBox =  () => {
+//Introduction JS
+const steps = [
+    {
+      element: '.selector1',
+      intro: 'test 1',
+      position: 'right',
+      tooltipClass: 'myTooltipClass',
+      highlightClass: 'myHighlightClass',
+    },
+    {
+      element: '.selector2',
+      intro: 'test 2',
+    },
+    {
+      element: '.selector3',
+      intro: 'test 3',
+    },
+  ];
+  const stepsEnabled = true;
+  const initialStep = 0;
+  const onExitIntro = function (stepIndex){
+      console.log("Introduction has exited" , stepIndex);
+  }  
+//End of Introduction JS
+const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
     let [active , setActive] = useState(0);
     //For modals
     const [showModal , setShowModal] = useState(false);
 
+    useEffect(()=>{
+        console.log("User info found" , user );
+      },[user]);
+
     //Adding send message functionality
     let [message , setMessage ] = useState('');
     const sendMessage = ()=>{
+            if(message.trim().length == 0 ){        
+                toast.error("Please enter a message");
+                return ;
+            }
             let data = [];
             //Making an object of header authorization
             const config = {
@@ -31,7 +72,6 @@ const MailBox =  () => {
                     'Content-Type': 'application/json'
                 }
             };
-            console.log("The token is "  , localStorage.token )
             if (localStorage.token) {
                 setAuthToken(localStorage.token);
             }
@@ -39,13 +79,16 @@ const MailBox =  () => {
             axios.post(`${apiUrl}chat/message` , {sessionId : active.session_id , message : message } , config)
                 .then(function (response) {
                         let temp = active ;
+                        //So that view effect can be called
                         setActive({session_id: '__' } );
+                        //Tor refresh data 
                         setActive(temp);
+                        //Clearing message
+                        setMessage('');
                   })
                   .catch(function (error) {
                     console.log(error , "send error");
                   })
-
     }
 
     return (
@@ -61,32 +104,30 @@ const MailBox =  () => {
                     </ul>
                     {/* <a href="mailbox-compose.html" className="btn btn-block col-2 ml-auto">Compose</a> */}
                 </div>	
-                <div className="row">
+                <div className="row"  >
                     {/* <!-- Your Profile Views Chart --> */}
                     <div className="col-lg-12 m-b30">
                         <div className="widget-box">
                             <div className="email-wrapper">
                                 {/* Start of email menu bar component */}
                                 <div className="email-menu-bar">
-                                    <div className="compose-mail">
+                                    <div className="compose-mail" data-intro='To view Requests Click here!'>
                                         <a className="btn btn-block text-light" onClick={()=>setShowModal(true)}>View Requests</a>
                                     </div>
+                                    <div data-intro='Click on a recipient to start conversation.!'>
                                     {/* Start of Left User Menu List */}
-                                    <Sidebar active={active} setActive={setActive} />
+                                    <Sidebar active={active} setActive={setActive} data-intro='Hello step one!' />
                                     {/* End of Left User Menu List  */}
+                                    </div>
                                 </div>                               
                                 {/* End of email menu bar componeenyt  */}                                
                                 <div className="mail-list-container">
                                     <div className="mail-toolbar">                                        
-                                        <div className="mail-search-bar">
-                                            <input type="text" className="form-control" placeholder="Type Message" onChange={(evt)=>setMessage(evt.target.value)} />
+                                        <div className="mail-search-bar" style={{width : '40%'}} data-intro='Use this textarea to compose message.'>
+                                            <textarea type="text" value={message} className="form-control" placeholder="Type Message" rows={1} onChange={(evt)=>setMessage(evt.target.value)} />
                                         </div>
-                                        <div className="dropdown all-msg-toolbar">
-                                            <span className="btn btn-info-icon" data-toggle="dropdown" onClick={()=>sendMessage()}>Send</span>                                            
-                                        </div> 
-                                        <div className="next-prev-btn">
-                                            <a href="#"><i className="fa fa-angle-left"></i></a>
-                                            <a href="#"><i className="fa fa-angle-right"></i></a>
+                                        <div className="dropdown all-msg-toolbar" data-intro='Click to send message.'>
+                                            <span className="btn btn-info-icon" data-toggle="dropdown" style={{background : '#216044'}} onClick={()=>sendMessage()}>Send</span>                                            
                                         </div>
                                     </div>
                                     <LatestMessagesComponent active={active}/>
@@ -97,11 +138,22 @@ const MailBox =  () => {
                     {/* <!-- Your Profile Views Chart END--> */}
 
                     <RequestModal showModal={showModal} setShowModal={setShowModal} />
+
                 </div>
             </div>
+            <button className="btn btn-info-icon" style={{background : '#216044', position :'fixed' , right : '40px' , bottom : '50px'}} onClick={()=>introJs().start()}>Intro ?</button>
         </main>
+        <Toaster />
+
         </Fragment>
 );
 }
+MailBox.propTypes = {
+    auth: PropTypes.object.isRequired,
+};
 
-export default MailBox;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+  
+export default connect(mapStateToProps)(MailBox);

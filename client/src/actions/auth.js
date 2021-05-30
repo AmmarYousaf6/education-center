@@ -12,28 +12,66 @@ import {
   LOGOUT,
   CLEAR_PROFILE,
   RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAIL
+  RESET_PASSWORD_FAIL ,
+  NOTIFICATIONS_FETCHED
 } from './types';
 
 import setAuthToken from '../utils/setAuthToken';
 
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
-export const loadUser = () => async dispatch => {
+export const loadUserAfterWait = () => async dispatch => {
+  //Make sure the token does not exist
+  for(let i =0 ; i < 20000 ; i++)
+    {
+      console.log("wait");
+    }
+  const headers = {};  
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+    headers = { Authorization: `Bearer ${localStorage.token}` };
+  }
 
+  try {
+    const res = await axios.get(apiUrl+'users' , { headers } );
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data.user
+    });
+    window.location.href="/";
+  } catch (err) {
+    console.table("Error occured" , err);
+    dispatch({
+      type: AUTH_ERROR ,
+      payload : "waiting"
+    });
+  }
+};
+export const loadUser = () => async dispatch => {
+  //Make sure the token does not exist
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 
   try {
     const res = await axios.get(apiUrl+'users');
+
+    //Fetching pending invites
+    const resultInvites = await axios.get(apiUrl+'users/my-pending-invites');
+    
+    console.log("Data we have" , res , resultInvites.data.data , "<<<:"); 
     dispatch({
       type: USER_LOADED,
       payload: res.data.user
     });
+    dispatch({
+      type: NOTIFICATIONS_FETCHED,
+      payload: resultInvites.data.data
+    });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR
+      type: AUTH_ERROR ,
+      payload : "simple loading"
     });
   }
 };

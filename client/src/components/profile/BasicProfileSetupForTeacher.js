@@ -26,13 +26,14 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
     const [beingSaved, setBeingSaved] = useState(false);
     const [formData, setFormData] = useState({
         experience: '',
+        summary : '' ,
         qualification: '',
         age: '',
         salary: '',
         introduction: '',
         curriculum: ''
     });
-    const { experience, qualification, age, salary, introduction, curriculum } = formData;
+    const { experience, qualification, age, salary, introduction, curriculum , summary } = formData;
 
     const [timeMonday, setTimeMonday] = useState({ day: 'Monday', start: "00:00", end: "23:59" });
     const [timeTuesday, setTimeTuesday] = useState({ day: 'Tuesday', start: "02:00", end: "10:59" });
@@ -40,6 +41,8 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
 
     const [timeThursday, setTimeThursday] = useState({ day: 'Thursday', start: "02:00", end: "10:59" });
     const [timeFriday, setTimeFriday] = useState({ day: 'Friday', start: "00:00", end: "23:59" });
+    const [timeSaturday, setTimeSaturday] = useState({ day: 'Saturday', start: "02:00", end: "10:59" });
+    const [timeSunday, setTimeSunday] = useState({ day: 'Sunday', start: "00:00", end: "23:59" });
 
     const [timeSlot, setTimeSlot] = useState([]);
 
@@ -67,7 +70,15 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         { name: "Computer Science", id: "computerScience" },
         { name: "Physics", id: "physics" },
         { name: "Chemistry", id: "chemistry" },
-        { name: "Bio", id: "bio" },
+        {name : "Biology" , id : "biology" },
+        {name : "Business" , id : "business" },
+        {name : "Economics" , id : "economics" },
+        {name : "Accounting" , id : "accounting" },
+        {name : "Sociology" , id : "sociology" },
+        {name : "Psychology" , id : "psychology" },
+        {name : "Art" , id : "art" },
+        {name : "FSc/FA" , id  : "fsc/fa" },
+        {name : "Holy Quran" , id  : "holyQuran" }
     ];
 
     const gradeList = [
@@ -98,6 +109,10 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
             setTimeThursday({ start: time.start, end: time.end, day: day });
         } else if (day == 'Friday') {
             setTimeFriday({ start: time.start, end: time.end, day: day });
+        }else if (day == 'Saturday') {
+            setTimeSaturday({ start: time.start, end: time.end, day: day });
+        }else if (day == 'Sunday') {
+            setTimeSunday({ start: time.start, end: time.end, day: day });
         }
         //setTimeSlot([{day: 'Monday', start: time.start, end: time.end}, ...timeSlot]);
     }
@@ -145,7 +160,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
         if (validateForm()) {
             return;
         }
-        let timeSlot = { timeMonday, timeTuesday, timeWednesday , timeThursday , timeFriday  };
+        let timeSlot = { timeMonday, timeTuesday, timeWednesday , timeThursday , timeFriday , timeSaturday , timeSunday  };
         setTimeSlot(timeSlot);
         let postData = { 'subjects': subject, 'grades': grade, 'target_area': locationValue, 'slots': timeSlot, 'userType': userType }
         const data = new FormData();
@@ -188,8 +203,41 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                 <div className="row placeani">
                                     <div className="col-lg-12">
                                         <div className="row">
+                                            
+                                            <div className="col-lg-4 mt-5">
+                                                <div className="form-group">
+                                                    <div className="input-group">
+                                                        <input id="file-upload" type="file" name="file" onChange={changeHandler} />
+
+                                                        {isSelected && (
+                                                            <img className="image-upload-ph" src={fileUrl} />
+                                                        )}
+                                                        <label htmlFor="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
+                                                            <i className="fa fa-cloud-upload"></i> Upload Your Picture
+                                                    </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-8">
+                                                <div className="form-group">
+                                                    <label className="col-form-label">Summary </label>
+                                                    <div className="input-group">
+                                                        <input
+                                                            name="summary"
+                                                            placeholder="Summary"
+                                                            className="form-control"
+                                                            required=""
+                                                            value={summary}
+                                                            onChange={e => onChange(e)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Experience (Years)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="experience"
@@ -206,6 +254,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Qualification</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="qualification"
@@ -225,6 +274,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                <label className="col-form-label">Age (Years)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="age"
@@ -241,6 +291,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Salary (Monthly)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="salary"
@@ -257,9 +308,10 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                             </div>
                                         </div>
 
-                                        <div className="row">
+                                        {/* <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Video link</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="introduction"
@@ -274,10 +326,11 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Subjects</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={subjectList} // Options to display in the dropdown
@@ -293,6 +346,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
 
                                             <div className="col-lg-6">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Grades</label>
                                                     <div className="input-group">
                                                         <Multiselect
                                                             options={gradeList} // Options to display in the dropdown
@@ -310,6 +364,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="form-group">
+                                                    <label className="col-form-label">Areas</label>
                                                     <div className="input-group">
                                                         <GooglePlacesAutocomplete
                                                             placeholder="Select areas"
@@ -324,7 +379,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                     {locationValue.map(value => (
                                                         <div className="suggested-items-sty" key={value.placeId}>
                                                             {value.location}
-                                                            <span className="close-place">X</span>
+                                                            <span className="close-place" onClick={()=>locationValue.filter(l=>l.placeId != value.placeId)}> X</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -359,7 +414,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                         pickerClassName="range-class"
                                                     />
 
-                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Wednesday </span>StartTime : {timeTuesday.start} - EndTime : {timeTuesday.end} </div>
+                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Wednesday </span>StartTime : {timeWednesday.start} - EndTime : {timeWednesday.end} </div>
                                                     <TimeRangeSlider
                                                         disabled={false}
                                                         format={24}
@@ -372,7 +427,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                         pickerClassName="range-class"
                                                     />
 
-                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Thursday </span>StartTime : {timeTuesday.start} - EndTime : {timeTuesday.end} </div>
+                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Thursday </span>StartTime : {timeThursday.start} - EndTime : {timeThursday.end} </div>
                                                     <TimeRangeSlider
                                                         disabled={false}
                                                         format={24}
@@ -385,7 +440,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                         pickerClassName="range-class"
                                                     />
 
-                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Friday </span>StartTime : {timeTuesday.start} - EndTime : {timeTuesday.end} </div>
+                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Friday </span>StartTime : {timeFriday.start} - EndTime : {timeFriday.end} </div>
                                                     <TimeRangeSlider
                                                         disabled={false}
                                                         format={24}
@@ -397,25 +452,38 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                         value={timeFriday}
                                                         pickerClassName="range-class"
                                                     />
+
+                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Saturday </span>StartTime : {timeSaturday.start} - EndTime : {timeSaturday.end} </div>
+                                                    <TimeRangeSlider
+                                                        disabled={false}
+                                                        format={24}
+                                                        maxValue={"23:59"}
+                                                        minValue={"00:00"}
+                                                        name={"time_range"}
+                                                        onChange={(t) => timeChangeHandler(t, 'Saturday')}
+                                                        step={15}
+                                                        value={timeSaturday}
+                                                        pickerClassName="range-class"
+                                                    />
+
+                                                    <div className="header-day-parent slider-label mt-3"><span className="header-day">Sunday </span>StartTime : {timeSunday.start} - EndTime : {timeSunday.end} </div>
+                                                    <TimeRangeSlider
+                                                        disabled={false}
+                                                        format={24}
+                                                        maxValue={"23:59"}
+                                                        minValue={"00:00"}
+                                                        name={"time_range"}
+                                                        onChange={(t) => timeChangeHandler(t, 'Sunday')}
+                                                        step={15}
+                                                        value={timeSunday}
+                                                        pickerClassName="range-class"
+                                                    />
+
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="col-lg-12 mt-5">
-                                            <div className="form-group">
-                                                <div className="input-group">
-                                                    <input id="file-upload" type="file" name="file" onChange={changeHandler} />
 
-                                                    {isSelected && (
-                                                        <img className="image-upload-ph" src={fileUrl} />
-                                                    )}
-                                                    <label htmlFor="file-upload" className="custom-file-upload" style={{ position: 'unset' }}>
-                                                        <i className="fa fa-cloud-upload"></i> Upload Your Picture
-                                                </label>
-
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div className="col-lg-12 text-right">
                                             <button type="reset" className="btn" onClick={saveChanges}>
                                             {!beingSaved && ('Save Changes')}
@@ -423,6 +491,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                     <img src="assets/images/loader.gif" className="ratingLoader" />
                                                 )}
                                                 </button>
+                                                <button type="reset" className="btn-secondry" onClick={() => history.push('/')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>

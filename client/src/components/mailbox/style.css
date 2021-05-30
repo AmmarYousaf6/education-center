@@ -658,6 +658,7 @@
 }
 .menu-links .nav .add-menu-left ul li a:hover{
 	background-color:rgba(0,0,0,0);
+	background-color: #F2F2F2;
 }
 .menu-adv-title{
 	font-size: 16px;
@@ -2109,7 +2110,6 @@ button.back-to-top {
     padding-left: 10px;
 }
 .heading-bx.left p{
-	max-width:500px;
 	margin-bottom:0;
 }
 .title-head span{
@@ -3241,4 +3241,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#391800', end
 	.courses-filter {
 		padding: 15px 15px 0 15px;
 	}
+}
+.input-label{
+    float : left !important;
+}
+.no-padding{
+	padding: 0px !important;
 }

@@ -11,6 +11,8 @@
     "create-react-class": "^15.7.0",
     "dotenv": "^8.2.0",
     "framer-motion": "^3.7.0",
+    "intro.js": "^3.4.0",
+    "introjs": "^0.2.2",
     "leaflet": "^1.7.1",
     "moment": "^2.24.0",
     "multiselect-react-dropdown": "^1.6.7",

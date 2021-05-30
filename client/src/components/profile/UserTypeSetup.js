@@ -45,7 +45,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                                 <div className="pricingtable-price"> 
                                                     <span className="pricingtable-bx" style={{fontSize: "55px" } }>Teacher</span>
                                                     <span className="pricingtable-type-cust">
-                                                        <img src="assets/images/testimonials/pic1.jpg" width="100" alt="" className="border-radius-circle"/>
+                                                        <img src="https://res.cloudinary.com/home-tutor/image/upload/v1622366385/edu_tutor/pic1_whq4vb.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
                                                 </div>
                                                 <div className="pricingtable-title">
@@ -64,7 +64,7 @@ const UserTypeSetup = ({ login, clearAlert, isAuthenticated, auth: {user}, setUs
                                                 <div className="pricingtable-price"> 
                                                     <span className="pricingtable-bx" style={{fontSize: "55px" } }>Parent</span>
                                                     <span className="pricingtable-type-cust">
-                                                    <img src="assets/images/testimonials/pic2.jpg" width="100" alt="" className="border-radius-circle"/>
+                                                    <img src="https://res.cloudinary.com/home-tutor/image/upload/v1622366385/edu_tutor/pic2_plzdj1.jpg" width="100" alt="" className="border-radius-circle"/>
                                                     </span>
                                                 </div>
                                                 <div className="pricingtable-title">

@@ -45,8 +45,8 @@ const ChangePassword = ({ login, clearAlert, isAuthenticated, match, setAlert, r
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>New Password</label>
                                             <input 
+                                                placeholder="New Password"
                                                 name="password" 
                                                 type="password" 
                                                 required="" 
@@ -61,8 +61,8 @@ const ChangePassword = ({ login, clearAlert, isAuthenticated, match, setAlert, r
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <div className="input-group">
-                                            <label>Confirm Password</label>
                                             <input 
+                                                placeholder="Confirm Password"
                                                 name="confirmPassword" 
                                                 type="password" 
                                                 required="" 

@@ -27,12 +27,12 @@ import {
     num_rows : 10,
     search : '' ,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
+    searchString : '' ,
     error: String | null
   };
   
 const filterStore = (state = initialState, action) => {
     const { type, payload } = action;
-    console.log("In filter store reducer :" , type , " ::  " , payload);
    switch (action.type) {
         case SORT_BY_FEE:
             return {
@@ -63,6 +63,7 @@ const filterStore = (state = initialState, action) => {
             //load data
             return {
                 ...state ,
+                searchString : state.search ,
                 status : 'succeeded' ,
                 results : payload
              };

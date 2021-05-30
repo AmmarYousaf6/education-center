@@ -31,7 +31,7 @@ const segmentStyle = {
   width: "400px",
   top: "20px",
   left: "50px",
-  maxHeight: "550px",
+  height: "320px",
   overflow: "auto",
   padding: "20px"
 };

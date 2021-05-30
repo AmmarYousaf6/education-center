@@ -17,6 +17,7 @@ const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL;
 const apiUrl = process.env.REACT_APP_APP_SERVER_URL;
 
 
+
 const backdrop = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 }
@@ -32,48 +33,14 @@ const modalTransitions = {
         transition: { delay: 0.5 }
     }
 }
-const RequestModal = ({ showModal, setShowModal }) => {
-    const [inviteLst , setInviteLst ] = useState(false);
+const TermsModal = ({ showModal, setShowModal }) => {
+    const [feedBack , setFeedBack ] = useState(false);
     const [rating , setRating ] = useState(false);
     const [beingUpdated , setBeingUpdated ] = useState(false);
     const [error_message  , setErrorMessage ] = useState(null);
 
-    const fetchRequests =async () =>{
-        setBeingUpdated(true);
-        if (localStorage.token) {
-            setAuthToken(localStorage.token);
-        }
-        let resultToReturn = [];
-        try {
-            //Making an object of header authorization
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            const requestLstData = await axios.get(`${apiUrl}users/my-pending-invites` , {} , config);
-            console.log("Requests fetched " , requestLstData);
-            if (!requestLstData.data) {
-                throw "Something went wrong. Please try again";
-            }    
-            setInviteLst(requestLstData.data.data);        
 
-        } catch (err) {
-            console.log("Error occured "   , err);
-            if(err.config && err.config.url){
-                setErrorMessage("Connection error occured.");
-                setTimeout(()=>setErrorMessage(false) , 5000)
-
-            }else{
-                toast.error(err);
-                setShowModal(false);
-            }
-        } finally {
-            setBeingUpdated(false);
-        }
-    }
     useEffect(() => {
-        fetchRequests();
         console.log("Show rating modal details", showModal)
     }, []);
     const star = {
@@ -81,7 +48,6 @@ const RequestModal = ({ showModal, setShowModal }) => {
         count: 5,
         color1: '#216044',
         color2: '#216044',
-        colot: '#216044',
         emptyIcon: `<i className='far fa-star'></i>`,
         halfIcon: `<i className='fa fa-star-half-alt'></i>`,
         fullIcon: `<i className='fa fa-star'></i>`,
@@ -119,8 +85,12 @@ const RequestModal = ({ showModal, setShowModal }) => {
             if(!rating || isNaN(rating)){
                 throw {msg : "Please select stars to rate" , validationFailed : true };
             }
+            if(!feedBack || feedBack.length  < 10){
+                throw { msg : "Please write feedback of at least 10 characters." , validationFailed : true };
+            }
             //ratedTo, rating, feedback
             let dataBody = {
+                feedBack : feedBack ,
                 rating : rating ,
                 ratedTo : teacherInfo.id
             };
@@ -152,46 +122,8 @@ const RequestModal = ({ showModal, setShowModal }) => {
         return resultToReturn;
     }
 
-    const updateRequest = async (id, status) => {
-        console.log("Session id" , id);
-        setBeingUpdated(true);
-        
-        //check if setModal has actually teacher data
-        let data = [];
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        if (localStorage.token) {
-            setAuthToken(localStorage.token);
-        }
-        try {
-            let dataBody = {
-                id : id ,
-                status : status
-            };
-            const statusChanged = await axios.post(`${apiUrl}users/invite` , JSON.stringify(dataBody) , config);
-            if (!statusChanged.data) {
-                throw "Something went wrong. Please try again";
-            }            
-            toast.success(statusChanged.data.message);
-            setShowModal(false);
-
-            fetchRequests();
-        } catch (err) {
-            console.log("Error occured "   , err);
-            if(err.config && err.config.url){
-                setErrorMessage("Connection error occured.");
-                setTimeout(()=>setErrorMessage(false) , 5000)
-
-            }else{
-                toast.error(err);
-                setShowModal(false);
-            }
-        } finally {
-            setBeingUpdated(false);
-        }
+    const feedbackProvided = (evt) => {
+        setFeedBack(evt.target.value);
     }
 
     return (
@@ -203,7 +135,6 @@ const RequestModal = ({ showModal, setShowModal }) => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        key={'12'}
                     >
                         <motion.div className="modal-body"
                             variants={modalTransitions}
@@ -215,57 +146,29 @@ const RequestModal = ({ showModal, setShowModal }) => {
                             <button className="btn btn-danger margin-fix-btm" onClick={()=>setShowModal(false)}>
                                Cancel 
                             </button> */}
-                           
+
                             <div className="container d-flex justify-content-center">
-                                    <div className="card mt-5 pb-5" style={{width: '500px'}}>
+                                    <div className="card mt-5 pb-5">
                                         <div className="d-flex flex-row justify-content-between p-3 adiv "> 
                                             <i className="fas "></i> 
-                                            <span className="pb-3">Requests List</span> 
-                                            <i className="closeModal" onClick={()=>setShowModal(false)}>x</i> 
-                                        </div>
+                                            <span className="pb-3">Terms and conditions</span> 
+                                            <i className="closeModal" onClick={()=>setShowModal(false)}>x</i> </div>
                                         <div className="mt-2 p-4 text-center">
-                                        {inviteLst && (
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sr.</th>
-                                                        <th>Name</th>
-                                                        <th>Gender</th>
-                                                        <th>Summary</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {inviteLst.map((inv , k)=>(
-                                                    <tr key={inv.session_id}>
-                                                        <td>{k+1}</td>
-                                                        <td>{inv.name}</td>
-                                                        <td>{inv.gender}</td>
-                                                        <td style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak : 'break-all'}}>{inv.summary}</td>
-                                                        <td>
-                                                        <button className="btn btn-xs " style={{padding: "5px"}} onClick={()=>updateRequest(inv.session_id, 'accepted')}>Accept</button>
-                                                        <button className="btn btn-xs btn-danger m-1" style={{padding: "5px"}} onClick={()=>updateRequest(inv.session_id, 'reject')}>Reject</button>
-                                                        </td>
-                                                    </tr>
-                                                    ))
-                                                    }
-                                                    
-
-                                                </tbody>
-                                            </table>
-                                        )}
-                                        {typeof inviteLst == 'object' && inviteLst.length == 0 && (<span>No requests found</span>)}
+                                            <div className="form-group mt-4"> 
+                                            </div>
                                             { error_message && 
                                                 (<div className="validation-errors">{error_message}</div>)
                                             }
                                             <div className="mt-2"> 
-                                                <button type="button" className="btn btn-primary btn-block">
+                                                <button type="button" className="btn btn-primary btn-block" onClick={(evt)=>rate()}>
+                                                    <span>Accept</span>
                                                     {beingUpdated && (
                                                         <img src="assets/images/loader.gif" className="ratingLoader" />
                                                         )
                                                     }
                                                 </button> 
                                             </div>
+                                            <p className="mt-3" onClick={()=>setShowModal(false)}>Reject</p>
                                         </div>
                                     </div>
                                 {/* <div className="card p-3 py-4">
@@ -282,8 +185,9 @@ const RequestModal = ({ showModal, setShowModal }) => {
             }
             <Toaster />
         </AnimatePresence>
+
     )
 }
 
-export default RequestModal;
+export default TermsModal;
 

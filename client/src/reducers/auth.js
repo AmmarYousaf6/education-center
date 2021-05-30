@@ -7,20 +7,27 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     ACCOUNT_DELETED,
-    FORGET_PASSWORD_FAIL, FORGET_PASSWORD_SUCCESS, RESET_PASSWORD_SUCCESS
+    FORGET_PASSWORD_FAIL, FORGET_PASSWORD_SUCCESS, RESET_PASSWORD_SUCCESS ,
+    NOTIFICATIONS_FETCHED
   } from '../actions/types';
   
   const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
-    user: null
+    user: null ,
+    notifications : []
   };
   
   export default function(state = initialState, action) {
-    const { type, payload } = action;
-  
+    console.log("I am auth reducer" , action);
+    const { type, payload } = action;  
     switch (type) {
+      case NOTIFICATIONS_FETCHED :
+        return {
+          ...state,
+          notifications: payload
+        };
       case USER_LOADED:
         return {
           ...state,

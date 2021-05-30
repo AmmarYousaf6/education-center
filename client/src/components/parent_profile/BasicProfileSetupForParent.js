@@ -1,4 +1,4 @@
-import React, { Fragment, useState  } from 'react';
+import React, { Fragment, useState , useEffect  } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -34,7 +34,28 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
     const handleSubmission = () => {
 		// console.log(selectedFile);
 	};
+    useEffect (()=>{
+        const updateAsParent = async ()=>{
+            console.log("User type parent selected");
+            try {            
+                let fd = new FormData();
+                fd.append("userType" , 'parent');
+                const config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                };
 
+                const updateProfile = await axios.post(`${apiUrl}users/update-profile-to-parent` , fd , config);
+                if (!updateProfile.data) {
+                    throw "Something went wrong while updating basic info to parent. Please try again";
+                }            
+            } catch (err) {
+                console.log("Error occured basic info provision. basic info of teacher"   , err);
+            }
+        }
+        updateAsParent();
+    } , []);
     const saveChanges = async () => {
         console.log("What will be saved " , fileUrl , " Description" , profileDesc)
         setBeingSaved(true);
@@ -72,7 +93,7 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
                 throw "Something went wrong. Please try again";
             }            
             toast.success(updateProfile.data.message)
-            history.push("/");        
+            window.location.href = '/';     
 
         } catch (err) {
             console.log("Error occured "   , err);
@@ -150,6 +171,8 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
                                                                     )
                                                                 }
                                                             </a>
+                                                            <button type="reset" className="btn btn-secondary m-3" onClick={() => window.location.href="/"}>Skip for Now</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
