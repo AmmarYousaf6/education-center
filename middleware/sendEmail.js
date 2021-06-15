@@ -28,6 +28,7 @@ const sendEmailForgotPassword = async (req,res,next) => {
         subject: res.subject,
         html: html
     };
+    console.log('7777777777777')
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log("New customer email send error ::" , error);
@@ -108,6 +109,21 @@ const sendCustomEmail = async (req,res,next) => {
 
     // Adjusting message
     html = html.replace(" <--Message Placeholder-->" , message);
+    // var transporter = nodemailer.createTransport({
+    //     host : 'smtp.gmail.com' ,
+    //     port : 465 ,
+    //     service: 'gmail',
+    //     auth: {
+    //         user: 'inquiries.hometutor@gmail.com',
+    //         pass: 'COP21hometutor^^'
+    //     }
+    // });
+    // var mailOptions = {
+    //     from: 'inquiries.hometutor@gmail.com',
+    //     to: process.env.GMAIL_EMAIL ,
+    //     subject: subject,
+    //     html: html
+    // };
     var transporter = nodemailer.createTransport({
         host: 'smtp.hostinger.com',
         service: 'hostinger',
@@ -118,8 +134,8 @@ const sendCustomEmail = async (req,res,next) => {
         }
     });
     var mailOptions = {
-        from: 'inquiries.hometutor@gmail.com',
-        to: 'inquiries.hometutor@gmail.com' ,
+        from: 'admin@zubnee.com',
+        to: 'inquiries.hometutor@gmail.com',
         subject: subject,
         html: html
     };
