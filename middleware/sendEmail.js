@@ -119,7 +119,7 @@ const sendCustomEmail = async (req,res,next) => {
     });
     var mailOptions = {
         from: 'inquiries.hometutor@gmail.com',
-        to: process.env.GMAIL_EMAIL ,
+        to: 'inquiries.hometutor@gmail.com' ,
         subject: subject,
         html: html
     };
@@ -127,7 +127,7 @@ const sendCustomEmail = async (req,res,next) => {
         if (error) {
             console.log("While senig email error:" , error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log('Email sent: ' + info.response + 'to '+process.env.GMAIL_EMAIL);
         
             if(res.status_message = true){
                 res.status(200).json({
