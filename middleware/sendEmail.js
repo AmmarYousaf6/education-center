@@ -109,12 +109,12 @@ const sendCustomEmail = async (req,res,next) => {
     // Adjusting message
     html = html.replace(" <--Message Placeholder-->" , message);
     var transporter = nodemailer.createTransport({
-        host : 'smtp.gmail.com' ,
-        port : 465 ,
-        service: 'gmail',
+        host: 'smtp.hostinger.com',
+        service: 'hostinger',
+        port: 587 ,
         auth: {
-            user: 'inquiries.hometutor@gmail.com',
-            pass: 'COP21hometutor^^'
+            user: process.env.GMAIL_EMAIL,
+            pass: process.env.GMAIL_PASSWORD
         }
     });
     var mailOptions = {
