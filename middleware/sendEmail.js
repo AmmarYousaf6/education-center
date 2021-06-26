@@ -28,7 +28,6 @@ const sendEmailForgotPassword = async (req,res,next) => {
         subject: res.subject,
         html: html
     };
-    console.log('7777777777777')
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log("New customer email send error ::" , error);
@@ -109,33 +108,18 @@ const sendCustomEmail = async (req,res,next) => {
 
     // Adjusting message
     html = html.replace(" <--Message Placeholder-->" , message);
-    // var transporter = nodemailer.createTransport({
-    //     host : 'smtp.gmail.com' ,
-    //     port : 465 ,
-    //     service: 'gmail',
-    //     auth: {
-    //         user: 'inquiries.hometutor@gmail.com',
-    //         pass: 'COP21hometutor^^'
-    //     }
-    // });
-    // var mailOptions = {
-    //     from: 'inquiries.hometutor@gmail.com',
-    //     to: process.env.GMAIL_EMAIL ,
-    //     subject: subject,
-    //     html: html
-    // };
     var transporter = nodemailer.createTransport({
-        host: 'smtp.hostinger.com',
-        service: 'hostinger',
-        port: 587 ,
+        host : 'smtp.gmail.com' ,
+        port : 465 ,
+        service: 'gmail',
         auth: {
-            user: process.env.GMAIL_EMAIL,
-            pass: process.env.GMAIL_PASSWORD
+            user: 'inquiries.hometutor@gmail.com',
+            pass: 'COP21hometutor^^'
         }
     });
     var mailOptions = {
-        from: 'admin@zubnee.com',
-        to: 'inquiries.hometutor@gmail.com',
+        from: 'inquiries.hometutor@gmail.com',
+        to: process.env.GMAIL_EMAIL ,
         subject: subject,
         html: html
     };
@@ -143,7 +127,7 @@ const sendCustomEmail = async (req,res,next) => {
         if (error) {
             console.log("While senig email error:" , error);
         } else {
-            console.log('Email sent: ' + info.response + 'to '+process.env.GMAIL_EMAIL);
+            console.log('Email sent: ' + info.response);
         
             if(res.status_message = true){
                 res.status(200).json({

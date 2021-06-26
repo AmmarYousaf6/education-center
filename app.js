@@ -16,6 +16,7 @@ const mapRouter = require('./routes/map');
 const settingRouter = require('./routes/setting');
 const contactRouter = require('./routes/contact');
 const testimonialsRouter = require('./routes/testimonials');
+const blogsRouter = require('./routes/blogRoutes');
 
 
 var app = express();
@@ -75,6 +76,7 @@ app.use('/map', mapRouter );
 app.use('/settings', settingRouter);
 app.use('/contactus', contactRouter);
 app.use('/testimonials', testimonialsRouter);
+app.use('/blogs', blogsRouter);
 
 
 app.get('*', (req,res) =>{

@@ -1157,14 +1157,10 @@ const search = async (req,res) => {
     }
     //Make sure the teacher himself is not in the list
     let token = req.headers.authorization;
-    if(token){
-        let userInfo = jwtDecode(token);
-        let id = userInfo.userID;
-        values.push(id);
-    }
-    
+    let userInfo = jwtDecode(token);
+    let id = userInfo.userID;
     let userIdQuery = ++counter;
-    
+    values.push(id);
     
     // sort_fee: 1, 
     let orderQuery = ` order by LENGTH(u.salary) ${req.body.sort_fee == '1' ? 'desc' : 'asc'}, u.salary ${req.body.sort_fee == '1' ? 'desc' : 'asc'}`;
