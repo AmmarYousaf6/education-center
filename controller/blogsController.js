@@ -41,7 +41,7 @@ async function addComment(req , resp , next){
         const query = await database.query(text, values).then(async (response) => {
             let data = response.rows[0];
             const getComments = {
-                text : 'SELECT users.name , users.image , comments.* FROM comments join users on comments.user_id=users.id WHERE blog_id = $1',
+                text : 'SELECT users.name , users.image , comments.* FROM comments join users on comments.user_id=users.id WHERE blog_id = $1  ORDER BY id DESC',
                 values : [blog_id]
             }
             const commentsData  = await database.query(getComments);
@@ -63,7 +63,7 @@ async function addComment(req , resp , next){
 async function getComments(req , resp){
     try {
             const getComments = {
-                text : 'SELECT users.name , users.image , comments.* FROM comments join users on comments.user_id=users.id WHERE blog_id = $1',
+                text : 'SELECT users.name , users.image , comments.* FROM comments join users on comments.user_id=users.id WHERE blog_id = $1 ORDER BY id DESC',
                 values : [req.params.id]
             }
             const commentsData  = await database.query(getComments);
