@@ -1182,6 +1182,7 @@ const search = async (req,res) => {
             u.id, 
             u.name, 
             u.image, 
+            u.status,
             u.qualification, 
             u.curriculum, 
             u.duration_of_commitment, 
@@ -1200,7 +1201,7 @@ const search = async (req,res) => {
             left join user_target_areas uta on u.id = uta.user_id
           where 
             u.user_type = $1 ${classQuery} ${subjectQuery} ${genderQuery} ${experienceQuery} ${minSalaryQuery} ${maxSalaryQuery} ${searchText}
-            and u.id != $${userIdQuery}
+            and u.id != $${userIdQuery} and u.status = '1'
             GROUP by 
             u.id, 
             u.name, 
