@@ -621,6 +621,10 @@ const getProfileById = async (req,res) => {
         text : 'SELECT count(*) FROM profile_views WHERE teacher_id = $1',
         values : [userId]
     }
+    const getFeedback = {
+        text : 'SELECT * FROM ratings WHERE rated_to = $1',
+        values : [userId]
+    }
     try {
         const response  = await database.query(getUserById);
         
@@ -641,6 +645,7 @@ const getProfileById = async (req,res) => {
                 const rating  = await database.query(getAverageRating);
                 const allRatings = await database.query(getAllRatings);
                 const viewsCount = await database.query(getViewCount);
+                const feedback = await database.query(getFeedback);
                 // Map data
                 data.rating = rating.rows[0].averagerating;
                 data.subjects = subjects.rows;
@@ -648,7 +653,8 @@ const getProfileById = async (req,res) => {
                 data.areas = areas.rows;
                 data.slots = slots.rows;
                 data.ratings = allRatings.rows; 
-                data.viewsCount = viewsCount.rows;               
+                data.viewsCount = viewsCount.rows;        
+                data.feedback = feedback.rows;       
             }
             res.status(200).json({
                 status: 1,
