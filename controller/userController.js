@@ -622,7 +622,7 @@ const getProfileById = async (req,res) => {
         values : [userId]
     }
     const getFeedback = {
-        text : 'SELECT * FROM ratings WHERE rated_to = $1',
+        text : 'SELECT ratings.*,users.name,users.image FROM ratings LEFT JOIN users ON ratings.rated_to = users.id WHERE rated_to = $1',
         values : [userId]
     }
     try {
