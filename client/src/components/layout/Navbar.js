@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
@@ -33,8 +33,8 @@ const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logo
                                 <ul>
                                     {!isAuthenticated && (
                                         <Fragment>
-                                            <li><Link to="/login">Login</Link></li>
-                                            <li><Link to="/register">Register</Link></li>
+                                            <li><NavLink activeStyle={{color: '#efbb20'}} to="/login">Login</NavLink></li>
+                                            <li><NavLink activeStyle={{color: '#efbb20'}} to="/register">Register</NavLink></li>
                                         </Fragment>
                                     )}
                                     {isAuthenticated && (
@@ -53,7 +53,7 @@ const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logo
                         <div className="container clearfix">
                             
                             <div className="menu-logo">
-                                <Link to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt="" /></Link>
+                                <NavLink activeStyle={{color: '#efbb20'}} to="/"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt="" /></NavLink>
                             </div>
                             
                             <button className="navbar-toggler collapsed menuicon justify-content-end" 
@@ -94,14 +94,14 @@ const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logo
                                     <a href="index.html"><img src="https://res.cloudinary.com/home-tutor/image/upload/v1617753560/edu_tutor/default-monochrome_v6idag.svg" alt="" /></a>
                                 </div>
                                 <ul className="nav navbar-nav">	
-                                    <li className="active"><Link to="/">Home</Link></li>
-                                    <li ><Link to="/about">About</Link></li>
+                                    <li ><NavLink activeStyle={{color: ''}} to="/">Home</NavLink></li>
+                                    <li ><NavLink activeStyle={{color: '#efbb20'}} to="/about">About</NavLink></li>
                                     <li className="add-mega-menu">
                                         {/* <a href="javascript:;"> */}
-                                        <Link to="/how-it-works">
+                                        <NavLink activeStyle={{color: '#efbb20'}} to="/how-it-works">
                                             How it Works
                                             <i className="fa fa-chevron-down"></i>
-                                        </Link>
+                                        </NavLink>
                                         {/* </a> */}
                                         <ul className="sub-menu add-menu">
                                             <li className="add-menu-left">
@@ -114,9 +114,11 @@ const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logo
                                             </li>
                                         </ul>
                                     </li>
-                                    {/* <li ><Link to="/">Online Tutors</Link></li> */}
-                                    <li ><Link to="/contact">Contact Us</Link></li>
-                                    <li ><Link to="/search">Search</Link></li>
+                                    <li ><NavLink activeStyle={{color: '#efbb20'}} to="/blogs">Blogs</NavLink></li>
+
+                                    {/* <li ><NavLink activeStyle={{color: '#efbb20'}} to="/">Online Tutors</NavLink></li> */}
+                                    <li ><NavLink activeStyle={{color: '#efbb20'}} to="/contact">Contact Us</NavLink></li>
+                                    <li ><NavLink activeStyle={{color: '#efbb20'}} to="/search">Search</NavLink></li>
                                     {isAuthenticated && (
                                         <li><a href="#!">
                                             {user && (user.name)} 
@@ -126,8 +128,8 @@ const Navbar = ({ auth: { user, isAuthenticated, loading , notifications }, logo
                                                 <i className="fa fa-chevron-down"></i>
                                             </a>
                                         <ul className="sub-menu">
-                                            <li><Link to="/profile/update/basic">Profile</Link></li>
-                                            <li><Link to="/mailbox" >Mailbox</Link></li>
+                                            <li><NavLink activeStyle={{color: '#efbb20'}} to="/profile/update/basic">Profile</NavLink></li>
+                                            <li><NavLink activeStyle={{color: '#efbb20'}} to="/mailbox" >Mailbox</NavLink></li>
                                         </ul>
                                     </li>
                                     )}

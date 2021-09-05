@@ -163,7 +163,7 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
                                                             { error_message && 
                                                                 (<div className="validation-errors">{error_message}</div>)
                                                             }
-                                                            <a className="btn btn-next" onClick={saveChanges}>
+                                                            <a className="btn button-md btn-next" onClick={saveChanges}>
                                                                 <i className="fa fa-paper-plane"></i> Save
                                                                 {
                                                                   beingSaved && (
@@ -171,7 +171,7 @@ const BasicParentProfileSetup = ({ clearAlert, isAuthenticated, auth: {user}, pr
                                                                     )
                                                                 }
                                                             </a>
-                                                            <button type="reset" className="btn btn-secondary m-3" onClick={() => window.location.href="/"}>Skip for Now</button>
+                                                            <button type="reset" className="btn button-md btn-secondary m-3" onClick={() => window.location.href="/"}>Skip for Now</button>
 
                                                         </div>
                                                     </div>

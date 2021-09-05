@@ -80,6 +80,8 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                     case  "Wednesday" : setTimeWednesday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
                     case  "Thursday" : setTimeThursday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day }) ;break;
                     case  "Friday" : setTimeFriday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day })  ;break;
+                    case  "Saturday" : setTimeSaturday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day })  ;break;
+                    case  "Sunday" : setTimeSunday({ start: thisSlot.time.split("-")[0].trim(), end: thisSlot.time.split("-")[1].trim(), day: thisSlot.day })  ;break;
                 }
             }
 
@@ -282,18 +284,20 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-8">
+                                    <div className="col-lg-12">
                                                 <div className="form-group">
-                                                    <label className="col-form-label">Summary </label>
+                                                    <label className="col-form-label">Summary</label>
                                                     <div className="input-group">
-                                                        <input
+                                                        <textarea
                                                             name="summary"
                                                             placeholder="Summary"
                                                             className="form-control"
+                                                            style={{scrollY :"no-scroll"}}
                                                             required=""
                                                             value={summary}
                                                             onChange={e => onChange(e)}
-                                                        />
+                                                        >
+                                                        </textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -301,7 +305,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
-                                                    <label className="col-form-label">Experience</label>
+                                                    <label className="col-form-label">Experience (Years)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="experience"
@@ -338,7 +342,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="form-group">
-                                                    <label className="col-form-label">Age</label>
+                                                    <label className="col-form-label">Age (Years)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="age"
@@ -355,7 +359,7 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="form-group">
-                                                    <label className="col-form-label">Salary</label>
+                                                    <label className="col-form-label">Salary (Monthly)</label>
                                                     <div className="input-group">
                                                         <input
                                                             name="salary"
@@ -559,13 +563,13 @@ const TeacherProfileUpdate = ({ clearAlert, isAuthenticated, auth: { user }, pro
 
                                        
                                         <div className="col-lg-12 text-right">
-                                        <button type="reset" className="btn" onClick={saveChanges}>
+                                        <button type="reset" className="btn button-md " onClick={saveChanges}>
                                             {!beingSaved && ('Save Changes')}
                                                 {beingSaved && (
                                                     <img src="assets/images/loader.gif" className="ratingLoader" />
                                                 )}
                                                 </button>
-                                                <button type="reset" className="btn-secondry" onClick={() => fetchTeacherInfo()}>Cancel</button>
+                                                <button type="reset" className="btn ml-4 button-md btn-danger" onClick={() => fetchTeacherInfo()}>Cancel</button>
                                         </div>
 
                                     </div>

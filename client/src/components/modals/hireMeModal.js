@@ -109,10 +109,10 @@ const Modal = ({showModal , setShowModal}) =>{
                                             Click yes to hire me
                                         </small>
                                         <div>
-                                            <button className="btn margin-fix-btm mr-4  " onClick={()=>hire(showModal)}>
+                                            <button className="btn button-md margin-fix-btm mr-4  " onClick={()=>hire(showModal)}>
                                                 Yes 
                                             </button>
-                                            <button className="btn btn-danger margin-fix-btm" onClick={()=>setShowModal(false)}>
+                                            <button className="btn button-md btn-danger margin-fix-btm" onClick={()=>setShowModal(false)}>
                                                 Cancel 
                                             </button>
                                         </div>

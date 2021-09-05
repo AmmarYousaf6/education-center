@@ -49,7 +49,7 @@ const steps = [
       console.log("Introduction has exited" , stepIndex);
   }  
 //End of Introduction JS
-const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
+const MailBox =  ({ auth: { user, isAuthenticated, loading , notifications } }) => {
     let [active , setActive] = useState(0);
     //For modals
     const [showModal , setShowModal] = useState(false);
@@ -112,7 +112,12 @@ const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
                                 {/* Start of email menu bar component */}
                                 <div className="email-menu-bar">
                                     <div className="compose-mail" data-intro='To view Requests Click here!'>
-                                        <a className="btn btn-block text-light" onClick={()=>setShowModal(true)}>View Requests</a>
+                                        <a className="btn btn-block text-light" onClick={()=>setShowModal(true)}>
+                                            {notifications && notifications.length > 0 && (
+                                            <span className="badge badge-info" style={{margin: '5px'}}>{notifications.length}</span>
+                                                )}
+                                            View Requests
+                                        </a>
                                     </div>
                                     <div data-intro='Click on a recipient to start conversation.!'>
                                     {/* Start of Left User Menu List */}
@@ -127,7 +132,7 @@ const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
                                             <textarea type="text" value={message} className="form-control" placeholder="Type Message" rows={1} onChange={(evt)=>setMessage(evt.target.value)} />
                                         </div>
                                         <div className="dropdown all-msg-toolbar" data-intro='Click to send message.'>
-                                            <span className="btn btn-info-icon" data-toggle="dropdown" style={{background : '#216044'}} onClick={()=>sendMessage()}>Send</span>                                            
+                                            <span className="btn button-md ml-4" data-toggle="dropdown" style={{background : '#216044'}} onClick={()=>sendMessage()}>Send</span>                                            
                                         </div>
                                     </div>
                                     <LatestMessagesComponent active={active}/>
@@ -141,7 +146,15 @@ const MailBox =  ({ auth: { user, isAuthenticated, loading } }) => {
 
                 </div>
             </div>
-            <button className="btn btn-info-icon" style={{background : '#216044', position :'fixed' , right : '40px' , bottom : '50px'}} onClick={()=>introJs().start()}>Intro ?</button>
+            <div class="wrapper" style={{background : '#216044', position :'fixed' , right : '40px' , bottom : '50px'}} onClick={()=>introJs().start()}>
+            <button className="buttoni">
+                Intro? 
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            </div>
         </main>
         <Toaster />
 

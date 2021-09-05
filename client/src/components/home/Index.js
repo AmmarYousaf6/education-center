@@ -100,8 +100,8 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                                 <form className="cours-search">
                                     {/* <div className="input-group main-search"> */}
                                         {/* <input type="text" className="form-control" onChange={handleValueChange} placeholder="Search tutors by name or location"/> */}
-                                        <div className="input-group-append">
-                                            <button to="/search" className="btn" style={{width : '100%'}} onClick={()=>applySearch()}>Search</button> 
+                                        <div class="wrap">
+                                          <button class="button" onClick={()=>applySearch()}>Search</button>
                                         </div>
                                     {/* </div> */}
                                 </form>
@@ -114,10 +114,15 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                         </div>
                     </div>
                 </div>
+                {/* Map */}
+                <div className="row">
+                    <MapComponent/>
+                </div>
+                {/*  */}
 
                 {/*  */}
                 
-                <div className="section-area section-sp1">
+                <div className="section-area section-sp1" style={{marginTop: '612px'}}>
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12 m-b30">
@@ -198,12 +203,7 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                         </div>
                     </div>
                 </div>
-                {/* Map */}
-                <div className="row">
-                    <MapComponent/>
-                </div>
-                {/*  */}
-                <div className="section-area section-sp2" style={{marginTop:'600px'}}>
+                <div className="section-area section-sp2" >
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12 heading-bx left">
@@ -224,7 +224,7 @@ const Index =  ({inpSearch , searchMap , queryData}) => {
                                                 <p>{tm.role}</p>
                                             </div>
                                             <div className="testimonial-content">
-                                                <p>{tm.description}</p>
+                                                <p style={{textAlign:'left'}}>{tm.description}</p>
                                             </div>
                                         </div>
                                     </div>

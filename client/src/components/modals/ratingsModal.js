@@ -171,7 +171,7 @@ const RatingModal = ({ showModal, setShowModal }) => {
                                                     }
                                                 </button> 
                                             </div>
-                                            <p className="mt-3" onClick={()=>setShowModal(false)}>Continue without sending feedback</p>
+                                            <p className="mt-3 cursor-pointer " onClick={()=>setShowModal(false)}>Continue without rating and feedback</p>
                                         </div>
                                     </div>
                                 {/* <div className="card p-3 py-4">

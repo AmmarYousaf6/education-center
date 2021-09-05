@@ -878,6 +878,38 @@ function isRated(userId, ratedTo, callback){
         callback(err);
     }
 }
+const myRatings = async (req,res,next) => {
+    const {userId} = req.params;
+    let token = req.headers.authorization;
+    let userInfo = jwtDecode(token);
+    const myRating = {
+        text : 'SELECT * FROM ratings WHERE rated_to = $1',
+        values : [userInfo.userID]
+    }
+    try {
+        const query = database.query(myRating).then(response => {
+            if(response.rows.length > 0){
+                res.status(200).json({
+                    status: 1,
+                    message: 'User ratings',
+                    data : response.rows
+                });
+            } else {
+                res.status(200).json({
+                    status: 1,
+                    message: 'No rating found',
+                    data : []
+                });
+            }
+        })
+    } catch (err) {
+        res.status(500).json({
+            status: 0,
+            message: err,
+            data : []
+        });
+    }
+}
 const rateUser = async (req,res,next) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
@@ -1490,6 +1522,7 @@ module.exports = {
     updateInvite,
     myInvites,
     myPendingInvites,
+    myRatings,
     rateUser,
     userRated,
     health,

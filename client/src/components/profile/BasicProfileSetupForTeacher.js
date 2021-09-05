@@ -223,7 +223,7 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
                                                 <div className="form-group">
                                                     <label className="col-form-label">Summary </label>
                                                     <div className="input-group">
-                                                        <input
+                                                        <area
                                                             name="summary"
                                                             placeholder="Summary"
                                                             className="form-control"
@@ -485,13 +485,13 @@ const BasicTeacherProfileSetup = ({ clearAlert, isAuthenticated, auth: { user },
 
 
                                         <div className="col-lg-12 text-right">
-                                            <button type="reset" className="btn" onClick={saveChanges}>
+                                            <button type="reset" className="btn button-md" onClick={saveChanges}>
                                             {!beingSaved && ('Save Changes')}
                                                 {beingSaved && (
                                                     <img src="assets/images/loader.gif" className="ratingLoader" />
                                                 )}
                                                 </button>
-                                                <button type="reset" className="btn-secondry" onClick={() => history.push('/')}>Cancel</button>
+                                                <button type="reset" className="btn button-md btn-danger ml-4" onClick={() => history.push('/')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>

@@ -42,8 +42,11 @@ class LinkedInPage extends Component {
           scope={scope}
           state={state}
         > */}
-        <a href="https://hometutorpk.herokuapp.com/auth/linkedin">
-          <img src={linkedin} alt="Log in with Linked In" style={{ maxWidth: '180px' ,height : '39px' }} />
+        {/* <a href="https://hometutorpk.herokuapp.com/auth/linkedin">
+          <img src={linkedin} alt="Log in with Linked In" style={{ maxWidth: '180px' ,height : '46px' }} />
+        </a> */}
+        <a href="https://hometutorpk.herokuapp.com/auth/linkedin" title="LinkedIn" className="btn btn-linkedin btn-lg mr-3" style={{ borderRadius : '4px' , fontWeight : 'bold' ,maxWidth: '180px' ,height : '46px' }}>
+          <i className="fa fa-linkedin fa-fw"></i> LinkedIn
         </a>
         {/* </LinkedIn> */}
         

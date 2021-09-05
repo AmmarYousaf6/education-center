@@ -26,11 +26,19 @@ const ProfileForm = ({ auth: { user, isAuthenticated, loading } }) => {
 
     const location = useLocation();
     let match = useRouteMatch("/\profile/*/:link");
-    let styles={ 
-        transform : `translateX(${match?.params?.link == 'basic' ? 0 : 100}%)` 
+    var styles={ 
+        transform : `translateX(${match?.params?.link == 'basic' ? (user && user.user_type == "teacher" ? 50 : 0) : 100}%)` 
     };
+    useEffect(()=>{
+        if(user != null && user.user_type == "teacher"){    
+            styles = {
+                transform :  `translateX(50%)`
+            }
+        }
+        console.log("User info :::" , user , styles  );
+    } , [user])
     useEffect(() => {
-        console.log("What we have in match ", user);
+        // console.log("What we have in match ", user);
         const fetchProfileData = async () => {
             let data = [];
             const config = {

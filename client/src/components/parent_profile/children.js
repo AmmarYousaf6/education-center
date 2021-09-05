@@ -148,7 +148,7 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                 <div className="widget-box col-12">
                                     <div className="wc-title">
                                         <h4 style={{display : "inline"}} > Children list</h4>
-                                        <button className="btn button-sm pull-right" onClick={()=>setShowModal(true)}>Add child</button>
+                                        <button className="btn button-md pull-right" onClick={()=>setShowModal(true)}>Add child</button>
                                     </div>
                                     <div className="widget-inner row ">
                                         <div className="new-user-list col-12 row" style={{ }}>
@@ -185,8 +185,8 @@ const ManageChildren = ({ auth: { user, isAuthenticated, loading } , showModal ,
                                                             </ol>
                                                         </span>
                                                         <span className="new-users-btn" style={{margin :"0px 0px 0px auto"}}>                                                            
-                                                            <a className="btn button-sm text-light" onClick={()=>editClicked(child)}>Edit</a>
-                                                            <button className="btn button-sm btn-danger " onClick={()=>deleteChild(child.id)}>
+                                                            <a className="btn button-md text-light" onClick={()=>editClicked(child)}>Edit</a>
+                                                            <button className="btn button-md ml-4 btn-danger " onClick={()=>deleteChild(child.id)}>
                                                                 Delete
                                                             </button>
                                                         </span>

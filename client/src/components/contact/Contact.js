@@ -152,35 +152,35 @@ const Contact = () => {
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <input name="name" type="text" required className="form-control valid-character" placeholder="Name" onChange={e => onChange(e)} />
+                                                    <input name="name" type="text" required value={formData.name || ''} className="form-control valid-character" placeholder="Name" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group"> 
-                                                    <input name="email" type="email" className="form-control" placeholder="Email" required onChange={e => onChange(e)} />
+                                                    <input name="email" type="email" value={formData.email || ''} className="form-control" placeholder="Email" required onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <input name="phone" type="text" required className="form-control int-value" placeholder="Phone" onChange={e => onChange(e)} />
+                                                    <input name="phone" type="text" required value={formData.phone || ''} className="form-control int-value" placeholder="Phone" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <input name="subject" type="text" required className="form-control" placeholder="Subject" onChange={e => onChange(e)} />
+                                                    <input name="subject" type="text" required value={formData.subject || ''} className="form-control" placeholder="Subject" onChange={e => onChange(e)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="form-group">
                                                 <div className="input-group">
-                                                    <textarea name="message" rows="4" className="form-control" placeholder="message" required onChange={e => onChange(e)} ></textarea>
+                                                    <textarea name="message" rows="4" className="form-control" value ={formData.message || ''} placeholder="message" required onChange={e => onChange(e)} ></textarea>
                                                 </div>
                                             </div>
                                         </div>

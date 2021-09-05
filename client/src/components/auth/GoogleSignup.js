@@ -29,7 +29,7 @@ const GoogleSignup = ({ socialLogin }) => {
       <GoogleLogin
         clientId={clientId}
         render={renderProps => (
-            <a onClick={renderProps.onClick} disabled={renderProps.disabled} className="btn flex-fill m-l5 google-plus" href="#"><i className="fa fa-google"></i>Google</a>
+            <a onClick={renderProps.onClick} disabled={renderProps.disabled} className="btn button-md flex-fill m-l5 google-plus" href="#"><i className="fa fa-google"></i>Google</a>
         )}
         buttonText="Google"
         onSuccess={onSuccess}

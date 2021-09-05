@@ -1,3 +1,4 @@
+import { nominalTypeHack } from 'prop-types';
 import React, { Fragment , useEffect , useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
@@ -67,7 +68,7 @@ const TermsAndConditions = () => {
 									<p className="text-left">
 										As a condition to use, you promise not to use the services for any purpose that is unlawful or prohibited by these terms, or any other purpose not reasonably intended by Zubnee. By way of example, and not as a limitation, you agree not to use the Services:
 									</p>
-									<ul>
+									<ul style={{listStyle:'none'}}>
 										<li><b>1.</b>  &nbsp;&nbsp;To abuse, harass, threaten, impersonate or intimidate any person.</li>
 										<li><b>2.</b>  &nbsp;&nbsp;To post or transmit, or cause to be posted or transmitted, any content that is libelous, defamatory, obscene, abusive, offensive, profane, or that infringes any copyright or other right of any person.</li>
 										<li><b>3.</b>  &nbsp;&nbsp;To communicate with Zubnee representative or other users in an abusive or offensive manner.</li>

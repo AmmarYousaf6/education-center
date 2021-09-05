@@ -16,6 +16,8 @@ import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 import Contact from './components/contact/Contact';
 import About from './components/about/About';
+import Blogs from './components/blogs/blogs';
+import BlogDetails from './components/blogs/blogDetails';
 import Works from './components/howitworks/Works';
 import Main from './components/search/Main';
 import TeacherProfile from './components/profile/TeacherProfile';
@@ -57,6 +59,9 @@ const App = () => {
               <Route exact path="/forgetpassword" component={ForgetPassword} />
               <Route exact path="/contact" component={Contact} />
               <Route exact path="/about" component={About} />
+              <Route exact path="/blogs" component={Blogs} />
+              <Route exact path="/blogs/*" component={BlogDetails} />
+              
               <Route exact path="/how-it-works" component={Works} />
               <Route exact path="/" component={Index}  />
               <Route exact path="/linkedin" component={LinkedInPopUp} />

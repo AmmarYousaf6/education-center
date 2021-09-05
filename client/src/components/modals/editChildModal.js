@@ -313,7 +313,7 @@ const ChildModal = ({showModal , setShowModal}) =>{
                                                 <label className="input-label">Grade</label>
                                                     <div className="input-group">
                                                         <select
-                                                            className="form-control selectBtm"
+                                                            className="form-control selectBtm selectOpt"
                                                             value={showModal && (qualification || '')} // Preselected value to persist in dropdown
                                                             onChange={(event)=>setQualification(event.target.value)}
                                                         >      
@@ -351,13 +351,13 @@ const ChildModal = ({showModal , setShowModal}) =>{
 							</div>                                        
                             {/* End of body */}
                                         <div>
-                                            <button className="btn mr-4  " onClick={()=>update()}>
+                                            <button className="btn button-md mr-4  " onClick={()=>update()}>
                                                 Save
                                                 {
                                                     beingSaved && ( <img src="assets/images/loader.gif" className="ratingLoader" />)
                                                 }
                                             </button>
-                                            <button className="btn btn-danger" onClick={()=>{setShowModal(false);resetForm();}}>
+                                            <button className="btn button-md btn-danger" onClick={()=>{setShowModal(false);resetForm();}}>
                                                 Cancel 
                                             </button>
                                         </div>

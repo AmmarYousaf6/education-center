@@ -232,8 +232,8 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                                                                 <div className="row">
                                                                     <div className="col-12 col-sm-3 col-md-3 col-lg-2">
                                                                     </div>
-                                                                    <div className="col-12 col-sm-9 col-md-9 col-lg-7">
-                                                                        <button type="reset" className="btn" onClick={saveChanges} >
+                                                                    <div className="mt-4 pull-right col-12 col-sm-9 col-md-9 col-lg-7">
+                                                                        <button type="reset" className="btn button-md" onClick={saveChanges} >
                                                                             Save changes
                                                                             {
                                                                                 beingSaved && (
@@ -241,7 +241,7 @@ const ProfileDetailsBasicForm = ({ auth: { user, isAuthenticated, loading } }) =
                                                                                 )
                                                                             }
                                                                         </button>
-                                                                        <button type="reset" className="btn-secondry" onClick={() => fetchProfileData()}>Cancel</button>
+                                                                        <button type="reset" className="btn button-md ml-4 btn-danger" onClick={() => fetchProfileData()}>Cancel</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

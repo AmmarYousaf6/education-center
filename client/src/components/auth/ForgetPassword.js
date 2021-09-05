@@ -35,7 +35,7 @@ const ForgetPassword = ({ setAlert, clearAlert, forgetPassword }) => {
                     <div className="account-container">
                         <div className="heading-bx left">
                             <h2 className="title-head">Forget <span>Password</span></h2>
-                            <p>Login Your Account <Link to="/login">Click here</Link></p>
+                            <p style={{textAlign : "left"}}>Login Your Account <Link to="/login">Click here</Link></p>
                         </div>	
                         <form className="contact-bx" onSubmit={e => onSubmit(e)}>
                             <div className="row placeani">

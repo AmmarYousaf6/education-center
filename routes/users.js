@@ -38,6 +38,7 @@ router.get('/session/:userId',authMiddleware.validateToken,userController.getUse
 
 
 //ratings
+router.get('/myratings',authMiddleware.validateToken,userController.myRatings);
 router.post('/ratings',authMiddleware.validateToken,userController.rateUser);
 router.get('/ratings/:userId',authMiddleware.validateToken,userController.userRated);
 

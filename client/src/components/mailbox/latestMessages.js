@@ -149,7 +149,7 @@ const LatestMessagesComponent = ({active , auth: { user, isAuthenticated, loadin
                                 ) : ( 
                                 (msg && user && msg.sender_id == user.id) ? 
                                 (<div className="media media-chat"> 
-                                    <img className="avatar" src={mediaBaseUrl+"u30hj9koseh1hvwtaft1.jpg"} alt="..." />
+                                    <img className="avatar" src={mediaBaseUrl+msg.image} alt="..." />
                                     <div className="media-body">
                                         <p>{msg.message}</p>
                                         <p className="meta">
@@ -159,6 +159,7 @@ const LatestMessagesComponent = ({active , auth: { user, isAuthenticated, loadin
                                 </div>) : 
                                 (<div>                                     
                                     <div className="media media-chat media-chat-reverse">
+                                        <img className="avatar" src={mediaBaseUrl+msg.image} alt="..." />
                                         <div className="media-body">
                                             <p>{msg.message}</p>
                                             <p className="meta"><Time datetime={msg.created_at}></Time></p>

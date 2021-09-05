@@ -26,6 +26,7 @@
     "react-leaflet": "^2.6.3",
     "react-leaflet-search": "^2.0.1",
     "react-linkedin-login-oauth2": "^1.0.8",
+    "react-loading-skeleton": "^2.2.0",
     "react-moment": "^0.9.7",
     "react-places-autocomplete": "^7.3.0",
     "react-rating-stars-component": "^2.2.0",

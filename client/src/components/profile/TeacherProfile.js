@@ -340,7 +340,7 @@ const TeacherProfile = ({ login, isAuthenticated, auth: {user}  }) => {
                                         
                                         <div className="course-buy-now text-center">
                                             {user && user.user_type && user.user_type == 'parent' && (
-                                                <button className="btn radius-xl text-uppercase" onClick={()=>hireMeClicked(teacherInfo)}>Hire Me Now</button>
+                                                <button className="btn button-md  text-uppercase" onClick={()=>hireMeClicked(teacherInfo)}>Hire Me Now</button>
                                             )}
                                         </div>
                                         <div className="teacher-bx">
@@ -362,7 +362,9 @@ const TeacherProfile = ({ login, isAuthenticated, auth: {user}  }) => {
                                                         <li key={key} className={teacherInfo && teacherInfo.rating > key ? "active" : "" } key={key}><i className="fa fa-star"></i></li>
                                                     ))}
                                                </ul>
-                                               <button className="btn radius-xl" onClick={()=>rateClicked(teacherInfo)}>Rate</button>                                              
+                                               {user && user.user_type && user.user_type == 'parent' && (
+                                                <button className="btn button-md mt-3 ml-3" onClick={()=>rateClicked(teacherInfo)}>Rate</button>
+                                               )}
                                             </div>
                                             <div className="price categories">
                                                 <span>Categories</span>
