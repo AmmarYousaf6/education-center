@@ -647,7 +647,7 @@ const getProfileById = async (req,res) => {
                 const viewsCount = await database.query(getViewCount);
                 const feedback = await database.query(getFeedback);
                 // Map data
-                data.rating = rating.rows[0].averagerating;
+                data.rating = rating.rows[0].averagerating ? Math.round(rating.rows[0].averagerating) : 0;
                 data.subjects = subjects.rows;
                 data.grades = grades.rows;
                 data.areas = areas.rows;
