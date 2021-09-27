@@ -919,7 +919,7 @@ const myRatings = async (req,res,next) => {
 const rateUser = async (req,res,next) => {
     let token = req.headers.authorization;
     let userInfo = jwtDecode(token);
-    const {ratedTo, rating, feedback} = req.body;
+    const {ratedTo, rating, feedBack} = req.body;
     isRated(userInfo.userID,ratedTo, async (err,results)=> {
         if (err) {
             res.status(500).json({
@@ -929,7 +929,7 @@ const rateUser = async (req,res,next) => {
         }
         if (!results) {
             const text = 'INSERT INTO ratings(rated_by, rated_to, rating, feedback ) VALUES($1, $2, $3, $4) RETURNING *'
-            const values = [userInfo.userID, ratedTo, rating,feedback ];
+            const values = [userInfo.userID, ratedTo, rating,feedBack ];
             try {
                 const query = await database.query(text, values).then((response) => {
                     res.status(200).json({
@@ -948,7 +948,7 @@ const rateUser = async (req,res,next) => {
             console.log(results)
             const updateRating = {
                 text : 'UPDATE ratings SET rating = $1,feedback = $2 WHERE id = $3',
-                values : [rating, feedback, results.id]
+                values : [rating, feedBack, results.id]
             }
             try {
                 const response  = await database.query(updateRating);
